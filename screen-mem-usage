@@ -1,0 +1,9 @@
+#!/bin/sh
+
+total_mem=$(free -m | awk '$1 == "Mem:" { print $2 }')
+
+while(true); do
+  current_mem=$(free -m | awk '$1 == "-/+" { print $3 }')
+  echo "${current_mem}MB/${total_mem}MB"
+  sleep 3
+done
