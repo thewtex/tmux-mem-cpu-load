@@ -11,7 +11,7 @@ Description
 ===========
 
 
-Two programs are provided for system monitoring in the *hardstatusline* of **GNU
+Two programs are provided for system monitoring in the *hardstatus* line of **GNU
 Screen**: a CPU usage monitor and a memory usage monitor.  These programs are
 intended to use minimal system resources.
 
