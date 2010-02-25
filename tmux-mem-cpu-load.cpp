@@ -131,11 +131,21 @@ string mem_string()
   return oss.str();
 }
 
+string load_string()
+{
+  ifstream loadavg_file( "/proc/loadavg" );
+  string load_line;
+  getline( loadavg_file, load_line );
+  loadavg_file.close();
+
+  return load_line.substr( 0, 14 );
+}
+
 int main(int argc, char** argv)
 {
   try
   {
-  std::cout << mem_string() << ' ' << cpu_string();
+  std::cout << mem_string() << ' ' << cpu_string() << ' ' << load_string();
   }
   catch(const exception &e)
   {
