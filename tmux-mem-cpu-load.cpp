@@ -7,7 +7,7 @@ using namespace std;
 
 #include <unistd.h> // sleep
 
-float cpu_percentage()
+float cpu_percentage( unsigned int cpu_usage_delay )
 {
   string stat_line;
   size_t line_start_pos;
@@ -41,7 +41,7 @@ float cpu_percentage()
   iss >> current_user >> current_nice >> current_system >> current_idle;
   iss.clear();
 
-  sleep(1);
+  usleep( cpu_usage_delay );
 
   stat_file.open("/proc/stat");
   getline(stat_file, stat_line);
@@ -66,7 +66,7 @@ float cpu_percentage()
   return static_cast<float>(diff_user + diff_system + diff_nice)/static_cast<float>(diff_user + diff_system + diff_nice + diff_idle)*100.0;
 }
 
-string cpu_string()
+string cpu_string( unsigned int cpu_usage_delay )
 {
   string meter = "[          ]";
   int meter_count = 0;
@@ -75,7 +75,7 @@ string cpu_string()
   oss.precision( 1 );
   oss.setf( ios::fixed | ios::right );
 
-  percentage = cpu_percentage();
+  percentage = cpu_percentage( cpu_usage_delay );
   meter_count = 1;
   while(meter_count*9.99 < percentage)
     {
@@ -141,15 +141,25 @@ string load_string()
 
 int main(int argc, char** argv)
 {
-  try
-  {
-  std::cout << mem_string() << ' ' << cpu_string() << ' ' << load_string();
-  }
-  catch(const exception &e)
-  {
-    cerr << "Error: " << e.what() << endl;
-    return 1;
-  }
+  unsigned int cpu_usage_delay = 900000;
+  if( argc > 1 )
+    {
+    try
+    {
+      istringstream iss( argv[1] );
+      iss.exceptions ( ifstream::failbit | ifstream::badbit );
+      unsigned int status_interval;
+      iss >> status_interval;
+      cpu_usage_delay = status_interval * 1000000 - 100000;
+    }
+    catch(const exception &e)
+    {
+      cerr << "Usage: " << argv[0] << " [tmux_status-interval(seconds)]" << endl;
+      return 1;
+    }
+    }
+
+  std::cout << mem_string() << ' ' << cpu_string( cpu_usage_delay ) << ' ' << load_string();
   
   return 0;
 }
