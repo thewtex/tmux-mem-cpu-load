@@ -24,6 +24,7 @@ float cpu_percentage()
   unsigned long long diff_system;
   unsigned long long diff_nice;
   unsigned long long diff_idle;
+  istringstream iss;
 
   ifstream stat_file("/proc/stat");
   getline(stat_file, stat_line);
@@ -36,7 +37,6 @@ float cpu_percentage()
   line_end_pos = stat_line.find_first_of(' ', line_end_pos + 1);
   line_end_pos = stat_line.find_first_of(' ', line_end_pos + 1);
 
-  istringstream iss;
   iss.str( stat_line.substr( line_start_pos, line_end_pos - line_start_pos ) );
   iss >> current_user >> current_nice >> current_system >> current_idle;
   iss.clear();
@@ -92,11 +92,37 @@ string cpu_string()
   return oss.str();
 }
 
+string mem_string()
+{
+  int total_mem;
+  size_t line_start_pos;
+  size_t line_end_pos;
+  istringstream iss;
+  ostringstream oss;
+  string mem_line;
+
+  ifstream meminfo_file( "/proc/meminfo" );
+  getline( meminfo_file, mem_line );
+  line_start_pos = mem_line.find_first_of( ':' );
+  line_start_pos++;
+  line_end_pos = mem_line.find_first_of( 'k' );
+  iss.str( mem_line.substr( line_start_pos, line_end_pos - line_start_pos ) );
+  iss >> total_mem;
+
+  oss << "MEM: ";
+  oss << total_mem / 1024;
+
+  
+  meminfo_file.close();
+
+  return oss.str();
+}
+
 int main(int argc, char** argv)
 {
   try
   {
-  std::cout << cpu_string();
+  std::cout << mem_string() << ' ' << cpu_string();
   }
   catch(const exception &e)
   {
