@@ -94,7 +94,9 @@ string cpu_string()
 
 string mem_string()
 {
-  int total_mem;
+  unsigned int total_mem;
+  unsigned int used_mem;
+  unsigned int unused_mem;
   size_t line_start_pos;
   size_t line_end_pos;
   istringstream iss;
@@ -109,11 +111,22 @@ string mem_string()
   iss.str( mem_line.substr( line_start_pos, line_end_pos - line_start_pos ) );
   iss >> total_mem;
 
-  oss << "MEM: ";
-  oss << total_mem / 1024;
+  used_mem = total_mem;
 
-  
+  for( unsigned int i = 0; i < 3; i++ )
+    {
+    getline( meminfo_file, mem_line );
+    line_start_pos = mem_line.find_first_of( ':' );
+    line_start_pos++;
+    line_end_pos = mem_line.find_first_of( 'k' );
+    iss.str( mem_line.substr( line_start_pos, line_end_pos - line_start_pos ) );
+    iss >> unused_mem;
+    used_mem -= unused_mem;
+    }
   meminfo_file.close();
+
+  oss << "Mem: ";
+  oss << used_mem / 1024 << '/' << total_mem / 1024;
 
   return oss.str();
 }
