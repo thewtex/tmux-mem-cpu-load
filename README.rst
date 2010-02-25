@@ -28,15 +28,15 @@ Example output::
 
    ^    ^          ^         ^     ^    ^    ^
    |    |          |         |     |    |    |
-   A    B          C         D     E    F    G
+   1    2          3         4     5    6    G
 
-A. Currently used memory.
-B. Available memory.
-C. CPU usage bar graph.
-D. CPU usage percentage.
-E. Load average for the past minute.
-F. Load average for the past 5 minutes.
-G. Load average for the past 15 minutes.
+1. Currently used memory.
+2. Available memory.
+3. CPU usage bar graph.
+4. CPU usage percentage.
+5. Load average for the past minute.
+6. Load average for the past 5 minutes.
+7. Load average for the past 15 minutes.
 
 
 Installation
@@ -84,7 +84,7 @@ Configuring tmux_
 =======================
 
 
-Edit ``$HOME/.tmux.conf`` to display the programs output in *status-left* or
+Edit ``$HOME/.tmux.conf`` to display the program's output in *status-left* or
 *status-right*.  For example::
 
   set -g status-interval 2
