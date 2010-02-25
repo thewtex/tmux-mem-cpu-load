@@ -1,8 +1,8 @@
 ====================================================
-                  screen-cpu-mem
+               tmux-mem-cpu-load
 ====================================================
 ----------------------------------------------------
-CPU and RAM memory monitors for use with GNU Screen_
+CPU, RAM memory, and load monitor for use with tmux_
 ----------------------------------------------------
 
 
@@ -11,21 +11,32 @@ Description
 ===========
 
 
-Two programs are provided for system monitoring in the *hardstatus* line of **GNU
-Screen**: a CPU usage monitor and a memory usage monitor.  These programs are
-intended to use minimal system resources.
+A simple, lightweight program provided for system monitoring in the *status*
+line of **tmux**.
 
-The CPU usage monitor outputs a percent CPU usage over all processors that is
-updated every second.  It also displays a textual bar graph of the current
-percent usage where every '|' character represents 10% usage.  
+The memory monitor displays the used and available memory.
 
-The memory monitor is updated every three seconds and displays the used and
-available memory.
+The CPU usage monitor outputs a percent CPU usage over all processors. It also
+displays a textual bar graph of the current percent usage where every '|'
+character represents 10% usage.  
 
-Example::
+The system load average is also displayed.
 
-  Mem:2885MB/7987MB  Cpu:[|||||     ]  51.2%
+Example output::
 
+  2885/7987MB [|||||     ]  51.2% 2.11 2.35 2.44
+
+   ^    ^          ^         ^     ^    ^    ^
+   |    |          |         |     |    |    |
+   A    B          C         D     E    F    G
+
+A. Currently used memory.
+B. Available memory.
+C. CPU usage bar graph.
+D. CPU usage percentage.
+E. Load average for the past minute.
+F. Load average for the past 5 minutes.
+G. Load average for the past 15 minutes.
 
 
 Installation
@@ -69,27 +80,18 @@ Install
 
 
 
-Configuring GNU Screen_
+Configuring tmux_
 =======================
 
 
-The ``$HOME/.screenrc`` file must be edited to make use of the installed
-programs, ``screen-cpu-usage`` and ``screen-mem-usage``.
+Edit ``$HOME/.tmux.conf`` to display the programs output in *status-left* or
+*status-right*.  For example::
 
-An example configuration::
+  set -g status-interval 2
+  set -g status-left "#S #[fg=green,bg=black,bright]#(tmux-mem-cpu-load 2)#[default]" 
 
-  # backticks to display information in the statusbar
-  backtick 1 0 0 /usr/local/bin/screen-mem-usage
-  backtick 2 0 0 /usr/local/bin/screen-cpu-usage
-
-  hardstatus alwayslastline  
-  hardstatus string '%{kg}Host:%{kG}%H%{kg} %=%{kb}Mem:%{kB}%1`  %{ky}Cpu:%{kY}%2`%%  %{kR}Load:%{kr}%l%=%{kc} %D %m/%d %{kC}%C%a%{w}' 
-
-The example configuration will result in::
-
-  Host:flea   Mem:2961MB/7987MB  Cpu:[||        ]  25.6%  Load:0.64 0.35 0.28 Fri 09/11 12:56am
-
-
+Note that the first argument to `tmux-mem-cpu-load` should be the same number
+of seconds that *status-interval* is set at.
 
 
 Author
@@ -98,6 +100,6 @@ Author
 Matt McCormick (thewtex) <matt@mmmccormick.com>
 
 
-.. _screen: http://www.gnu.org/software/screen/
+.. _tmux: http://tmux.sourceforge.net/
 .. _cmake: http://www.cmake.org
-.. _`project homepage`: http://github.com/thewtex/screen-cpu-mem
+.. _`project homepage`: http://github.com/thewtex/tmux-mem-cpu-load
