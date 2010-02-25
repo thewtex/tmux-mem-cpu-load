@@ -83,7 +83,6 @@ string cpu_string()
     meter_count++;
     }
 
-  oss << "CPU:";
   oss << meter;
   oss.width( 5 );
   oss << percentage;
@@ -125,8 +124,7 @@ string mem_string()
     }
   meminfo_file.close();
 
-  oss << "Mem: ";
-  oss << used_mem / 1024 << '/' << total_mem / 1024;
+  oss << used_mem / 1024 << '/' << total_mem / 1024 << "MB";
 
   return oss.str();
 }
