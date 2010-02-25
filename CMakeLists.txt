@@ -3,7 +3,7 @@ if(COMMAND cmake_policy)
     cmake_policy(VERSION 2.6)
 endif(COMMAND cmake_policy)
 
-project(screen-cpu-mem)
+project( tmux-mem-cpu-load )
 
 if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Release CACHE STRING
@@ -11,12 +11,8 @@ if(NOT CMAKE_BUILD_TYPE)
       FORCE)
 endif(NOT CMAKE_BUILD_TYPE)
 
-add_executable(screen-cpu-usage screen-cpu-usage.cpp)
-install(TARGETS screen-cpu-usage
+add_executable(tmux-mem-cpu-load tmux-mem-cpu-load.cpp)
+install(TARGETS tmux-mem-cpu-load
   RUNTIME
-  DESTINATION bin
-  )
-
-install(PROGRAMS screen-mem-usage
   DESTINATION bin
   )

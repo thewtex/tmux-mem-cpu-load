@@ -1,9 +1,0 @@
-#!/bin/sh
-
-total_mem=$(/usr/bin/free -m | /usr/bin/awk '$1 == "Mem:" { print $2 }')
-
-while(true); do
-  current_mem=$(/usr/bin/free -m | /usr/bin/awk '$1 == "-/+" { print $3 }')
-  echo "${current_mem}MB/${total_mem}MB"
-  sleep 3
-done
