@@ -66,9 +66,11 @@ float cpu_percentage( unsigned int cpu_usage_delay )
   return static_cast<float>(diff_user + diff_system + diff_nice)/static_cast<float>(diff_user + diff_system + diff_nice + diff_idle)*100.0;
 }
 
-string cpu_string( unsigned int cpu_usage_delay )
+string cpu_string( unsigned int cpu_usage_delay, unsigned int graph_lines )
 {
-  string meter = "[          ]";
+  string meter( graph_lines + 2, ' ' );
+  meter[0] = '[';
+  meter[meter.length() - 1] = ']';
   int meter_count = 0;
   float percentage;
   ostringstream oss;
@@ -76,8 +78,9 @@ string cpu_string( unsigned int cpu_usage_delay )
   oss.setf( ios::fixed | ios::right );
 
   percentage = cpu_percentage( cpu_usage_delay );
+  float meter_step = 99.9 / graph_lines;
   meter_count = 1;
-  while(meter_count*9.99 < percentage)
+  while(meter_count*meter_step < percentage)
     {
     meter[meter_count] = '|';
     meter_count++;
@@ -142,25 +145,33 @@ string load_string()
 int main(int argc, char** argv)
 {
   unsigned int cpu_usage_delay = 900000;
+  unsigned int graph_lines = 10;
+  try
+  {
+  istringstream iss;
+  iss.exceptions ( ifstream::failbit | ifstream::badbit );
   if( argc > 1 )
     {
-    try
-    {
-      istringstream iss( argv[1] );
-      iss.exceptions ( ifstream::failbit | ifstream::badbit );
+      iss.str( argv[1] );
       unsigned int status_interval;
       iss >> status_interval;
       cpu_usage_delay = status_interval * 1000000 - 100000;
     }
-    catch(const exception &e)
+  if( argc > 2 )
     {
-      cerr << "Usage: " << argv[0] << " [tmux_status-interval(seconds)]" << endl;
-      return 1;
+    iss.str( argv[2] );
+    iss.clear();
+    iss >> graph_lines;
     }
-    }
+  }
+  catch(const exception &e)
+  {
+    cerr << "Usage: " << argv[0] << " [tmux_status-interval(seconds)] [graph lines]" << endl;
+    return 1;
+  }
 
-  std::cout << mem_string() << ' ' << cpu_string( cpu_usage_delay ) << ' ' << load_string();
-  
+  std::cout << mem_string() << ' ' << cpu_string( cpu_usage_delay, graph_lines ) << ' ' << load_string();
+
   return 0;
 }
 

@@ -17,8 +17,7 @@ line of **tmux**.
 The memory monitor displays the used and available memory.
 
 The CPU usage monitor outputs a percent CPU usage over all processors. It also
-displays a textual bar graph of the current percent usage where every '|'
-character represents 10% usage.  
+displays a textual bar graph of the current percent usage.
 
 The system load average is also displayed.
 
@@ -88,10 +87,14 @@ Edit ``$HOME/.tmux.conf`` to display the program's output in *status-left* or
 *status-right*.  For example::
 
   set -g status-interval 2
-  set -g status-left "#S #[fg=green,bg=black,bright]#(tmux-mem-cpu-load 2)#[default]" 
+  set -g status-left "#S #[fg=green,bg=black,bright]#(tmux-mem-cpu-load 2)#[default]"
 
 Note that the first argument to `tmux-mem-cpu-load` should be the same number
 of seconds that *status-interval* is set at.
+
+An optional second argument is the number of bars in the bar graph, which
+defaults to 10.  This can, for instance, be set to the number of cores in a
+multi-core system.
 
 
 Author
