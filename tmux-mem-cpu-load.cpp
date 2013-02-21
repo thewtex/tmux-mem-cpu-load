@@ -14,6 +14,7 @@
  * limitations under the License.
  * */
 
+#include <cstring>
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -161,30 +162,43 @@ int main(int argc, char** argv)
 {
   unsigned int cpu_usage_delay = 900000;
   unsigned int graph_lines = 10;
+  bool use_colors = false;
   try
     {
     istringstream iss;
     iss.exceptions ( ifstream::failbit | ifstream::badbit );
-    if( argc > 1 )
+    std::string current_arg;
+    unsigned int arg_index = 1;
+    if( argc > arg_index )
       {
-      iss.str( argv[1] );
+      if( strcmp( argv[arg_index], "--colors" ) == 0 )
+        {
+        use_colors = true;
+        ++arg_index;
+        }
+      }
+    if( argc > arg_index )
+      {
+      iss.str( argv[arg_index] );
       unsigned int status_interval;
       iss >> status_interval;
       cpu_usage_delay = status_interval * 1000000 - 100000;
+      ++arg_index;
       }
-    if( argc > 2 )
+    if( argc > arg_index )
       {
-      iss.str( argv[2] );
+      iss.str( argv[arg_index] );
       iss.clear();
       iss >> graph_lines;
       }
     }
   catch(const exception &e)
     {
-    cerr << "Usage: " << argv[0] << " [tmux_status-interval(seconds)] [graph lines]" << endl;
+    cerr << "Usage: " << argv[0] << " [--colors] [tmux_status-interval(seconds)] [graph lines]" << endl;
     return 1;
     }
 
+  std::cout << use_colors << " " << cpu_usage_delay << " " << graph_lines << std::endl;
   std::cout << mem_string() << ' ' << cpu_string( cpu_usage_delay, graph_lines ) << ' ' << load_string();
 
   return 0;
