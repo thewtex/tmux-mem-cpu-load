@@ -162,28 +162,28 @@ int main(int argc, char** argv)
   unsigned int cpu_usage_delay = 900000;
   unsigned int graph_lines = 10;
   try
-  {
-  istringstream iss;
-  iss.exceptions ( ifstream::failbit | ifstream::badbit );
-  if( argc > 1 )
     {
+    istringstream iss;
+    iss.exceptions ( ifstream::failbit | ifstream::badbit );
+    if( argc > 1 )
+      {
       iss.str( argv[1] );
       unsigned int status_interval;
       iss >> status_interval;
       cpu_usage_delay = status_interval * 1000000 - 100000;
+      }
+    if( argc > 2 )
+      {
+      iss.str( argv[2] );
+      iss.clear();
+      iss >> graph_lines;
+      }
     }
-  if( argc > 2 )
-    {
-    iss.str( argv[2] );
-    iss.clear();
-    iss >> graph_lines;
-    }
-  }
   catch(const exception &e)
-  {
+    {
     cerr << "Usage: " << argv[0] << " [tmux_status-interval(seconds)] [graph lines]" << endl;
     return 1;
-  }
+    }
 
   std::cout << mem_string() << ' ' << cpu_string( cpu_usage_delay, graph_lines ) << ' ' << load_string();
 
