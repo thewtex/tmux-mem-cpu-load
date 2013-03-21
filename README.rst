@@ -27,7 +27,7 @@ Example output::
 
    ^    ^          ^         ^     ^    ^    ^
    |    |          |         |     |    |    |
-   1    2          3         4     5    6    G
+   1    2          3         4     5    6    7
 
 1. Currently used memory.
 2. Available memory.
