@@ -45,10 +45,13 @@ Installation
 Dependencies
 ------------
 
+Currently only tested on Linux.  Mac OSX is known not to work.  Patches or
+hardware are welcome.
+
 Building
 ~~~~~~~~
 
-* >= cmake_ -2.6
+* >= CMake_ -2.6
 * C++ compiler (e.g. gcc/g++)
 
 
@@ -104,5 +107,5 @@ Matt McCormick (thewtex) <matt@mmmccormick.com>
 
 
 .. _tmux: http://tmux.sourceforge.net/
-.. _cmake: http://www.cmake.org
+.. _CMake: http://www.cmake.org
 .. _`project homepage`: http://github.com/thewtex/tmux-mem-cpu-load
