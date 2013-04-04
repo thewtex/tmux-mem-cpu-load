@@ -11,8 +11,11 @@ if(NOT CMAKE_BUILD_TYPE)
       FORCE)
 endif(NOT CMAKE_BUILD_TYPE)
 
+if(APPLE)
+  message(SEND_ERROR "OSX is currently not supported.  Patches are welcome.")
+endif()
+
 add_executable(tmux-mem-cpu-load tmux-mem-cpu-load.cpp)
 install(TARGETS tmux-mem-cpu-load
-  RUNTIME
-  DESTINATION bin
+  RUNTIME DESTINATION bin
   )
