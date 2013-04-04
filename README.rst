@@ -47,7 +47,8 @@ Installation
 Dependencies
 ------------
 
-Currently, Linux and Mac OSX are supported.
+Currently only tested on Linux.  Mac OSX is known not to work.  Patches or
+hardware are welcome.
 
 Building
 ~~~~~~~~
