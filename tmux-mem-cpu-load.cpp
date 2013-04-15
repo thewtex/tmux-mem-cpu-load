@@ -82,30 +82,6 @@ host_cpu_load_info_data_t _get_cpu_percentage()
 
 float cpu_percentage( unsigned int cpu_usage_delay )
 {
-  // Get the load times from the XNU kernel
-  host_cpu_load_info_data_t load1 = _get_cpu_percentage();
-  usleep(cpu_usage_delay);
-  host_cpu_load_info_data_t load2 = _get_cpu_percentage();
-
-  // Current load times
-  unsigned long long current_user    = load1.cpu_ticks[CPU_STATE_USER];
-  unsigned long long current_system  = load1.cpu_ticks[CPU_STATE_SYSTEM];
-  unsigned long long current_nice    = load1.cpu_ticks[CPU_STATE_NICE];
-  unsigned long long current_idle    = load1.cpu_ticks[CPU_STATE_IDLE];
-  // Next load times
-  unsigned long long next_user       = load2.cpu_ticks[CPU_STATE_USER];
-  unsigned long long next_system     = load2.cpu_ticks[CPU_STATE_SYSTEM];
-  unsigned long long next_nice       = load2.cpu_ticks[CPU_STATE_NICE];
-  unsigned long long next_idle       = load2.cpu_ticks[CPU_STATE_IDLE];
-  // Difference between the two
-  unsigned long long diff_user       = next_user - current_user;
-  unsigned long long diff_system     = next_system - current_system;
-  unsigned long long diff_nice       = next_nice - current_nice;
-  unsigned long long diff_idle       = next_idle - current_idle;
-
-#else // Linux
-float cpu_percentage( unsigned int cpu_usage_delay )
-{
   std::string stat_line;
   size_t line_start_pos;
   size_t line_end_pos;
@@ -124,7 +100,7 @@ float cpu_percentage( unsigned int cpu_usage_delay )
   std::istringstream iss;
 
   std::ifstream stat_file("/proc/stat");
-  getline(stat_file, stat_line);
+  std::getline(stat_file, stat_line);
   stat_file.close();
 
   // skip "cpu"
@@ -141,7 +117,7 @@ float cpu_percentage( unsigned int cpu_usage_delay )
   usleep( cpu_usage_delay );
 
   stat_file.open("/proc/stat");
-  getline(stat_file, stat_line);
+  std::getline(stat_file, stat_line);
   stat_file.close();
 
   // skip "cpu"
@@ -164,9 +140,7 @@ float cpu_percentage( unsigned int cpu_usage_delay )
   return static_cast<float>(diff_user + diff_system + diff_nice)/static_cast<float>(diff_user + diff_system + diff_nice + diff_idle)*100.0;
 }
 
-std::string cpu_string( unsigned int cpu_usage_delay,
-  unsigned int graph_lines,
-  bool use_colors )
+std::string cpu_string( unsigned int cpu_usage_delay, unsigned int graph_lines )
 {
   std::string meter( graph_lines + 2, ' ' );
   meter[0] = '[';
@@ -202,8 +176,7 @@ std::string cpu_string( unsigned int cpu_usage_delay,
   return oss.str();
 }
 
-
-std::string mem_string( bool use_colors )
+std::string mem_string()
 {
   std::ostringstream oss;
 #if defined(BSD_BASED) || (defined(__APPLE__) && defined(__MACH__))
@@ -252,10 +225,11 @@ std::string mem_string( bool use_colors )
   size_t line_start_pos;
   size_t line_end_pos;
   std::istringstream iss;
+  std::ostringstream oss;
   std::string mem_line;
 
   std::ifstream meminfo_file( "/proc/meminfo" );
-  getline( meminfo_file, mem_line );
+  std::getline( meminfo_file, mem_line );
   line_start_pos = mem_line.find_first_of( ':' );
   line_start_pos++;
   line_end_pos = mem_line.find_first_of( 'k' );
@@ -266,22 +240,13 @@ std::string mem_string( bool use_colors )
 
   for( unsigned int i = 0; i < 3; i++ )
     {
-    getline( meminfo_file, mem_line );
-    // accomodate MemAvailable potentially being in lines 2-4 of /proc/meminfo
-    // did this in a way to not break the original logic of the loop
-    if( mem_line.find("MemAvailable") == 0 )
-        {
-        i--;
-        }
-    else
-        {
-        line_start_pos = mem_line.find_first_of( ':' );
-        line_start_pos++;
-        line_end_pos = mem_line.find_first_of( 'k' );
-        iss.str( mem_line.substr( line_start_pos, line_end_pos - line_start_pos ) );
-        iss >> unused_mem;
-        used_mem -= unused_mem;
-        }
+    std::getline( meminfo_file, mem_line );
+    line_start_pos = mem_line.find_first_of( ':' );
+    line_start_pos++;
+    line_end_pos = mem_line.find_first_of( 'k' );
+    iss.str( mem_line.substr( line_start_pos, line_end_pos - line_start_pos ) );
+    iss >> unused_mem;
+    used_mem -= unused_mem;
     }
   meminfo_file.close();
 
@@ -300,35 +265,8 @@ std::string mem_string( bool use_colors )
   return oss.str();
 }
 
-
-std::string load_string( bool use_colors )
+std::string load_string()
 {
-  std::ostringstream oss;
-
-#if defined(BSD_BASED) || (defined(__APPLE__) && defined(__MACH__))
-  // Both apple and BSD style systems have these api calls
-
-  // Only get 3 load averages
-  int nelem = 3;
-  double averages[3];
-  // based on: http://www.opensource.apple.com/source/Libc/Libc-262/gen/getloadavg.c
-  if( getloadavg(averages, nelem) < 0 )
-    {
-    oss << "0.00 0.00 0.00"; // couldn't get averages.
-    }
-  else
-    {
-    for(int i = 0; i < nelem; ++i)
-      {
-      // Round to nearest, make sure this is only a 0.00 value not a 0.0000
-      float avg = floorf(static_cast<float>(averages[i]) * 100 + 0.5) / 100;
-      oss << avg << " ";
-      }
-    }
-  std::string load_line( oss.str() );
-  oss.str( "" );
-
-#else // Linux
   std::ifstream loadavg_file( "/proc/loadavg" );
   std::string load_line;
   std::getline( loadavg_file, load_line );
@@ -373,6 +311,10 @@ int main(int argc, char** argv)
   int graph_lines = 10;
   bool use_colors = false;
   try
+  {
+  std::istringstream iss;
+  iss.exceptions ( std::ifstream::failbit | std::ifstream::badbit );
+  if( argc > 1 )
     {
     std::istringstream iss;
     iss.exceptions ( std::ifstream::failbit | std::ifstream::badbit );
@@ -416,6 +358,12 @@ int main(int argc, char** argv)
     std::cerr << "Usage: " << argv[0] << " [--colors] [tmux_status-interval(seconds)] [graph lines]" << std::endl;
     return EXIT_FAILURE;
     }
+  }
+  catch(const std::exception &e)
+  {
+    std::cerr << "Usage: " << argv[0] << " [tmux_status-interval(seconds)] [graph lines]" << std::endl;
+    return 1;
+  }
 
   std::cout << mem_string( use_colors ) << ' ' << cpu_string( cpu_usage_delay, graph_lines, use_colors ) << ' ' << load_string( use_colors );
 
