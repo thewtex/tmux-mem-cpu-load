@@ -19,13 +19,12 @@
 #include <iostream>
 #include <sstream>
 #include <string>
-using namespace std;
 
 #include <unistd.h> // sleep
 
 float cpu_percentage( unsigned int cpu_usage_delay )
 {
-  string stat_line;
+  std::string stat_line;
   size_t line_start_pos;
   size_t line_end_pos;
   unsigned long long current_user;
@@ -40,9 +39,9 @@ float cpu_percentage( unsigned int cpu_usage_delay )
   unsigned long long diff_system;
   unsigned long long diff_nice;
   unsigned long long diff_idle;
-  istringstream iss;
+  std::istringstream iss;
 
-  ifstream stat_file("/proc/stat");
+  std::ifstream stat_file("/proc/stat");
   getline(stat_file, stat_line);
   stat_file.close();
 
@@ -82,16 +81,16 @@ float cpu_percentage( unsigned int cpu_usage_delay )
   return static_cast<float>(diff_user + diff_system + diff_nice)/static_cast<float>(diff_user + diff_system + diff_nice + diff_idle)*100.0;
 }
 
-string cpu_string( unsigned int cpu_usage_delay, unsigned int graph_lines )
+std::string cpu_string( unsigned int cpu_usage_delay, unsigned int graph_lines )
 {
-  string meter( graph_lines + 2, ' ' );
+  std::string meter( graph_lines + 2, ' ' );
   meter[0] = '[';
   meter[meter.length() - 1] = ']';
   int meter_count = 0;
   float percentage;
-  ostringstream oss;
+  std::ostringstream oss;
   oss.precision( 1 );
-  oss.setf( ios::fixed | ios::right );
+  oss.setf( std::ios::fixed | std::ios::right );
 
   percentage = cpu_percentage( cpu_usage_delay );
   float meter_step = 99.9 / graph_lines;
@@ -110,18 +109,18 @@ string cpu_string( unsigned int cpu_usage_delay, unsigned int graph_lines )
   return oss.str();
 }
 
-string mem_string()
+std::string mem_string()
 {
   unsigned int total_mem;
   unsigned int used_mem;
   unsigned int unused_mem;
   size_t line_start_pos;
   size_t line_end_pos;
-  istringstream iss;
-  ostringstream oss;
-  string mem_line;
+  std::istringstream iss;
+  std::ostringstream oss;
+  std::string mem_line;
 
-  ifstream meminfo_file( "/proc/meminfo" );
+  std::ifstream meminfo_file( "/proc/meminfo" );
   getline( meminfo_file, mem_line );
   line_start_pos = mem_line.find_first_of( ':' );
   line_start_pos++;
@@ -148,11 +147,11 @@ string mem_string()
   return oss.str();
 }
 
-string load_string()
+std::string load_string()
 {
-  ifstream loadavg_file( "/proc/loadavg" );
-  string load_line;
-  getline( loadavg_file, load_line );
+  std::ifstream loadavg_file( "/proc/loadavg" );
+  std::string load_line;
+  std::getline( loadavg_file, load_line );
   loadavg_file.close();
 
   return load_line.substr( 0, 14 );
@@ -165,8 +164,8 @@ int main(int argc, char** argv)
   bool use_colors = false;
   try
     {
-    istringstream iss;
-    iss.exceptions ( ifstream::failbit | ifstream::badbit );
+    std::istringstream iss;
+    iss.exceptions ( std::ifstream::failbit | std::ifstream::badbit );
     std::string current_arg;
     unsigned int arg_index = 1;
     if( argc > arg_index )
@@ -192,9 +191,9 @@ int main(int argc, char** argv)
       iss >> graph_lines;
       }
     }
-  catch(const exception &e)
+  catch(const std::exception &e)
     {
-    cerr << "Usage: " << argv[0] << " [--colors] [tmux_status-interval(seconds)] [graph lines]" << endl;
+    std::cerr << "Usage: " << argv[0] << " [--colors] [tmux_status-interval(seconds)] [graph lines]" << std::endl;
     return 1;
     }
 
