@@ -37,6 +37,9 @@ Example output::
 6. Load average for the past 5 minutes.
 7. Load average for the past 15 minutes.
 
+For `terminals with 256 color support`_, graded colors can be displayed by
+passing the **--colors** flag.
+
 
 Installation
 ============
@@ -87,7 +90,7 @@ Edit ``$HOME/.tmux.conf`` to display the program's output in *status-left* or
 *status-right*.  For example::
 
   set -g status-interval 2
-  set -g status-left "#S #[fg=green,bg=black,bright]#(tmux-mem-cpu-load 2)#[default]"
+  set -g status-left "#S #[fg=green,bg=black,bright]#(tmux-mem-cpu-load --colors 2)#[default]"
 
 Note that the first argument to `tmux-mem-cpu-load` should be the same number
 of seconds that *status-interval* is set at.
@@ -106,3 +109,4 @@ Matt McCormick (thewtex) <matt@mmmccormick.com>
 .. _tmux: http://tmux.sourceforge.net/
 .. _cmake: http://www.cmake.org
 .. _`project homepage`: http://github.com/thewtex/tmux-mem-cpu-load
+.. _`terminals with 256 color support`: http://misc.flogisoft.com/bash/tip_colors_and_formatting#terminals_compatibility
