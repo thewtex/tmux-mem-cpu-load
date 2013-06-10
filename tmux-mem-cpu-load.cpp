@@ -20,7 +20,8 @@
 #include <sstream>
 #include <string>
 #include <unistd.h> // sleep
-#include <math.h> // for floorf
+#include <cmath> // for floorf
+#include <cstdlib> // EXIT_SUCCESS
 
 // Apple specific.
 #if defined(__APPLE__) && defined(__MACH__)
@@ -349,18 +350,18 @@ int main(int argc, char** argv)
       if( graph_lines < 1 )
         {
         std::cerr << "graph lines argument must be one or greater." << std::endl;
-        return 1;
+        return EXIT_FAILURE;
         }
       }
     }
   catch(const std::exception &e)
     {
     std::cerr << "Usage: " << argv[0] << " [--colors] [tmux_status-interval(seconds)] [graph lines]" << std::endl;
-    return 1;
+    return EXIT_FAILURE;
     }
 
   std::cout << mem_string( use_colors ) << ' ' << cpu_string( cpu_usage_delay, graph_lines, use_colors ) << ' ' << load_string( use_colors );
 
-  return 0;
+  return EXIT_SUCCESS;
 }
 
