@@ -98,6 +98,11 @@ Author
 
 Matt McCormick (thewtex) <matt@mmmccormick.com>
 
+Contributions from:
+
+* Justin Crawford <justinc@pci-online.net>
+* krieiter <krieiter@gmail.com>
+
 
 .. _tmux: http://tmux.sourceforge.net/
 .. _CMake: http://www.cmake.org
