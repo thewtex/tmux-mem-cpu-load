@@ -378,8 +378,13 @@ int main(int argc, char** argv)
     if( argc > arg_index )
       {
       iss.str( argv[arg_index] );
-      unsigned int status_interval;
+      int status_interval;
       iss >> status_interval;
+      if( status_interval < 1 )
+        {
+        std::cerr << "Status interval argument must be one or greater." << std::endl;
+        return EXIT_FAILURE;
+        }
       cpu_usage_delay = status_interval * 1000000 - 100000;
       ++arg_index;
       }
@@ -390,7 +395,7 @@ int main(int argc, char** argv)
       iss >> graph_lines;
       if( graph_lines < 1 )
         {
-        std::cerr << "graph lines argument must be one or greater." << std::endl;
+        std::cerr << "Graph lines argument must be one or greater." << std::endl;
         return EXIT_FAILURE;
         }
       }
