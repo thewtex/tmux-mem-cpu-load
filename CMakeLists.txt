@@ -15,6 +15,5 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
 add_executable(tmux-mem-cpu-load tmux-mem-cpu-load.cpp)
 install(TARGETS tmux-mem-cpu-load
-  RUNTIME
-  DESTINATION bin
+  RUNTIME DESTINATION bin
   )
