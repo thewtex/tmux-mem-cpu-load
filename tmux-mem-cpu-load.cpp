@@ -358,7 +358,7 @@ std::string load_string( bool use_colors )
 int main(int argc, char** argv)
 {
   unsigned int cpu_usage_delay = 900000;
-  unsigned int graph_lines = 10;
+  int graph_lines = 10;
   bool use_colors = false;
   try
     {
@@ -387,6 +387,11 @@ int main(int argc, char** argv)
       iss.str( argv[arg_index] );
       iss.clear();
       iss >> graph_lines;
+      if( graph_lines < 1 )
+        {
+        std::cerr << "graph lines argument must be one or greater." << std::endl;
+        return 1;
+        }
       }
     }
   catch(const std::exception &e)
