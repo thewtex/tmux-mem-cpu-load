@@ -5,9 +5,6 @@
 CPU, RAM memory, and load monitor for use with tmux_
 ----------------------------------------------------
 
-.. image:: https://travis-ci.org/thewtex/tmux-mem-cpu-load.svg
-  :target: https://travis-ci.org/thewtex/tmux-mem-cpu-load
-
 Description
 ===========
 
@@ -47,8 +44,7 @@ Installation
 Dependencies
 ------------
 
-Currently only tested on Linux.  Mac OSX is known not to work.  Patches or
-hardware are welcome.
+Currently, Linux and Mac OSX are supported.
 
 Building
 ~~~~~~~~
