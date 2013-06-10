@@ -27,7 +27,7 @@ Example output::
 
    ^    ^          ^         ^     ^    ^    ^
    |    |          |         |     |    |    |
-   1    2          3         4     5    6    G
+   1    2          3         4     5    6    7
 
 1. Currently used memory.
 2. Available memory.
@@ -48,10 +48,13 @@ Installation
 Dependencies
 ------------
 
+Currently only tested on Linux.  Mac OSX is known not to work.  Patches or
+hardware are welcome.
+
 Building
 ~~~~~~~~
 
-* >= cmake_ -2.6
+* >= CMake_ -2.6
 * C++ compiler (e.g. gcc/g++)
 
 
@@ -107,6 +110,6 @@ Matt McCormick (thewtex) <matt@mmmccormick.com>
 
 
 .. _tmux: http://tmux.sourceforge.net/
-.. _cmake: http://www.cmake.org
+.. _CMake: http://www.cmake.org
 .. _`project homepage`: http://github.com/thewtex/tmux-mem-cpu-load
 .. _`terminals with 256 color support`: http://misc.flogisoft.com/bash/tip_colors_and_formatting#terminals_compatibility
