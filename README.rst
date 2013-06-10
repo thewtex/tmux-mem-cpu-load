@@ -5,11 +5,8 @@
 CPU, RAM memory, and load monitor for use with tmux_
 ----------------------------------------------------
 
-
-
 Description
 ===========
-
 
 A simple, lightweight program provided for system monitoring in the *status*
 line of **tmux**.
@@ -44,12 +41,10 @@ passing the **--colors** flag.
 Installation
 ============
 
-
 Dependencies
 ------------
 
-Currently only tested on Linux.  Mac OSX is known not to work.  Patches or
-hardware are welcome.
+Currently, Linux and Mac OSX are supported.
 
 Building
 ~~~~~~~~
@@ -57,12 +52,10 @@ Building
 * >= CMake_ -2.6
 * C++ compiler (e.g. gcc/g++)
 
-
 Download
 --------
 
 There are links to the source code at the `project homepage`_.
-
 
 Build
 -----
@@ -72,7 +65,6 @@ Build
   cd <source dir>
   cmake .
   make
-
 
 Install
 -------
@@ -84,10 +76,8 @@ Install
   logout
 
 
-
 Configuring tmux_
-=======================
-
+=================
 
 Edit ``$HOME/.tmux.conf`` to display the program's output in *status-left* or
 *status-right*.  For example::
