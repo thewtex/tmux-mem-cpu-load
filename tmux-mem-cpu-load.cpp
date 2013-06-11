@@ -316,6 +316,8 @@ std::string load_string( bool use_colors )
       oss << avg << " ";
       }
     }
+  std::string load_line( oss.str() );
+  oss.str( "" );
 
 #else // Linux
   std::ifstream loadavg_file( "/proc/loadavg" );
