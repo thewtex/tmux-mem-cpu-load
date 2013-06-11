@@ -208,41 +208,38 @@ std::string load_string()
 // Linux based system, if it's windows, too much work, they can deal with their compile errors - CMD sucks anyway.
 std::string mem_string()
 {
-	unsigned int total_mem;
-	unsigned int used_mem;
-	unsigned int unused_mem;
-	size_t line_start_pos;
-	size_t line_end_pos;
-	std::istringstream iss;
-	std::ostringstream oss;
-	std::string mem_line;
+  std::ostringstream oss;
 
-	std::ifstream meminfo_file( "/proc/meminfo" );
-	std::getline( meminfo_file, mem_line );
-	line_start_pos = mem_line.find_first_of( ':' );
-	line_start_pos++;
-	line_end_pos = mem_line.find_first_of( 'k' );
-	iss.str( mem_line.substr( line_start_pos, line_end_pos - line_start_pos ) );
-	iss >> total_mem;
+#if defined(BSD_BASED) || (defined(__APPLE__) && defined(__MACH__))
+  // Both apple and BSD style systems have these api calls
 
-	used_mem = total_mem;
+  // Only get 3 load averages
+  int nelem = 3;
+  double averages[3];
+  // based on: http://www.opensource.apple.com/source/Libc/Libc-262/gen/getloadavg.c
+  if( getloadavg(averages, nelem) < 0 )
+    {
+    oss << "0.00 0.00 0.00"; // couldn't get averages.
+    }
+  else
+    {
+    for(int i = 0; i < nelem; ++i)
+      {
+      // Round to nearest, make sure this is only a 0.00 value not a 0.0000
+      float avg = floorf(static_cast<float>(averages[i]) * 100 + 0.5) / 100;
+      oss << avg << " ";
+      }
+    }
+  std::string load_line( oss.str() );
+  oss.str( "" );
 
-	for( unsigned int i = 0; i < 3; i++ )
-	{
-		std::getline( meminfo_file, mem_line );
-		line_start_pos = mem_line.find_first_of( ':' );
-		line_start_pos++;
-		line_end_pos = mem_line.find_first_of( 'k' );
-		iss.str( mem_line.substr( line_start_pos, line_end_pos - line_start_pos ) );
-		iss >> unused_mem;
-		used_mem -= unused_mem;
-	}
-	meminfo_file.close();
+#else // Linux
+  std::ifstream loadavg_file( "/proc/loadavg" );
+  std::string load_line;
+  std::getline( loadavg_file, load_line );
+  loadavg_file.close();
 
-	oss << used_mem / 1024 << '/' << total_mem / 1024 << "MB";
-
-	return oss.str();
-}
+#endif // platform
 
 float cpu_percentage( unsigned int cpu_usage_delay )
 {
