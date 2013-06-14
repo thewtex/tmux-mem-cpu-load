@@ -1,0 +1,10 @@
+language: cpp
+compiler:
+  - gcc
+  - clang
+script:
+  - mkdir build
+  - cd build
+  - cmake -DCMAKE_INSTALL_PREFIX:PATH=../install ..
+  - cmake --build . --target install
+  - ctest -V
