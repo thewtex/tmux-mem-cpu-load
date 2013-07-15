@@ -36,8 +36,8 @@ with open('luts.h', 'w') as fp:
 
     # hot colormap with white fg for the first half
     # and black fg for the second half
-    write_table(fp, 'hot', 'cpu_percentage', 'white', 'black')
-    write_table(fp, 'gist_earth', 'mem', 'white', 'black')
-    write_table(fp, 'bone', 'load', 'white', 'black')
+    write_table(fp, 'hot', 'cpu_percentage', 'brightwhite', 'black')
+    write_table(fp, 'gist_earth', 'mem', 'brightwhite', 'black')
+    write_table(fp, 'bone', 'load', 'brightwhite', 'black')
 
     fp.write('#endif\n')
