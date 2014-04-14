@@ -3,6 +3,7 @@
 #include <unistd.h> // usleep
 
 #include "cpu.h"
+#include "../luts.h"
 
 float cpu_percentage( unsigned cpu_usage_delay ) {
    std::string line;
@@ -31,7 +32,7 @@ float cpu_percentage( unsigned cpu_usage_delay ) {
    usleep( cpu_usage_delay );
 
    stat_file.open("/proc/stat");
-   getline(stat_file, stat_line);
+   getline(stat_file, line);
    stat_file.close();
 
    // skip "cpu"
