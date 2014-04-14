@@ -1,7 +1,9 @@
 #include <string>
-#include <ostream>
+#include <sstream>
+#include <fstream>
 
 #include "memory.h"
+#include "../luts.h"
 
 std::string mem_string( bool use_colors = false ) {
    std::ostringstream oss;
@@ -20,7 +22,7 @@ std::string mem_string( bool use_colors = false ) {
    getline( meminfo_file, mem_line );
    substrStart = mem_line.find_first_of( ':' ) + 1;
    substrLen   = mem_line.find_first_of( 'k' );
-   total_mem = stoi(mem_line.substr(substrStart, substrLen);
+   total_mem = stoi(mem_line.substr(substrStart, substrLen));
 
    used_mem = total_mem;
 
@@ -28,7 +30,7 @@ std::string mem_string( bool use_colors = false ) {
       getline( meminfo_file, mem_line );
       substrStart = mem_line.find_first_of( ':' ) + 1;
       substrLen   = mem_line.find_first_of( 'k' );
-      unused_mem = stoi(mem_line.substr(substrStart, substrLen);
+      unused_mem = stoi(mem_line.substr(substrStart, substrLen));
       used_mem -= unused_mem;
    }
 
