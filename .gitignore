@@ -16,6 +16,9 @@ cmake_install.cmake
 CMakeCache.txt
 install_manifest.txt
 version.h
+CTestTestfile.cmake
+tmux-mem-cpu-load
+DartConfiguration.tcl
 
 # Packages #
 ############

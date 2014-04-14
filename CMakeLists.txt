@@ -4,6 +4,15 @@ if(COMMAND cmake_policy)
 endif(COMMAND cmake_policy)
 
 project( tmux-mem-cpu-load )
+set(tmux-mem-cpu-load_VERSION_MAJOR 2)
+set(tmux-mem-cpu-load_VERSION_MINOR 3)
+set(tmux-mem-cpu-load_VERSION_PATCH 0)
+
+# generate header file to handle version
+configure_file(
+   "${PROJECT_SOURCE_DIR}/version.h.in"
+   "${PROJECT_SOURCE_DIR}/version.h"
+   )
 
 if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE MinSizeRel CACHE STRING
@@ -11,10 +20,43 @@ if(NOT CMAKE_BUILD_TYPE)
       FORCE)
 endif(NOT CMAKE_BUILD_TYPE)
 
-add_executable(tmux-mem-cpu-load tmux-mem-cpu-load.cpp)
-install(TARGETS tmux-mem-cpu-load
-  RUNTIME DESTINATION bin
-  )
+# detect system type
+if(CMAKE_SYSTEM_NAME MATCHES "Linux")
+   message( "Linux detected")
+   SET( METER_SOURCES "linux/memory.cc" "linux/cpu.cc" "linux/load.cc" )
+ELSEIF(CMAKE_SYSTEM_NAME MATCHES "Darwin")
+   message( "Darwin detected")
+   SET( METER_SOURCES "osx/memory.cc" "osx/cpu.cc" "osx/load.cc" )
+# Mac OS X source setting will go here
+ELSEIF(CMAKE_SYSTEM_NAME MATCHES "FreeBSD")
+   message( "FreeBSD detected")
+# FreeBSD STUFF HERE
+ELSEIF(CMAKE_SYSTEM_NAME MATCHES "OpenBSD")
+   message( "OpenBSD detected")
+# OpenBSD Stuff Here
+ELSE(CMAKE_SYSTEM_NAME MATCHES "Linux")
+   message( FATAL_ERROR "Cannot be compiled on this system" )
+endif()
+
+# Search for boost
+# will be needed later
+set(Boost_USE_STATIC_LIBS OFF)
+set(Boost_USE_MULTITHREADED ON)
+set(Boost_SUE_STATIC_RUTIME OFF)
+find_package(Boost 1.52.0 REQUIRED COMPONENTS filesystem program_options system)
+
+# compiler flags
+SET( GCC_COVERAGE_COMPILE_FLAGS "-std=c++11 " )
+SET( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}" )
+
+# add binary tree so we find version.h
+include_directories("${PROJECT_BINARY_DIR}" ${Boost_INCLUDE_DIRS})
+
+add_executable(tmux-mem-cpu-load tmux-mem-cpu-load.cpp ${METER_SOURCES})
+target_link_libraries(tmux-mem-cpu-load ${Boost_LIBRARIES})
+install(TARGETS tmux-mem-cpu-load 
+   RUNTIME DESTINATION bin
+)
 
 include( CTest )
 if( BUILD_TESTING )
