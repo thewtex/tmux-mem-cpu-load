@@ -44,13 +44,11 @@
    #include "linux/load.h"
 #endif
 
-
 // Function declarations.
 // TODO: those should stay in separate headers
 //    LINUX: DONE/partial
 //    OSX:   DONE/partial
 //    BSD:   TODO
-float cpu_percentage( unsigned int cpu_usage_delay );
 
 std::string cpu_string( unsigned int cpu_usage_delay,
       unsigned int graph_lines, bool use_colors = false ) {
