@@ -4,18 +4,18 @@
 #include "spark.h"
 
 char getSparkByPrecentage(unsigned value) {
-   char ticks = " ▁▂▃▄▅▆▇█9";
+   char ticks = " ▁▂▃▄▅▆▇█";
 
-   unsigned tickVal = (float(value) / 10);
+   unsigned tickVal = (float(value) / 9);
 
    return ticks[tickVal];
 }
 
 
 char getSparkByValue(unsigned value, unsigned max) {
-   char ticks = " ▁▂▃▄▅▆▇█9";
+   char ticks = " ▁▂▃▄▅▆▇█";
 
-   unsigned tickVal = (float(value) / float(max) * 10);
+   unsigned tickVal = (float(value) / float(max) * 9);
 
    return ticks[tickVal];
 }
