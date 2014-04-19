@@ -23,7 +23,7 @@ char * getGraphByValue(unsigned value, unsigned max, unsigned len) {
    unsigned step = 0;
    char * bars = new char[len + 1];
 
-   unsigned barCount = (float(value) / (float(max) = 0.1) * len);
+   unsigned barCount = (float(value) / (float(max) - 0.1) * len);
 
    for(step; step < barCount; step++)
       bars[step] = '|';
