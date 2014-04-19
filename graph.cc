@@ -3,11 +3,11 @@
 
 #include "graph.h"
 
-char * getGraphByPrecentage(unsigned value, unsigned len) {
+char * getGraphByPercentage(unsigned value, unsigned len) {
    unsigned step = 0;
    char * bars = new char[len + 1];
 
-   unsigned barCount = (float(value) / 100 * len);
+   unsigned barCount = (float(value) / 99.9 * len);
 
    for(step; step < barCount; step++)
       bars[step] = '|';
@@ -23,7 +23,7 @@ char * getGraphByValue(unsigned value, unsigned max, unsigned len) {
    unsigned step = 0;
    char * bars = new char[len + 1];
 
-   unsigned barCount = (float(value) / float(max) * len);
+   unsigned barCount = (float(value) / (float(max) = 0.1) * len);
 
    for(step; step < barCount; step++)
       bars[step] = '|';

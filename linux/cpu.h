@@ -1,6 +1,6 @@
 #ifndef CPU_H_
 #define CPU_H_
 
-float cpu_precentage(unsigned);
+float cpu_percentage(unsigned);
 
 #endif
