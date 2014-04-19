@@ -52,7 +52,7 @@ SET( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}" )
 # add binary tree so we find version.h
 include_directories("${PROJECT_BINARY_DIR}" ${Boost_INCLUDE_DIRS})
 
-add_executable(tmux-mem-cpu-load tmux-mem-cpu-load.cpp ${METER_SOURCES})
+add_executable(tmux-mem-cpu-load tmux-mem-cpu-load.cpp graph.cc ${METER_SOURCES})
 target_link_libraries(tmux-mem-cpu-load ${Boost_LIBRARIES})
 install(TARGETS tmux-mem-cpu-load 
    RUNTIME DESTINATION bin

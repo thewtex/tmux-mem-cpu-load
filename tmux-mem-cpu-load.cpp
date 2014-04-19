@@ -44,6 +44,8 @@
    #include "linux/load.h"
 #endif
 
+#include "graph.h"
+
 // Function declarations.
 // TODO: those should stay in separate headers
 //    LINUX: DONE/partial
@@ -52,28 +54,23 @@
 
 std::string cpu_string( unsigned int cpu_usage_delay,
       unsigned int graph_lines, bool use_colors = false ) {
-  std::string meter( graph_lines + 2, ' ' );
-  meter[0] = '[';
-  meter[meter.length() - 1] = ']';
-  int meter_count = 0;
-  float percentage;
+  
+   float percentage;
+
+   //output stuff
   std::ostringstream oss;
   oss.precision( 1 );
   oss.setf( std::ios::fixed | std::ios::right );
 
+  // get %
   percentage = cpu_percentage( cpu_usage_delay );
-  float meter_step = 99.9 / graph_lines;
-  meter_count = 1;
-
-  while(meter_count*meter_step < percentage) {
-    meter[meter_count] = '|';
-    meter_count++;
-    }
 
   if( use_colors )
     oss << cpu_percentage_lut[static_cast<unsigned int>( percentage )];
-    
-  oss << meter;
+   
+  oss << "[";
+  oss << getGraphByPercentage( unsigned(percentage), graph_lines );
+   oss << "]";
   oss.width( 5 );
   oss << percentage;
   oss << "%";
