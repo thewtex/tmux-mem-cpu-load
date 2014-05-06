@@ -75,6 +75,171 @@ std::string cpu_string( unsigned int cpu_usage_delay,
   oss << percentage;
   oss << "%";
   if( use_colors )
+    {
+    oss << "#[fg=default,bg=default]";
+    }
+
+  return oss.str();
+}
+
+
+std::string mem_string( bool use_colors )
+{
+  std::ostringstream oss;
+#if defined(BSD_BASED) || (defined(__APPLE__) && defined(__MACH__))
+// OSX or BSD based system, use BSD APIs instead
+
+#if defined(__APPLE__) && defined(__MACH__)
+  // These values are in bytes
+  int64_t total_mem;
+  int64_t used_mem;
+  int64_t unused_mem;
+  vm_size_t page_size;
+  mach_port_t mach_port;
+  mach_msg_type_number_t count;
+  vm_statistics_data_t vm_stats;
+
+  // Get total physical memory
+  int mib[2];
+  mib[0] = CTL_HW;
+  mib[1] = HW_MEMSIZE;
+  size_t length = sizeof(int64_t);
+  sysctl(mib, 2, &total_mem, &length, NULL, 0);
+
+  mach_port = mach_host_self();
+  count = sizeof(vm_stats) / sizeof(natural_t);
+  if (KERN_SUCCESS == host_page_size(mach_port, &page_size) &&
+    KERN_SUCCESS == host_statistics(mach_port, HOST_VM_INFO, (host_info_t)&vm_stats, &count))
+    {
+    unused_mem = (int64_t)vm_stats.free_count * (int64_t)page_size;
+
+    used_mem = ((int64_t)vm_stats.active_count +
+    (int64_t)vm_stats.inactive_count +
+    (int64_t)vm_stats.wire_count) *  (int64_t)page_size;
+    }
+
+  // To kilobytes
+#endif // Apple
+  // TODO BSD
+
+  used_mem /= 1024;
+  total_mem /= 1024;
+
+#else // Linux
+  unsigned int total_mem;
+  unsigned int used_mem;
+  unsigned int unused_mem;
+  size_t line_start_pos;
+  size_t line_end_pos;
+  std::istringstream iss;
+  std::string mem_line;
+
+  std::ifstream meminfo_file( "/proc/meminfo" );
+  getline( meminfo_file, mem_line );
+  line_start_pos = mem_line.find_first_of( ':' );
+  line_start_pos++;
+  line_end_pos = mem_line.find_first_of( 'k' );
+  iss.str( mem_line.substr( line_start_pos, line_end_pos - line_start_pos ) );
+  iss >> total_mem;
+
+  used_mem = total_mem;
+
+  for( unsigned int i = 0; i < 3; i++ )
+    {
+    getline( meminfo_file, mem_line );
+    // accomodate MemAvailable potentially being in lines 2-4 of /proc/meminfo
+    // did this in a way to not break the original logic of the loop
+    if( mem_line.find("MemAvailable") == 0 )
+        {
+        i--;
+        }
+    else
+        {
+        line_start_pos = mem_line.find_first_of( ':' );
+        line_start_pos++;
+        line_end_pos = mem_line.find_first_of( 'k' );
+        iss.str( mem_line.substr( line_start_pos, line_end_pos - line_start_pos ) );
+        iss >> unused_mem;
+        used_mem -= unused_mem;
+        }
+    }
+  meminfo_file.close();
+
+#endif // platform
+
+  if( use_colors )
+    {
+    oss << mem_lut[(100 * used_mem) / total_mem];
+    }
+  oss << used_mem / 1024 << '/' << total_mem / 1024 << "MB";
+  if( use_colors )
+    {
+    oss << "#[fg=default,bg=default]";
+    }
+
+  return oss.str();
+}
+
+
+std::string load_string( bool use_colors )
+{
+  std::ostringstream oss;
+
+#if defined(BSD_BASED) || (defined(__APPLE__) && defined(__MACH__))
+  // Both apple and BSD style systems have these api calls
+
+  // Only get 3 load averages
+  int nelem = 3;
+  double averages[3];
+  // based on: http://www.opensource.apple.com/source/Libc/Libc-262/gen/getloadavg.c
+  if( getloadavg(averages, nelem) < 0 )
+    {
+    oss << "0.00 0.00 0.00"; // couldn't get averages.
+    }
+  else
+    {
+    for(int i = 0; i < nelem; ++i)
+      {
+      // Round to nearest, make sure this is only a 0.00 value not a 0.0000
+      float avg = floorf(static_cast<float>(averages[i]) * 100 + 0.5) / 100;
+      oss << avg << " ";
+      }
+    }
+  std::string load_line( oss.str() );
+  oss.str( "" );
+
+#else // Linux
+  std::ifstream loadavg_file( "/proc/loadavg" );
+  std::string load_line;
+  std::getline( loadavg_file, load_line );
+  loadavg_file.close();
+
+#endif // platform
+
+  if( use_colors )
+    {
+    std::ifstream stat_file( "/proc/stat" );
+    std::string stat_line;
+    std::getline( stat_file, stat_line );
+    // Likely does not work on BSD, but not tested
+    unsigned int number_of_cpus = sysconf( _SC_NPROCESSORS_ONLN );
+
+    std::istringstream iss( load_line.substr( 0, 4 ) );
+    float recent_load;
+    iss >> recent_load;
+    // colors range from zero to twice the number of cpu's for the most recent
+    // load metric
+    unsigned int load_percent = static_cast< unsigned int >( recent_load / number_of_cpus * 0.5f * 100.0f );
+    if( load_percent > 100 )
+      {
+      load_percent = 100;
+      }
+    oss << load_lut[load_percent];
+    }
+
+  oss << load_line.substr( 0, 14 );
+  if( use_colors )
+    {
     oss << "#[fg=default,bg=default]";
 
   return oss.str();
