@@ -267,12 +267,21 @@ std::string mem_string( bool use_colors )
   for( unsigned int i = 0; i < 3; i++ )
     {
     getline( meminfo_file, mem_line );
-    line_start_pos = mem_line.find_first_of( ':' );
-    line_start_pos++;
-    line_end_pos = mem_line.find_first_of( 'k' );
-    iss.str( mem_line.substr( line_start_pos, line_end_pos - line_start_pos ) );
-    iss >> unused_mem;
-    used_mem -= unused_mem;
+    // accomodate MemAvailable potentially being in lines 2-4 of /proc/meminfo
+    // did this in a way to not break the original logic of the loop
+    if( mem_line.find("MemAvailable") == 0 )
+        {
+        i--;
+        }
+    else
+        {
+        line_start_pos = mem_line.find_first_of( ':' );
+        line_start_pos++;
+        line_end_pos = mem_line.find_first_of( 'k' );
+        iss.str( mem_line.substr( line_start_pos, line_end_pos - line_start_pos ) );
+        iss >> unused_mem;
+        used_mem -= unused_mem;
+        }
     }
   meminfo_file.close();
 
