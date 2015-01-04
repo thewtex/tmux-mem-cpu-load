@@ -55,7 +55,7 @@
 std::string cpu_string( unsigned int cpu_usage_delay,
       unsigned int graph_lines, bool use_colors = false ) {
   
-   float percentage;
+  float percentage;
 
    //output stuff
   std::ostringstream oss;
