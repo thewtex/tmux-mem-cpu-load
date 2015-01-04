@@ -10,6 +10,8 @@
 #include <sys/sysctl.h> // for sysctl
 #include <sys/types.h> // for integer types
 
+#include <unistd.h> // usleep()
+
 // OSX or BSD based system, use BSD APIs instead
 // See: http://www.opensource.apple.com/source/xnu/xnu-201/osfmk/mach/host_info.h
 // and: http://web.mit.edu/darwin/src/modules/xnu/osfmk/man/

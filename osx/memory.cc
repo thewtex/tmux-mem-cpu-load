@@ -1,6 +1,5 @@
 #include <string>
-#include <sstring>
-#include <fstring>
+#include <sstream>
 
 #include <mach/vm_statistics.h>
 #include <mach/processor_info.h>
@@ -13,6 +12,8 @@
 #include <mach/mach.h>
 #include <sys/sysctl.h> // for sysctl
 #include <sys/types.h> // for integer types
+
+#include "../luts.h"
 
 std::string mem_string( bool use_colors ) {
    std::ostringstream oss;
