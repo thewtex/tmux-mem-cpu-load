@@ -269,7 +269,8 @@ int main(int argc, char** argv) {
       iss >> status_interval;
       if( status_interval < 1 )
         {
-        std::cerr << "Status interval argument must be one or greater." << std::endl;
+        std::cerr << "Status interval argument must be one or greater." 
+		          << std::endl;
         return EXIT_FAILURE;
         }
       cpu_usage_delay = status_interval * 1000000 - 100000;
@@ -282,18 +283,23 @@ int main(int argc, char** argv) {
       iss >> graph_lines;
       if( graph_lines < 1 )
         {
-        std::cerr << "Graph lines argument must be one or greater." << std::endl;
+        std::cerr << "Graph lines argument must be one or greater." 
+		          << std::endl;
         return EXIT_FAILURE;
         }
       }
     }
   catch(const std::exception &e)
     {
-    std::cerr << "Usage: " << argv[0] << " [--colors] [tmux_status-interval(seconds)] [graph lines]" << std::endl;
+    std::cerr << "Usage: " << argv[0] 
+	          << " [--colors] [tmux_status-interval(seconds)] [graph lines]" 
+			  << std::endl;
     return EXIT_FAILURE;
     }
 
-  std::cout << mem_string( use_colors ) << ' ' << cpu_string( cpu_usage_delay, graph_lines, use_colors ) << ' ' << load_string( use_colors );
+  std::cout << mem_string( use_colors ) << ' ' 
+            << cpu_string( cpu_usage_delay, graph_lines, use_colors ) << ' ' 
+			<< load_string( use_colors );
 
   return EXIT_SUCCESS;
 }
