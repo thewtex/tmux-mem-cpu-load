@@ -32,10 +32,6 @@ std::string load_string( bool use_colors = false ) {
    oss.str( "" );
 
    if( use_colors ) {
-      std::ifstream stat_file( "/proc/stat" );
-      std::string stat_line;
-      std::getline( stat_file, stat_line );
-      
       // Likely does not work on BSD, but not tested
       unsigned number_of_cpus = sysconf( _SC_NPROCESSORS_ONLN );
 
