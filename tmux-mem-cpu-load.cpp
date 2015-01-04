@@ -15,12 +15,9 @@
  * */
 
 #include <cstring>
-#include <fstream>
-#include <iostream>
+#include <ostream>
 #include <sstream>
 #include <string>
-#include <unistd.h> // sleep
-#include <cmath> // for floorf
 #include <cstdlib> // EXIT_SUCCESS
 
 // Tmux color lookup tables for the different metrics.
