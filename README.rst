@@ -5,7 +5,7 @@
 CPU, RAM memory, and load monitor for use with tmux_
 ----------------------------------------------------
 
-.. image:: https://travis-ci.org/thewtex/tmux-mem-cpu-load.png
+.. image:: https://travis-ci.org/thewtex/tmux-mem-cpu-load.svg
   :target: https://travis-ci.org/thewtex/tmux-mem-cpu-load
 
 Description
