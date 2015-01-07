@@ -25,35 +25,38 @@ if(CMAKE_SYSTEM_NAME MATCHES "Linux")
    message( "Linux detected")
    SET( METER_SOURCES "linux/memory.cc" "linux/cpu.cc" "linux/load.cc" )
 ELSEIF(CMAKE_SYSTEM_NAME MATCHES "Darwin")
+   # Mac OS X source setting will go here
    message( "Darwin detected")
    SET( METER_SOURCES "osx/memory.cc" "osx/cpu.cc" "osx/load.cc" )
-# Mac OS X source setting will go here
 ELSEIF(CMAKE_SYSTEM_NAME MATCHES "FreeBSD")
+   # FreeBSD STUFF HERE
    message( "FreeBSD detected")
-# FreeBSD STUFF HERE
+   message( FATAL_ERROR "Free BSD is not supported yet" )
 ELSEIF(CMAKE_SYSTEM_NAME MATCHES "OpenBSD")
+   # OpenBSD Stuff Here
    message( "OpenBSD detected")
-# OpenBSD Stuff Here
-ELSE(CMAKE_SYSTEM_NAME MATCHES "Linux")
+   message( FATAL_ERROR "OpenBSD is not supported yet" )
+ELSE()
    message( FATAL_ERROR "Cannot be compiled on this system" )
 endif()
 
 # Search for boost
 # will be needed later
-set(Boost_USE_STATIC_LIBS OFF)
-set(Boost_USE_MULTITHREADED ON)
-set(Boost_SUE_STATIC_RUTIME OFF)
-find_package(Boost 1.52.0 REQUIRED COMPONENTS filesystem program_options system)
+#set(Boost_USE_STATIC_LIBS OFF)
+#set(Boost_USE_MULTITHREADED ON)
+#set(Boost_SUE_STATIC_RUTIME OFF)
+#find_package(Boost 1.52.0 REQUIRED COMPONENTS filesystem program_options system)
 
 # compiler flags
 SET( GCC_COVERAGE_COMPILE_FLAGS "-std=c++11 " )
 SET( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}" )
 
 # add binary tree so we find version.h
+#include_directories("${PROJECT_BINARY_DIR}" ${Boost_INCLUDE_DIRS})
 include_directories("${PROJECT_BINARY_DIR}" ${Boost_INCLUDE_DIRS})
 
 add_executable(tmux-mem-cpu-load tmux-mem-cpu-load.cpp graph.cc ${METER_SOURCES})
-target_link_libraries(tmux-mem-cpu-load ${Boost_LIBRARIES})
+#target_link_libraries(tmux-mem-cpu-load ${Boost_LIBRARIES})
 install(TARGETS tmux-mem-cpu-load 
    RUNTIME DESTINATION bin
 )
