@@ -20,6 +20,7 @@
 #include <sstream>
 #include <string>
 #include <cstdlib> // EXIT_SUCCESS
+#include "argParse/argParse.h"
 
 // Tmux color lookup tables for the different metrics.
 #include "luts.h"
@@ -52,12 +53,13 @@
 //    OSX:   DONE/partial
 //    BSD:   TODO
 
+
 std::string cpu_string(unsigned int cpu_usage_delay, unsigned int graph_lines,
-                       bool use_colors = false) {
-  
+	bool use_colors = false) {
+
   float percentage;
 
-   //output stuff
+  //output stuff
   std::ostringstream oss;
   oss.precision( 1 );
   oss.setf( std::ios::fixed | std::ios::right );
@@ -66,75 +68,80 @@ std::string cpu_string(unsigned int cpu_usage_delay, unsigned int graph_lines,
   percentage = cpu_percentage( cpu_usage_delay );
 
   if( use_colors )
-    oss << cpu_percentage_lut[static_cast<unsigned int>( percentage )];
-   
+	oss << cpu_percentage_lut[static_cast<unsigned int>( percentage )];
+
   oss << "[";
   oss << getGraphByPercentage( unsigned(percentage), graph_lines );
-   oss << "]";
+  oss << "]";
   oss.width( 5 );
   oss << percentage;
   oss << "%";
   if( use_colors )
-    oss << "#[fg=default,bg=default]";
+	oss << "#[fg=default,bg=default]";
 
   return oss.str();
 }
 
 int main(int argc, char** argv) {
-  unsigned int cpu_usage_delay = 1000000;
-  int graph_lines = 10;
+  using namespace ArgvParse;
+
+  unsigned cpu_usage_delay = 1000000;
+  unsigned short graph_lines = 10; // max 65535 should be enough
   bool use_colors = false;
-  try {
-    std::istringstream iss;
-    iss.exceptions ( std::ifstream::failbit | std::ifstream::badbit );
-    std::string current_arg;
-    unsigned int arg_index = 1;
-    if( argc > arg_index )
-      {
-      if( strcmp( argv[arg_index], "--colors" ) == 0 )
-        {
-        use_colors = true;
-        ++arg_index;
-        }
-      }
-    if( argc > arg_index )
-      {
-      iss.str( argv[arg_index] );
-      int status_interval;
-      iss >> status_interval;
-      if( status_interval < 1 )
-        {
-        std::cerr << "Status interval argument must be one or greater." 
-		          << std::endl;
-        return EXIT_FAILURE;
-        }
-      cpu_usage_delay = status_interval * 1000000;
-      ++arg_index;
-      }
-    if( argc > arg_index )
-      {
-      iss.str( argv[arg_index] );
-      iss.clear();
-      iss >> graph_lines;
-      if( graph_lines < 1 )
-        {
-        std::cerr << "Graph lines argument must be one or greater." 
-		          << std::endl;
-        return EXIT_FAILURE;
-        }
-      }
-    }
-  catch(const std::exception &e)
-    {
-    std::cerr << "Usage: " << argv[0] 
-	          << " [--colors] [tmux_status-interval(seconds)] [graph lines]" 
-			  << std::endl;
-    return EXIT_FAILURE;
-    }
+
+  // Argv parser
+  ArgvParser arg;
+
+  arg.setIntroduction("tmux-mem-cpu-load \n"
+	  "Usage: tmux-mem-cpu-load [OPTIONS]");
+
+  arg.setHelpOption("h", "help", "Prints this help message");
+
+  // define actual options
+  arg.defineOption("colors", "Use tmux colors in output",
+	  ArgvParser::NoAttribute);
+  arg.defineOption("i", "interval", "set tmux status refresh interval in "
+	  "seconds. Default: 1 second", ArgvParser::RequiresValue);
+  arg.defineOption("g", "graph-lines", "Set how many lines should be drawn in "
+	  "a graph. Default: 10", ArgvParser::RequiresValue);
+
+  int result = arg.parse(argc, argv);
+
+  if (result != ArgvParser::Success) {
+	std::cerr << arg.parseErrorDescription(result);
+	return EXIT_FAILURE;
+  }
+
+  // mangle arguments
+  std::istringstream iss;
+  iss.exceptions ( std::ifstream::failbit | std::ifstream::badbit );
+
+  if (arg.foundOption("colors"))
+	use_colors = true;
+
+  if (arg.foundOption("interval")){
+	iss.str(arg.optionValue("interval"));
+	iss >> cpu_usage_delay;
+	if (cpu_usage_delay < 1) {
+		std::cerr << "Status interval argument must be one or greater.\n";
+		return EXIT_FAILURE;
+	}
+	cpu_usage_delay *= 1000000;
+  }
+
+  if (arg.foundOption("graph-lines")) {
+	  iss.str( arg.optionValue("graph-lines") );
+	  iss.clear();
+	  iss >> graph_lines;
+	  if( graph_lines < 1 ) {
+		std::cerr << "Graph lines argument must be one or greater.\n";
+		return EXIT_FAILURE;
+	  }
+  }
 
   std::cout << mem_string( use_colors ) << ' ' 
-            << cpu_string( cpu_usage_delay, graph_lines, use_colors ) << ' ' 
-			<< load_string( use_colors );
+	<< cpu_string( cpu_usage_delay, graph_lines, use_colors ) << ' ' 
+	<< load_string( use_colors );
 
   return EXIT_SUCCESS;
 }
