@@ -1,5 +1,5 @@
 // the configured options and settings for sysstat
-#define tmux-mem-cpu-load_VERSION_MAJOR @tmux-mem-cpu-load_VERSION_MAJOR@
-#define tmux-mem-cpu-load_VERSION_MINOR @tmux-mem-cpu-load_VERSION_MINOR@
-#define tmux-mem-cpu-load_VERSION_PATCH @tmux-mem-cpu-load_VERSION_PATCH@
+#define VERSION_MAJOR @VERSION_MAJOR@
+#define VERSION_MINOR @VERSION_MINOR@
+#define VERSION_PATCH @VERSION_PATCH@
 

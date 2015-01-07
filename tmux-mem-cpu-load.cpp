@@ -24,6 +24,8 @@
 // Tmux color lookup tables for the different metrics.
 #include "luts.h"
 
+#include "version.h"
+
 #if defined(__APPLE__) && defined(__MACH__)
    // Apple osx system
    #include "osx/cpu.h"
