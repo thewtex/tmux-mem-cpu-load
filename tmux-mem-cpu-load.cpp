@@ -15,7 +15,8 @@
  * */
 
 #include <cstring>
-#include <ostream>
+#include <iostream>
+#include <fstream>
 #include <sstream>
 #include <string>
 #include <cstdlib> // EXIT_SUCCESS
