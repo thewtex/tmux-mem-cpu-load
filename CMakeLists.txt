@@ -3,16 +3,20 @@ if(COMMAND cmake_policy)
     cmake_policy(VERSION 2.6)
 endif(COMMAND cmake_policy)
 
+### General Package stuff
+
 project( tmux-mem-cpu-load )
-set(tmux-mem-cpu-load_VERSION_MAJOR 2)
-set(tmux-mem-cpu-load_VERSION_MINOR 3)
-set(tmux-mem-cpu-load_VERSION_PATCH 0)
+set(VERSION_MAJOR 2)
+set(VERSION_MINOR 3)
+set(VERSION_PATCH 0)
 
 # generate header file to handle version
 configure_file(
    "${PROJECT_SOURCE_DIR}/version.h.in"
    "${PROJECT_SOURCE_DIR}/version.h"
    )
+
+
 
 if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE MinSizeRel CACHE STRING
