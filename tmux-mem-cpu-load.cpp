@@ -52,8 +52,8 @@
 //    OSX:   DONE/partial
 //    BSD:   TODO
 
-std::string cpu_string( unsigned int cpu_usage_delay,
-      unsigned int graph_lines, bool use_colors = false ) {
+std::string cpu_string(unsigned int cpu_usage_delay, unsigned int graph_lines,
+                       bool use_colors = false) {
   
   float percentage;
 
@@ -246,7 +246,7 @@ std::string load_string( bool use_colors )
 }
 
 int main(int argc, char** argv) {
-  unsigned int cpu_usage_delay = 900000;
+  unsigned int cpu_usage_delay = 1000000;
   int graph_lines = 10;
   bool use_colors = false;
   try {
@@ -273,7 +273,7 @@ int main(int argc, char** argv) {
 		          << std::endl;
         return EXIT_FAILURE;
         }
-      cpu_usage_delay = status_interval * 1000000 - 100000;
+      cpu_usage_delay = status_interval * 1000000;
       ++arg_index;
       }
     if( argc > arg_index )
