@@ -16,8 +16,7 @@ configure_file(
    "${PROJECT_SOURCE_DIR}/version.h"
    )
 
-
-
+# set buold type
 if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE MinSizeRel CACHE STRING
       "Choose the type of build, options are: None Debug Release RelWithDebInfo MinSizeRel."
@@ -44,6 +43,9 @@ ELSE()
    message( FATAL_ERROR "Cannot be compiled on this system" )
 endif()
 
+# set common source files
+SET( COMMON_SOURCES "tmux-mem-cpu-load.cpp" "graph.cc" "argParse/argParse.cc" )
+
 # Search for boost
 # will be needed later
 #set(Boost_USE_STATIC_LIBS OFF)
@@ -57,9 +59,9 @@ SET( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}" )
 
 # add binary tree so we find version.h
 #include_directories("${PROJECT_BINARY_DIR}" ${Boost_INCLUDE_DIRS})
-include_directories("${PROJECT_BINARY_DIR}" ${Boost_INCLUDE_DIRS})
+include_directories("${PROJECT_BINARY_DIR}" )
 
-add_executable(tmux-mem-cpu-load tmux-mem-cpu-load.cpp graph.cc ${METER_SOURCES})
+add_executable(tmux-mem-cpu-load ${COMMON_SOURCES} ${METER_SOURCES})
 #target_link_libraries(tmux-mem-cpu-load ${Boost_LIBRARIES})
 install(TARGETS tmux-mem-cpu-load 
    RUNTIME DESTINATION bin
