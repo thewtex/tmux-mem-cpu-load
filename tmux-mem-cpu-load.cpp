@@ -92,8 +92,13 @@ int main(int argc, char** argv) {
   // Argv parser
   ArgvParser arg;
 
-  arg.setIntroduction("tmux-mem-cpu-load \n"
-	  "Usage: tmux-mem-cpu-load [OPTIONS]");
+  // ugly, I know
+  std::string intro = "tmux-mem-cpu-load v";
+  intro += std::to_string(VERSION_MAJOR) + "." + std::to_string(VERSION_MINOR);
+  intro += "." + std::to_string(VERSION_PATCH) + "\n";
+  intro += "Usage: tmux-mem-cpu-load [OPTIONS]";
+
+  arg.setIntroduction(intro);
 
   arg.setHelpOption("h", "help", "Prints this help message");
 
@@ -123,20 +128,20 @@ int main(int argc, char** argv) {
 	iss.str(arg.optionValue("interval"));
 	iss >> cpu_usage_delay;
 	if (cpu_usage_delay < 1) {
-		std::cerr << "Status interval argument must be one or greater.\n";
-		return EXIT_FAILURE;
+	  std::cerr << "Status interval argument must be one or greater.\n";
+	  return EXIT_FAILURE;
 	}
 	cpu_usage_delay *= 1000000;
   }
 
   if (arg.foundOption("graph-lines")) {
-	  iss.str( arg.optionValue("graph-lines") );
-	  iss.clear();
-	  iss >> graph_lines;
-	  if( graph_lines < 1 ) {
-		std::cerr << "Graph lines argument must be one or greater.\n";
-		return EXIT_FAILURE;
-	  }
+	iss.str( arg.optionValue("graph-lines") );
+	iss.clear();
+	iss >> graph_lines;
+	if( graph_lines < 1 ) {
+	  std::cerr << "Graph lines argument must be one or greater.\n";
+	  return EXIT_FAILURE;
+	}
   }
 
   std::cout << mem_string( use_colors ) << ' ' 
