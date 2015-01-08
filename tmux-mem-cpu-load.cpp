@@ -85,7 +85,7 @@ std::string cpu_string(unsigned int cpu_usage_delay, unsigned int graph_lines,
 int main(int argc, char** argv) {
   using namespace ArgvParse;
 
-  unsigned cpu_usage_delay = 1000000;
+  unsigned cpu_usage_delay = 990000;
   short graph_lines = 10; // max 32767 should be enough
   bool use_colors = false;
 
@@ -127,7 +127,7 @@ int main(int argc, char** argv) {
 	  std::cerr << "Status interval argument must be one or greater.\n";
 	  return EXIT_FAILURE;
 	}
-	cpu_usage_delay = delay * 1000000;
+	cpu_usage_delay = delay * 1000000 - 10000;
   }
 
   if (arg.foundOption("graph-lines")) {

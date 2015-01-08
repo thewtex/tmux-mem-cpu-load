@@ -67,6 +67,9 @@ if( BUILD_TESTING )
   add_test( NAME no_arguments
     COMMAND tmux-mem-cpu-load )
 
+  add_test( NAME custom_interval
+    COMMAND tmux-mem-cpu-load -i 3 )
+
   add_test( NAME colors
     COMMAND tmux-mem-cpu-load --colors )
 
@@ -74,7 +77,7 @@ if( BUILD_TESTING )
     COMMAND tmux-mem-cpu-load -i -1 )
 
   add_test( NAME invalid_graph_lines
-    COMMAND tmux-mem-cpu-load -g -4 )
+    COMMAND tmux-mem-cpu-load --graph_lines -2 )
 
   set_tests_properties( usage
     invalid_status_interval
