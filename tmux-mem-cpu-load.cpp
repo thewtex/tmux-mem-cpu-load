@@ -86,7 +86,7 @@ int main(int argc, char** argv) {
   using namespace ArgvParse;
 
   unsigned cpu_usage_delay = 1000000;
-  unsigned short graph_lines = 10; // max 65535 should be enough
+  short graph_lines = 10; // max 32767 should be enough
   bool use_colors = false;
 
   // Argv parser
@@ -118,26 +118,20 @@ int main(int argc, char** argv) {
   }
 
   // mangle arguments
-  std::istringstream iss;
-  iss.exceptions ( std::ifstream::failbit | std::ifstream::badbit );
-
   if (arg.foundOption("colors"))
 	use_colors = true;
 
-  if (arg.foundOption("interval")){
-	iss.str(arg.optionValue("interval"));
-	iss >> cpu_usage_delay;
-	if (cpu_usage_delay < 1) {
+  if (arg.foundOption("interval")) {
+	int delay = std::stoi(arg.optionValue("interval"));
+	if (delay < 1) {
 	  std::cerr << "Status interval argument must be one or greater.\n";
 	  return EXIT_FAILURE;
 	}
-	cpu_usage_delay *= 1000000;
+	cpu_usage_delay = delay * 1000000;
   }
 
   if (arg.foundOption("graph-lines")) {
-	iss.str( arg.optionValue("graph-lines") );
-	iss.clear();
-	iss >> graph_lines;
+	graph_lines = std::stoi(arg.optionValue("graph-lines"));
 	if( graph_lines < 1 ) {
 	  std::cerr << "Graph lines argument must be one or greater.\n";
 	  return EXIT_FAILURE;
