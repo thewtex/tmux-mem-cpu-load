@@ -46,23 +46,15 @@ endif()
 # set common source files
 SET( COMMON_SOURCES "tmux-mem-cpu-load.cpp" "graph.cc" "argParse/argParse.cc" )
 
-# Search for boost
-# will be needed later
-#set(Boost_USE_STATIC_LIBS OFF)
-#set(Boost_USE_MULTITHREADED ON)
-#set(Boost_SUE_STATIC_RUTIME OFF)
-#find_package(Boost 1.52.0 REQUIRED COMPONENTS filesystem program_options system)
 
 # compiler flags
 SET( GCC_COVERAGE_COMPILE_FLAGS "-std=c++11 " )
 SET( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}" )
 
 # add binary tree so we find version.h
-#include_directories("${PROJECT_BINARY_DIR}" ${Boost_INCLUDE_DIRS})
 include_directories("${PROJECT_BINARY_DIR}" )
 
 add_executable(tmux-mem-cpu-load ${COMMON_SOURCES} ${METER_SOURCES})
-#target_link_libraries(tmux-mem-cpu-load ${Boost_LIBRARIES})
 install(TARGETS tmux-mem-cpu-load 
    RUNTIME DESTINATION bin
 )
@@ -78,14 +70,11 @@ if( BUILD_TESTING )
   add_test( NAME colors
     COMMAND tmux-mem-cpu-load --colors )
 
-  add_test( NAME arguments
-    COMMAND tmux-mem-cpu-load --colors 1 4 )
-
   add_test( NAME invalid_status_interval
-    COMMAND tmux-mem-cpu-load -1 4 )
+    COMMAND tmux-mem-cpu-load -i -1 )
 
   add_test( NAME invalid_graph_lines
-    COMMAND tmux-mem-cpu-load 1 -4 )
+    COMMAND tmux-mem-cpu-load -g -4 )
 
   set_tests_properties( usage
     invalid_status_interval
