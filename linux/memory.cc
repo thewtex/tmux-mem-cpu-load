@@ -28,10 +28,17 @@ std::string mem_string( bool use_colors = false ) {
 
    for( unsigned int i = 0; i < 3; i++ ) {
       getline( meminfo_file, mem_line );
-      substrStart = mem_line.find_first_of( ':' ) + 1;
-      substrLen   = mem_line.find_first_of( 'k' );
-      unused_mem = stoi(mem_line.substr(substrStart, substrLen));
-      used_mem -= unused_mem;
+	  // accomodate MemAvailable potentially being in lines 2-4 of 
+	  // /proc/meminfo. do this in a way to not break the original logic of the
+	  // loop
+	  if( mem_line.find("MemAvailable") == 0 )
+        i--;
+	  else {
+		substrStart = mem_line.find_first_of( ':' ) + 1;
+		substrLen   = mem_line.find_first_of( 'k' );
+		unused_mem = stoi(mem_line.substr(substrStart, substrLen));
+		used_mem -= unused_mem;
+      }
    }
 
    meminfo_file.close();
