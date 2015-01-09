@@ -1,6 +1,5 @@
-#include <string>
 #include <sstream>
-#include <fstream>
+#include <sys/sysinfo.h>
 
 #include "memory.h"
 #include "../luts.h"
@@ -8,41 +7,14 @@
 std::string mem_string( bool use_colors = false ) {
    std::ostringstream oss;
 
-   unsigned int total_mem;
-   unsigned int used_mem;
-   unsigned int unused_mem;
+   struct sysinfo sinfo;
+   sysinfo(&sinfo);
+
+   unsigned int total_mem = sinfo.totalram / 1014;
+   unsigned int used_mem = total_mem - sinfo.freeram / 1024;
+   // we don't need this for now
+   //unsigned int unused_mem = sinfo.freeram / 1024;
    
-   size_t substrStart;
-   size_t substrLen;
-
-   std::ifstream meminfo_file( "/proc/meminfo" );
-
-   std::string mem_line;
-
-   getline( meminfo_file, mem_line );
-   substrStart = mem_line.find_first_of( ':' ) + 1;
-   substrLen   = mem_line.find_first_of( 'k' );
-   total_mem = stoi(mem_line.substr(substrStart, substrLen));
-
-   used_mem = total_mem;
-
-   for( unsigned int i = 0; i < 3; i++ ) {
-      getline( meminfo_file, mem_line );
-	  // accomodate MemAvailable potentially being in lines 2-4 of 
-	  // /proc/meminfo. do this in a way to not break the original logic of the
-	  // loop
-	  if( mem_line.find("MemAvailable") == 0 )
-        i--;
-	  else {
-		substrStart = mem_line.find_first_of( ':' ) + 1;
-		substrLen   = mem_line.find_first_of( 'k' );
-		unused_mem = stoi(mem_line.substr(substrStart, substrLen));
-		used_mem -= unused_mem;
-      }
-   }
-
-   meminfo_file.close();
-
    if( use_colors ) {
       oss << mem_lut[(100 * used_mem) / total_mem];
    }
