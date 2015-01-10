@@ -1,23 +1,24 @@
 #include <string>
 #include <sstream>
-#include <fstream>
-#include <unistd.h>
+#include <unistd.h> // sysconf()?
+#include <sys/sysinfo.h>
+#include <linux/kernel.h> // SI_LOAD_SHIFT
 
 #include "../luts.h"
 
 std::string load_string( bool use_colors = false ) {
    std::ostringstream oss;
 
-   std::ifstream loadavg_file( "/proc/loadavg" );
-   std::string load_line;
-   std::getline( loadavg_file, load_line );
-   loadavg_file.close();
+   float f = static_cast<float>(1 << SI_LOAD_SHIFT);
+
+   struct sysinfo sinfo;
+   sysinfo(&sinfo);
 
    if( use_colors ) {
       // Likely does not work on BSD, but not tested
       unsigned number_of_cpus = sysconf( _SC_NPROCESSORS_ONLN );
 
-      float recent_load = stof(load_line.substr( 0, 4 ));
+      float recent_load = sinfo.loads[0] / f;
 
       // colors range from zero to twice the number of cpu's 
       // for the most recent load metric
@@ -29,8 +30,14 @@ std::string load_string( bool use_colors = false ) {
       
       oss << load_lut[load_percent];
    }
-
-   oss << load_line.substr( 0, 14 );
+  
+   // set precision so we get results like "0.22"
+   oss.setf( std::ios::fixed );
+   oss.precision(2);
+   
+   oss << sinfo.loads[0] / f << " " << sinfo.load[1] / f << " " 
+	 << sinfo.load[2] / f;
+   
    if( use_colors )
       oss << "#[fg=default,bg=default]";
 
