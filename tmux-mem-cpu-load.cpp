@@ -34,10 +34,10 @@
    #include "osx/load.h"
 #elif defined(__FreeBSD__) || defined(__OpenBSD__) || defined(__NetBSD__)
    // BSD system
-   // TODO: Includes and *BSD support
    #define BSD_BASED 1
-   // include _get_cpu_percentage (see osx/cpu.cc)
-   // include cpu_percentage (see osx/cpu.cc)
+   #include "bsd/cpu.h"
+   #include "bsd/load.h"
+   #include "bsd/memory.h"
 #else
    // assume linux system
    #include "linux/cpu.h"
@@ -46,13 +46,6 @@
 #endif
 
 #include "graph.h"
-
-// Function declarations.
-// TODO: those should stay in separate headers
-//    LINUX: DONE/partial
-//    OSX:   DONE/partial
-//    BSD:   TODO
-
 
 std::string cpu_string(unsigned int cpu_usage_delay, unsigned int graph_lines,
 	bool use_colors = false) {
