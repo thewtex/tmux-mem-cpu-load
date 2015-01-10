@@ -70,9 +70,11 @@ std::string cpu_string(unsigned int cpu_usage_delay, unsigned int graph_lines,
   if( use_colors )
 	oss << cpu_percentage_lut[static_cast<unsigned int>( percentage )];
 
-  oss << "[";
-  oss << getGraphByPercentage( unsigned(percentage), graph_lines );
-  oss << "]";
+  if( graph_lines > 0) {
+	oss << "[";
+	oss << getGraphByPercentage( unsigned(percentage), graph_lines );
+	oss << "]";
+  }
   oss.width( 5 );
   oss << percentage;
   oss << "%";
@@ -132,8 +134,8 @@ int main(int argc, char** argv) {
 
   if (arg.foundOption("graph-lines")) {
 	graph_lines = std::stoi(arg.optionValue("graph-lines"));
-	if( graph_lines < 1 ) {
-	  std::cerr << "Graph lines argument must be one or greater.\n";
+	if( graph_lines < 0 ) {
+	  std::cerr << "Graph lines argument must be zero or greater.\n";
 	  return EXIT_FAILURE;
 	}
   }
