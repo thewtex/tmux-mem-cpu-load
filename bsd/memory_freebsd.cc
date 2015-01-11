@@ -24,6 +24,7 @@
 
 #include "common.h"
 #include "memory.h"
+#include "../luts.h"
 
 std::string mem_string( bool use_colors = false ) {
   // These values are in bytes
@@ -54,7 +55,13 @@ std::string mem_string( bool use_colors = false ) {
 	  static_cast<int64_t>(active_mem) + static_cast<int64_t>(inactive_mem) +
 	  static_cast<int64_t>(wired_mem)) * static_cast<int64_t>(page_size);
 
+  if( use_colors )
+	oss << mem_lut[(100 * used_mem) / total_mem];
+
   oss << MEGABYTES(used_mem) << '/' << MEGABYTES(total_mem) << "MB";
+
+  if( use_colors )
+	oss << "#[fg=default,bg=default]";
 
   return oss.str();
 }
