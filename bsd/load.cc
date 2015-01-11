@@ -26,7 +26,7 @@
 #include "load.h"
 
 // Load Averages
-std::string load_string() {
+std::string load_string( bool use_colors = false ) {
   std::stringstream ss;
   // Only get 3 load averages
   int nelem = 3;
