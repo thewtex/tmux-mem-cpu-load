@@ -18,14 +18,15 @@
 // Based on: Apple.cpp for load_string/mem_string and apple's documentation
 
 #include <sys/types.h>
+#include <unistd.h> // usleep
 
 #include "common.h"
 #include "cpu.h"
 
 float cpu_percentage(unsigned int cpu_usage_delay)
 {
-    int64_t load1[CPUSTATES];
-    int64_t load2[CPUSTATES];
+    int32_t load1[CPUSTATES];
+    int32_t load2[CPUSTATES];
     
     GETSYSCTL("kern.cp_time", load1);
     usleep(cpu_usage_delay);
