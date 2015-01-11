@@ -25,9 +25,9 @@
 #include "common.h"
 #include "memory.h"
 
-std::string mem_string() {
+std::string mem_string( bool use_colors = false ) {
   // These values are in bytes
-  int64_t total_mem = 0;
+  int32_t total_mem = 0;
   int64_t used_mem = 0;
   int64_t unused_mem = 0;
   int32_t inactive_mem = 0;
