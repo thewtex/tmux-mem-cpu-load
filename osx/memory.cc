@@ -1,18 +1,9 @@
 #include <string>
 #include <sstream>
-
-#include <mach/vm_statistics.h>
-#include <mach/processor_info.h>
-#include <mach/mach_types.h>
-#include <mach/mach_init.h>
-#include <mach/mach_host.h>
-#include <mach/host_info.h>
-#include <mach/mach_error.h>
-#include <mach/vm_map.h>
 #include <mach/mach.h>
 #include <sys/sysctl.h> // for sysctl
-#include <sys/types.h> // for integer types
 
+#include "memory.h"
 #include "../luts.h"
 
 std::string mem_string( bool use_colors ) {
