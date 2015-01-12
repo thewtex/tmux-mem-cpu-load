@@ -39,7 +39,8 @@ ELSEIF(CMAKE_SYSTEM_NAME MATCHES "FreeBSD")
 ELSEIF(CMAKE_SYSTEM_NAME MATCHES "OpenBSD")
    # OpenBSD Stuff Here
    message( "OpenBSD detected")
-   message( WARNING "OpenBSD is still experimental!" )
+   message( FATAL_ERROR "OpenBSD is not supported! See bsd/openBSD.txt for more
+   info" )
    SET( METER_SOURCES "bsd/memory_openbsd.cc" "bsd/cpu.cc" "bsd/load.cc" )
 ELSE()
    message( FATAL_ERROR "Cannot be compiled on this system" )
