@@ -4,6 +4,7 @@
 #include <sys/sysinfo.h>
 #include <linux/kernel.h> // SI_LOAD_SHIFT
 
+#include "load.h"
 #include "../luts.h"
 
 std::string load_string( bool use_colors = false ) {
