@@ -1,16 +1,7 @@
-#include <mach/vm_statistics.h>
-#include <mach/processor_info.h>
-#include <mach/mach_types.h>
-#include <mach/mach_init.h>
-#include <mach/mach_host.h>
-#include <mach/host_info.h>
-#include <mach/mach_error.h>
-#include <mach/vm_map.h>
 #include <mach/mach.h>
-#include <sys/sysctl.h> // for sysctl
-#include <sys/types.h> // for integer types
-
 #include <unistd.h> // usleep()
+
+#include "cpu.h"
 
 // OSX or BSD based system, use BSD APIs instead
 // See: http://www.opensource.apple.com/source/xnu/xnu-201/osfmk/mach/host_info.h
