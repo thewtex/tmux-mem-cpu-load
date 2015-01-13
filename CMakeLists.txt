@@ -61,6 +61,8 @@ if (CMAKE_COMPILER_IS_GNUCC)
   else()
 	  message(FATAL_ERROR "You need gcc version >= 4.6")
   endif()
+elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+  SET( GCC_COVERAGE_COMPILE_FLAGS "-std=c++11 " )
 endif()
 SET( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}" )
 
