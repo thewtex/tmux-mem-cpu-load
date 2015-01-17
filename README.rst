@@ -105,10 +105,7 @@ Contributions from:
 
 * Justin Crawford <justinc@pci-online.net>
 * krieiter <krieiter@gmail.com>
-<<<<<<< HEAD
-=======
 * Mark Palmeri <mlp6@duke.edu>
->>>>>>> upstream/master
 
 
 .. _tmux: http://tmux.sourceforge.net/
