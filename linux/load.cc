@@ -36,8 +36,8 @@ std::string load_string( bool use_colors = false ) {
    oss.setf( std::ios::fixed );
    oss.precision(2);
    
-   oss << sinfo.loads[0] / f << " " << sinfo.load[1] / f << " " 
-	 << sinfo.load[2] / f;
+   oss << sinfo.loads[0] / f << " " << sinfo.loads[1] / f << " " 
+	 << sinfo.loads[2] / f;
    
    if( use_colors )
       oss << "#[fg=default,bg=default]";
