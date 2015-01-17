@@ -51,7 +51,7 @@ SET( COMMON_SOURCES "tmux-mem-cpu-load.cpp" "graph.cc" "argParse/argParse.cc" )
 
 # compiler flags
 if (CMAKE_COMPILER_IS_GNUCC)
-  execute_process(COMMAD ${CMAKE_C_COMPILER} -dumpversion
+  execute_process(COMMAND ${CMAKE_C_COMPILER} -dumpversion
                   OUTPUT_VARIABLE GCC_VERSION)
   if (GCC_VERSION VERSION_EQUAL 4.6)
 	SET( GCC_COVERAGE_COMPILE_FLAGS "-std=c++0x " )
