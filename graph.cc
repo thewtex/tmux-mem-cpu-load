@@ -3,34 +3,42 @@
 
 #include "graph.h"
 
-char * getGraphByPercentage(unsigned value, unsigned len) {
-   unsigned step = 0;
-   char * bars = new char[len + 1];
+std::string get_graph_by_percentage(unsigned value, unsigned len) 
+{
+  unsigned step = 0;
+  std::string bars;
 
-   unsigned barCount = (static_cast<float>(value) / 99.9 * len);
+  unsigned bar_count = (static_cast<float>(value) / 99.9 * len);
 
-   for(step; step < barCount; step++)
-      bars[step] = '|';
-   for(step; step < len; step++)
-      bars[step] = ' ';
-   bars[len]='\0';
+  for(step; step < bar_count; step++)
+  {
+    bars.append("|");
+  }
+  for(step; step < len; step++)
+  {
+    bars.append(" ");
+  }
 
-   return bars;
+  return bars;
 }
 
 
-char * getGraphByValue(unsigned value, unsigned max, unsigned len) {
-   unsigned step = 0;
-   char * bars = new char[len + 1];
+std::string get_graph_by_value(unsigned value, unsigned max, unsigned len)
+{
+  unsigned step = 0;
+  std::string bars;
 
-   unsigned barCount = (static_cast<float>(value / (max - 0.1)) * len);
+  unsigned bar_count = (static_cast<float>(value / (max - 0.1)) * len);
 
-   for(step; step < barCount; step++)
-      bars[step] = '|';
-   for(step; step < len; step++)
-      bars[step] = ' ';
-   bars[len]='\0';
+  for(step; step < bar_count; step++)
+  {
+    bars.append("|");
+  }
+  for(step; step < len; step++)
+  {
+    bars.append(" ");
+  }
 
-   return bars;
+  return bars;
 }
 
