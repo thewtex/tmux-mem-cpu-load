@@ -53,7 +53,7 @@ Building
 ~~~~~~~~
 
 * >= CMake_ -2.6
-* C++ compiler (e.g. gcc/g++)
+* C++ compiler with C++11 support (e.g. gcc/g++ >= 4.6)
 
 Download
 --------
