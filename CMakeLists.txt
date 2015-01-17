@@ -49,9 +49,24 @@ endif()
 # set common source files
 SET( COMMON_SOURCES "tmux-mem-cpu-load.cpp" "graph.cc" "argParse/argParse.cc" )
 
-
 # compiler flags
-SET( GCC_COVERAGE_COMPILE_FLAGS "-std=c++11 " )
+if (CMAKE_COMPILER_IS_GNUCC)
+  execute_process(COMMAD ${CMAKE_C_COMPILER} -dumpversion
+                  OUTPUT_VARIABLE GCC_VERSION)
+  if (GCC_VERSION VERSION_EQUAL 4.6)
+	SET( GCC_COVERAGE_COMPILE_FLAGS "-std=c++0x " )
+  elseif (GCC_VERSION GREATER 4.6)
+	SET( GCC_COVERAGE_COMPILE_FLAGS "-std=c++11 " )
+  else()
+	message( FATAL_ERROR "You need gcc version >= 4.6")
+  endif()
+elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+  SET( GCC_COVERAGE_COMPILE_FLAGS "-std=c++11 " )
+else()
+  message( WARNING "Untested compiler detected. You may need to set c++11
+  support manually through CMakeList.txt file")
+  SET( GCC_COVERAGE_COMPILE_FLAGS "" )
+endif()
 SET( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}" )
 
 # add binary tree so we find version.h
