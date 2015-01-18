@@ -96,10 +96,8 @@ int main( int argc, char** argv )
 
   // ugly, I know
   std::string intro = "tmux-mem-cpu-load v";
-  intro += std::to_string( VERSION_MAJOR ) + ".";
-  intro += std::to_string( VERSION_MINOR ) + ".";
-  intro += std::to_string( VERSION_PATCH ) + "\n";
-  intro += "Usage: tmux-mem-cpu-load [OPTIONS]";
+  intro += tmux_mem_cpu_load_VERSION;
+  intro += "\nUsage: tmux-mem-cpu-load [OPTIONS]";
 
   arg.setIntroduction( intro );
 
