@@ -1,4 +1,5 @@
-/*
+/* vim: tabstop=2 shiftwidth=2 expandtab textwidth=80 linebreak wrap
+ *
  * Copyright 2012 Matthew McCormick
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,7 +13,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * */
+ */
 
 #include <cstring>
 #include <iostream>
@@ -20,12 +21,13 @@
 #include <sstream>
 #include <string>
 #include <cstdlib> // EXIT_SUCCESS
+
 #include "argParse/argParse.h"
+#include "version.h"
+#include "graph.h"
 
 // Tmux color lookup tables for the different metrics.
 #include "luts.h"
-
-#include "version.h"
 
 #if defined(__APPLE__) && defined(__MACH__)
    // Apple osx system
@@ -45,10 +47,9 @@
    #include "linux/load.h"
 #endif
 
-#include "graph.h"
-
-std::string cpu_string(unsigned int cpu_usage_delay, unsigned int graph_lines,
-	bool use_colors = false) {
+std::string cpu_string( unsigned int cpu_usage_delay, unsigned int graph_lines,
+	bool use_colors = false )
+{
 
   float percentage;
 
@@ -61,23 +62,29 @@ std::string cpu_string(unsigned int cpu_usage_delay, unsigned int graph_lines,
   percentage = cpu_percentage( cpu_usage_delay );
 
   if( use_colors )
-	oss << cpu_percentage_lut[static_cast<unsigned int>( percentage )];
+  {
+    oss << cpu_percentage_lut[static_cast<unsigned int>( percentage )];
+  }
 
-  if( graph_lines > 0) {
-	oss << "[";
-	oss << getGraphByPercentage( unsigned(percentage), graph_lines );
-	oss << "]";
+  if( graph_lines > 0)
+  {
+    oss << "[";
+    oss << get_graph_by_percentage( unsigned( percentage ), graph_lines );
+    oss << "]";
   }
   oss.width( 5 );
   oss << percentage;
   oss << "%";
   if( use_colors )
-	oss << "#[fg=default,bg=default]";
+  {
+    oss << "#[fg=default,bg=default]";
+  }
 
   return oss.str();
 }
 
-int main(int argc, char** argv) {
+int main( int argc, char** argv )
+{
   using namespace ArgvParse;
 
   unsigned cpu_usage_delay = 990000;
@@ -89,53 +96,59 @@ int main(int argc, char** argv) {
 
   // ugly, I know
   std::string intro = "tmux-mem-cpu-load v";
-  intro += std::to_string(VERSION_MAJOR) + "." + std::to_string(VERSION_MINOR);
-  intro += "." + std::to_string(VERSION_PATCH) + "\n";
+  intro += std::to_string( VERSION_MAJOR ) + ".";
+  intro += std::to_string( VERSION_MINOR ) + ".";
+  intro += std::to_string( VERSION_PATCH ) + "\n";
   intro += "Usage: tmux-mem-cpu-load [OPTIONS]";
 
-  arg.setIntroduction(intro);
+  arg.setIntroduction( intro );
 
-  arg.setHelpOption("h", "help", "Prints this help message");
+  arg.setHelpOption( "h", "help", "Prints this help message" );
 
   // define actual options
-  arg.defineOption("colors", "Use tmux colors in output",
-	  ArgvParser::NoAttribute);
-  arg.defineOption("i", "interval", "set tmux status refresh interval in "
-	  "seconds. Default: 1 second", ArgvParser::RequiresValue);
-  arg.defineOption("g", "graph-lines", "Set how many lines should be drawn in "
-	  "a graph. Default: 10", ArgvParser::RequiresValue);
+  arg.defineOption( "colors", "Use tmux colors in output",
+      ArgvParser::NoAttribute );
+  arg.defineOption( "i", "interval", "set tmux status refresh interval in "
+      "seconds. Default: 1 second", ArgvParser::RequiresValue );
+  arg.defineOption( "g", "graph-lines", "Set how many lines should be drawn in "
+      "a graph. Default: 10", ArgvParser::RequiresValue );
 
-  int result = arg.parse(argc, argv);
+  int result = arg.parse( argc, argv );
 
-  if (result != ArgvParser::Success) {
-	std::cerr << arg.parseErrorDescription(result);
-	return EXIT_FAILURE;
+  if( result != ArgvParser::Success )
+  {
+    std::cerr << arg.parseErrorDescription( result );
+    return EXIT_FAILURE;
   }
 
   // mangle arguments
-  if (arg.foundOption("colors"))
-	use_colors = true;
+  if( arg.foundOption( "colors" ) )
+    use_colors = true;
 
-  if (arg.foundOption("interval")) {
-	int delay = std::stoi(arg.optionValue("interval"));
-	if (delay < 1) {
-	  std::cerr << "Status interval argument must be one or greater.\n";
-	  return EXIT_FAILURE;
-	}
-	cpu_usage_delay = delay * 1000000 - 10000;
+  if( arg.foundOption( "interval" ) )
+  {
+    int delay = std::stoi( arg.optionValue( "interval" ) );
+    if( delay < 1 )
+    {
+      std::cerr << "Status interval argument must be one or greater.\n";
+      return EXIT_FAILURE;
+    }
+    cpu_usage_delay = delay * 1000000 - 10000;
   }
 
-  if (arg.foundOption("graph-lines")) {
-	graph_lines = std::stoi(arg.optionValue("graph-lines"));
-	if( graph_lines < 0 ) {
-	  std::cerr << "Graph lines argument must be zero or greater.\n";
-	  return EXIT_FAILURE;
-	}
+  if( arg.foundOption( "graph-lines" ) )
+  {
+    graph_lines = std::stoi( arg.optionValue( "graph-lines" ) );
+    if( graph_lines < 0 )
+    {
+      std::cerr << "Graph lines argument must be zero or greater.\n";
+      return EXIT_FAILURE;
+    }
   }
 
   std::cout << mem_string( use_colors ) << ' ' 
-	<< cpu_string( cpu_usage_delay, graph_lines, use_colors ) << ' ' 
-	<< load_string( use_colors );
+    << cpu_string( cpu_usage_delay, graph_lines, use_colors ) << ' ' 
+    << load_string( use_colors );
 
   return EXIT_SUCCESS;
 }

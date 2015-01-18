@@ -1,6 +1,24 @@
+# vim: tabstop=2 shiftwidth=2 expandtab textwidth=80 linebreak wrap
+#
+# Copyright 2012 Matthew McCormick
+# Copyright 2015 Pawel 'l0ner' Soltys
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
 cmake_minimum_required(VERSION 2.6)
 if(COMMAND cmake_policy)
-    cmake_policy(VERSION 2.6)
+  cmake_policy(VERSION 2.6)
 endif(COMMAND cmake_policy)
 
 ### General Package stuff
@@ -12,38 +30,38 @@ set(VERSION_PATCH 0)
 
 # generate header file to handle version
 configure_file(
-   "${PROJECT_SOURCE_DIR}/version.h.in"
-   "${PROJECT_SOURCE_DIR}/version.h"
-   )
+  "${PROJECT_SOURCE_DIR}/version.h.in"
+  "${PROJECT_SOURCE_DIR}/version.h"
+  )
 
 # set buold type
 if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE MinSizeRel CACHE STRING
-      "Choose the type of build, options are: None Debug Release RelWithDebInfo MinSizeRel."
-      FORCE)
+    "Choose the type of build, options are: None Debug Release RelWithDebInfo MinSizeRel."
+    FORCE)
 endif(NOT CMAKE_BUILD_TYPE)
 
 # detect system type
 if(CMAKE_SYSTEM_NAME MATCHES "Linux")
-   message("Linux detected")
-   set(METER_SOURCES "linux/memory.cc" "linux/cpu.cc" "linux/load.cc")
+  message("Linux detected")
+  set(METER_SOURCES "linux/memory.cc" "linux/cpu.cc" "linux/load.cc")
 elseif(CMAKE_SYSTEM_NAME MATCHES "Darwin")
-   # Mac OS X source setting will go here
-   message( "Darwin detected")
-   set(METER_SOURCES "osx/memory.cc" "osx/cpu.cc" "osx/load.cc")
+  # Mac OS X source setting will go here
+  message( "Darwin detected")
+  set(METER_SOURCES "osx/memory.cc" "osx/cpu.cc" "osx/load.cc")
 elseif(CMAKE_SYSTEM_NAME MATCHES "FreeBSD")
-   # FreeBSD STUFF HERE
-   message("FreeBSD detected")
-   message( WARNING "FreeBSD is still experimental!" )
-   set( METER_SOURCES "bsd/memory_freebsd.cc" "bsd/cpu.cc" "bsd/load.cc" )
+  # FreeBSD STUFF HERE
+  message("FreeBSD detected")
+  message( WARNING "FreeBSD is still experimental!" )
+  set( METER_SOURCES "bsd/memory_freebsd.cc" "bsd/cpu.cc" "bsd/load.cc" )
 elseif(CMAKE_SYSTEM_NAME MATCHES "OpenBSD")
-   # OpenBSD Stuff Here
-   message( "OpenBSD detected")
-   message( FATAL_ERROR "OpenBSD is not supported! See bsd/openBSD.txt for more
-   info" )
-   set( METER_SOURCES "bsd/memory_openbsd.cc" "bsd/cpu.cc" "bsd/load.cc" )
+  # OpenBSD Stuff Here
+  message( "OpenBSD detected")
+  message( FATAL_ERROR "OpenBSD is not supported! See bsd/openBSD.txt for more
+  info" )
+  set( METER_SOURCES "bsd/memory_openbsd.cc" "bsd/cpu.cc" "bsd/load.cc" )
 else()
-   message( FATAL_ERROR "Cannot be compiled on this system" )
+  message( FATAL_ERROR "Cannot be compiled on this system" )
 endif()
 
 # set common source files
@@ -52,13 +70,13 @@ SET( COMMON_SOURCES "tmux-mem-cpu-load.cpp" "graph.cc" "argParse/argParse.cc" )
 # compiler flags
 if (CMAKE_COMPILER_IS_GNUCC)
   execute_process(COMMAND ${CMAKE_C_COMPILER} -dumpversion
-                  OUTPUT_VARIABLE GCC_VERSION)
+    OUTPUT_VARIABLE GCC_VERSION)
   if (GCC_VERSION VERSION_EQUAL 4.6)
-	set( GCC_COVERAGE_COMPILE_FLAGS "-std=c++0x " )
+    set( GCC_COVERAGE_COMPILE_FLAGS "-std=c++0x " )
   elseif (GCC_VERSION GREATER 4.6)
-	set( GCC_COVERAGE_COMPILE_FLAGS "-std=c++11 " )
+    set( GCC_COVERAGE_COMPILE_FLAGS "-std=c++11 " )
   else()
-	message( FATAL_ERROR "You need gcc version >= 4.6")
+    message( FATAL_ERROR "You need gcc version >= 4.6")
   endif()
 elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
   set( GCC_COVERAGE_COMPILE_FLAGS "-std=c++11 " )
@@ -74,8 +92,8 @@ include_directories("${PROJECT_BINARY_DIR}" )
 
 add_executable(tmux-mem-cpu-load ${COMMON_SOURCES} ${METER_SOURCES})
 install(TARGETS tmux-mem-cpu-load 
-   RUNTIME DESTINATION bin
-)
+  RUNTIME DESTINATION bin
+  )
 
 include( CTest )
 if( BUILD_TESTING )
