@@ -109,6 +109,9 @@ if( BUILD_TESTING )
   add_test( NAME custom_interval
     COMMAND tmux-mem-cpu-load -i 3 )
 
+  add_test( NAME no_cpu_graph
+    COMMAND tmux-mem-cpu-load -g 0 )
+
   add_test( NAME colors
     COMMAND tmux-mem-cpu-load --colors )
 
