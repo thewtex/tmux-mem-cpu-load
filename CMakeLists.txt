@@ -22,7 +22,6 @@ if(COMMAND cmake_policy)
 endif(COMMAND cmake_policy)
 
 ### General Package stuff
-
 project( tmux-mem-cpu-load )
 set(tmux-mem-cpu-load_VERSION_MAJOR 2)
 set(tmux-mem-cpu-load_VERSION_MINOR 3)
@@ -31,10 +30,23 @@ set(tmux-mem-cpu-load_VERSION_PATCH 0)
 set(tmux-mem-cpu-load_VERSION
   ${tmux-mem-cpu-load_VERSION_MAJOR}.${tmux-mem-cpu-load_VERSION_MINOR}.${tmux-mem-cpu-load_VERSION_PATCH})
 
+# Check whether we have support for c++11 in compiler and fail if we don't
+include(CheckCXXCompilerFlag)
+CHECK_CXX_COMPILER_FLAG("-std=c++11" COMPILER_SUPPORTS_CXX11)
+CHECK_CXX_COMPILER_FLAG("-std=c++0x" COMPILER_SUPPORTS_CXX0X)
+
+if(COMPILER_SUPPORTS_CXX11)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+elseif(COMPILER_SUPPORTS_CXX0X)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
+else()
+    message(FATAL_ERROR "
+Compiler ${CMAKE_CXX_COMPILER_ID} ${CMAKE_CXX_COMPILER_VERSION} has no C++11 support.")
+endif()
+
 # generate header file to handle version
 configure_file(
-  "${PROJECT_SOURCE_DIR}/version.h.in"
-  "${PROJECT_SOURCE_DIR}/version.h"
+  "${PROJECT_SOURCE_DIR}/version.h.in" "${PROJECT_SOURCE_DIR}/version.h"
   )
 
 # set buold type
@@ -70,33 +82,11 @@ endif()
 # set common source files
 SET( COMMON_SOURCES "tmux-mem-cpu-load.cpp" "graph.cc" "argParse/argParse.cc" )
 
-# compiler flags
-if (CMAKE_COMPILER_IS_GNUCC)
-  execute_process(COMMAND ${CMAKE_C_COMPILER} -dumpversion
-    OUTPUT_VARIABLE GCC_VERSION)
-  if (GCC_VERSION VERSION_EQUAL 4.6)
-    set( GCC_COVERAGE_COMPILE_FLAGS "-std=c++0x " )
-  elseif (GCC_VERSION GREATER 4.6)
-    set( GCC_COVERAGE_COMPILE_FLAGS "-std=c++11 " )
-  else()
-    message( FATAL_ERROR "You need gcc version >= 4.6")
-  endif()
-elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-  set( GCC_COVERAGE_COMPILE_FLAGS "-std=c++11 " )
-else()
-  message( WARNING "Untested compiler detected. You may need to set c++11
-  support manually through CMakeList.txt file")
-  set( GCC_COVERAGE_COMPILE_FLAGS "" )
-endif()
-set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}" )
-
 # add binary tree so we find version.h
 include_directories("${PROJECT_BINARY_DIR}" )
 
 add_executable(tmux-mem-cpu-load ${COMMON_SOURCES} ${METER_SOURCES})
-install(TARGETS tmux-mem-cpu-load 
-  RUNTIME DESTINATION bin
-  )
+install(TARGETS tmux-mem-cpu-load RUNTIME DESTINATION bin)
 
 include( CTest )
 if( BUILD_TESTING )
