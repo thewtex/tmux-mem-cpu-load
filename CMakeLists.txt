@@ -46,7 +46,7 @@ endif()
 
 # generate header file to handle version
 configure_file(
-  "${PROJECT_SOURCE_DIR}/version.h.in" "${PROJECT_SOURCE_DIR}/version.h"
+  "${PROJECT_SOURCE_DIR}/config.h.in" "${PROJECT_SOURCE_DIR}/config.h"
   )
 
 # set buold type

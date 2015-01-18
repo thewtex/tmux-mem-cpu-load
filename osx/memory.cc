@@ -23,6 +23,7 @@
 
 #include "memory.h"
 #include "../luts.h"
+#include "../config.h"
 
 std::string mem_string( bool use_colors )
 {
@@ -58,16 +59,12 @@ std::string mem_string( bool use_colors )
         ) * ( int64_t )page_size;
   }
 
-  // To kilobytes
-  used_mem /= 1024;
-  total_mem /= 1024;
-
   if( use_colors )
   {
     oss << mem_lut[( 100 * used_mem ) / total_mem];
   }
 
-  oss << used_mem / 1024 << '/' << total_mem / 1024 << "MB";
+  oss << MEGABYTES(used_mem) << '/' << MEGABYTES(total_mem) << "MB";
 
   if( use_colors )
   {

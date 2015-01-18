@@ -21,3 +21,8 @@
 #define tmux_mem_cpu_load_VERSION_MINOR @tmux-mem-cpu-load_VERSION_MINOR@
 #define tmux_mem_cpu_load_VERSION_PATCH @tmux-mem-cpu-load_VERSION_PATCH@
 #define tmux_mem_cpu_load_VERSION "@tmux-mem-cpu-load_VERSION@"
+
+// Memory Sizes
+#define KILOBYTES(x) ((x)/1024)
+#define MEGABYTES(x) (KILOBYTES((x))/1024)
+#define GIGABYTES(x) (MEGABYTES((x))/1024)

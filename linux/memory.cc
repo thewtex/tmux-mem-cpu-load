@@ -21,6 +21,7 @@
 
 #include "memory.h"
 #include "../luts.h"
+#include "../config.h"
 
 std::string mem_string( bool use_colors = false )
 {
@@ -29,17 +30,17 @@ std::string mem_string( bool use_colors = false )
   struct sysinfo sinfo;
   sysinfo(&sinfo);
 
-  unsigned int total_mem = sinfo.totalram / 1014;
-  unsigned int used_mem = total_mem - sinfo.freeram / 1024;
+  unsigned int total_mem = MEGABYTES(sinfo.totalram);
+  unsigned int used_mem = total_mem - MEGABYTES(sinfo.freeram);
   // we don't need this for now
-  //unsigned int unused_mem = sinfo.freeram / 1024;
+  //unsigned int unused_mem = MEGABYTES(sinfo.freeram);
 
   if( use_colors )
   {
     oss << mem_lut[(100 * used_mem) / total_mem];
   }
 
-  oss << used_mem / 1024 << '/' << total_mem / 1024 << "MB";
+  oss << used_mem << '/' << total_mem << "MB";
 
   if( use_colors )
   {

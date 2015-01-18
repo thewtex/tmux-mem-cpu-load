@@ -27,11 +27,6 @@
 #include <sys/sysctl.h>
 #include <sys/types.h>
 
-// Memory Sizes
-#define KILOBYTES(x) ((x)/1024)
-#define MEGABYTES(x) (KILOBYTES((x))/1024)
-#define GIGABYTES(x) (MEGABYTES((x))/1024)
-
 // CPU percentages stuff
 #define CP_USER   0
 #define CP_NICE   1
