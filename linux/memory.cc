@@ -22,7 +22,7 @@
 
 #include "memory.h"
 #include "../luts.h"
-#include "../config.h"
+#include "../conversions.h"
 
 std::string mem_string( bool use_colors = false )
 {
@@ -92,7 +92,8 @@ std::string mem_string( bool use_colors = false )
   // we want megabytes on output, but since the values already come as 
   // kilobytes we need to divide them by 1024 only once, thus we use
   // KILOBYTES
-  oss << KILOBYTES(used_mem) << '/' << KILOBYTES(total_mem) << "MB";
+  oss << convert_unit(used_mem, MEGABYTES, KILOBYTES) << '/' 
+    << convert_unit(total_mem, MEGABYTES, KILOBYTES) << "MB";
 
   if( use_colors )
   {

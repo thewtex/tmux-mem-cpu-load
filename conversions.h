@@ -16,9 +16,20 @@
  * limitations under the License.
  */
 
-// the configured options and settings for sysstat
-#define tmux_mem_cpu_load_VERSION_MAJOR @tmux-mem-cpu-load_VERSION_MAJOR@
-#define tmux_mem_cpu_load_VERSION_MINOR @tmux-mem-cpu-load_VERSION_MINOR@
-#define tmux_mem_cpu_load_VERSION_PATCH @tmux-mem-cpu-load_VERSION_PATCH@
-#define tmux_mem_cpu_load_VERSION "@tmux-mem-cpu-load_VERSION@"
+enum
+{
+  BYTES = 0,
+  KILOBYTES = 1,
+  MEGABYTES = 2,
+  GIGABYTES = 3
+};
 
+template <class T>
+inline T convert_unit( T num, int to, int from = BYTES)
+{
+  for(from; from < to; from++)
+  {
+    num /= 1024;
+  }
+  return num;
+}

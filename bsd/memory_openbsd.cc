@@ -29,7 +29,7 @@
 #include "getsysctl.h"
 #include "memory.h"
 #include "../luts.h"
-#include "../config.h"
+#include "../conversions.h"
 
 std::string mem_string( bool use_colors = false )
 {
@@ -65,7 +65,8 @@ std::string mem_string( bool use_colors = false )
     oss << mem_lut[( 100 * used_mem ) / total_mem];
   }
 
-  oss << MEGABYTES( used_mem ) << '/' << MEGABYTES( total_mem ) << "MB";
+  oss << convert_unit( used_mem, MEGABYTES ) << '/' 
+    << convert_unit( total_mem, MEGABYTES ) << "MB";
 
   if( use_colors )
   {
