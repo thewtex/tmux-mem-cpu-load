@@ -23,7 +23,7 @@
 #include <cstdlib> // EXIT_SUCCESS
 
 #include "argParse/argParse.h"
-#include "config.h"
+#include "version.h"
 #include "graph.h"
 
 // Tmux color lookup tables for the different metrics.
