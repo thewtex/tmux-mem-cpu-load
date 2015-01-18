@@ -23,7 +23,7 @@
 #include <string>
 #include <sys/types.h>
 
-#include "common.h"
+#include "getsysctl.h"
 #include "memory.h"
 #include "../luts.h"
 #include "../config.h"

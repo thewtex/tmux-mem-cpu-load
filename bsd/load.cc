@@ -26,7 +26,7 @@
 #include <cmath> // floorf()
 #include <sys/types.h>
 
-#include "common.h"
+#include "getsysctl.h"
 #include "load.h"
 #include "../luts.h"
 

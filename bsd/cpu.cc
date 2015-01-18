@@ -23,7 +23,7 @@
 #include <sys/types.h>
 #include <unistd.h> // usleep
 
-#include "common.h"
+#include "getsysctl.h"
 #include "cpu.h"
 
 float cpu_percentage( unsigned int cpu_usage_delay )
