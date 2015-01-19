@@ -20,9 +20,9 @@
 #include <fstream>
 #include <sstream>
 #include <string>
-#include <cstdlib> // EXIT_SUCCESS
+#include <cstdlib> // EXIT_SUCCESS, atoi()
+#include <getopt.h> // getopt_long
 
-#include "argParse/argParse.h"
 #include "version.h"
 #include "graph.h"
 
@@ -83,64 +83,80 @@ std::string cpu_string( unsigned int cpu_usage_delay, unsigned int graph_lines,
   return oss.str();
 }
 
+void print_help()
+{
+  using std::cout;
+  using std::endl;
+  
+  cout << "tmux-mem-cpu-load v" << tmux_mem_cpu_load_VERSION << endl
+    << "Usage: tmux-mem-cpu-load [OPTIONS]\n\n"
+    << "Available options:\n"
+    << "-h, --help\n"
+    << "\t Prints this help message\n"
+    << "--colors\n" 
+    << "\tUse tmux colors in output\n"
+    << "-i <value>, --interval <value>\n" 
+    << "\tSet tmux status refresh interval in seconds. Default: 1 second\n"
+    << "-g <value>, --graph-lines <value>\n" 
+    << "\tSet how many lines should be drawn in a graph. Default: 10\n"
+    << endl;
+}
+
 int main( int argc, char** argv )
 {
-  using namespace ArgvParse;
-
   unsigned cpu_usage_delay = 990000;
   short graph_lines = 10; // max 32767 should be enough
   bool use_colors = false;
 
-  // Argv parser
-  ArgvParser arg;
-
-  // ugly, I know
-  std::string intro = "tmux-mem-cpu-load v";
-  intro += tmux_mem_cpu_load_VERSION;
-  intro += "\nUsage: tmux-mem-cpu-load [OPTIONS]";
-
-  arg.setIntroduction( intro );
-
-  arg.setHelpOption( "h", "help", "Prints this help message" );
-
-  // define actual options
-  arg.defineOption( "colors", "Use tmux colors in output",
-      ArgvParser::NoAttribute );
-  arg.defineOption( "i", "interval", "set tmux status refresh interval in "
-      "seconds. Default: 1 second", ArgvParser::RequiresValue );
-  arg.defineOption( "g", "graph-lines", "Set how many lines should be drawn in "
-      "a graph. Default: 10", ArgvParser::RequiresValue );
-
-  int result = arg.parse( argc, argv );
-
-  if( result != ArgvParser::Success )
+  static struct option long_options[] =
   {
-    std::cerr << arg.parseErrorDescription( result );
-    return EXIT_FAILURE;
-  }
+    // Struct is a s follows:
+    //   const char * name, int has_arg, int *flag, int val
+    // if *flag is null, val is option identifier to use in switch()
+    // otherwise it's a value to set the variable *flag points to
+    { "help", no_argument, NULL, 'h' },
+    { "colors", no_argument, NULL, 'c' },
+    { "interval", required_argument, NULL, 'i' },
+    { "graph-lines", required_argument, NULL, 'g' },
+    { 0, 0, 0, 0 } // used to handle unknown long options
+  };
 
-  // mangle arguments
-  if( arg.foundOption( "colors" ) )
-    use_colors = true;
-
-  if( arg.foundOption( "interval" ) )
+  int c; 
+  // while c != -1
+  while( (c = getopt_long( argc, argv, "hi:g:", long_options, NULL) ) != -1 )
   {
-    int delay = std::stoi( arg.optionValue( "interval" ) );
-    if( delay < 1 )
+    switch( c )
     {
-      std::cerr << "Status interval argument must be one or greater.\n";
-      return EXIT_FAILURE;
-    }
-    cpu_usage_delay = delay * 1000000 - 10000;
-  }
-
-  if( arg.foundOption( "graph-lines" ) )
-  {
-    graph_lines = std::stoi( arg.optionValue( "graph-lines" ) );
-    if( graph_lines < 0 )
-    {
-      std::cerr << "Graph lines argument must be zero or greater.\n";
-      return EXIT_FAILURE;
+      case 'h': // --help, -h
+        print_help();
+        return EXIT_FAILURE;
+        break;
+      case 'c': // --colors
+        use_colors = true;
+        break;
+      case 'i': // --interval, -i
+        if( atoi( optarg ) < 1 )
+          {
+            std::cerr << "Status interval argument must be one or greater.\n";
+            return EXIT_FAILURE;
+          }
+        cpu_usage_delay = atoi( optarg ) * 1000000 - 10000;
+        break;
+      case 'g': // --graph-lines, -g
+        if( atoi( optarg ) < 0 )
+          {
+            std::cerr << "Graph lines argument must be zero or greater.\n";
+            return EXIT_FAILURE;
+          }
+        graph_lines = atoi( optarg );
+        break;
+      case '?':
+        // getopt_long prints error message automatically
+        return EXIT_FAILURE;
+        break;
+      default:
+        std::cout << "?? getopt returned character code 0 " << c << std::endl;
+        return EXIT_FAILURE;
     }
   }
 
