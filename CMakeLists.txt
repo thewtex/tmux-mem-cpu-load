@@ -32,8 +32,8 @@ set(tmux-mem-cpu-load_VERSION
 
 # Check whether we have support for c++11 in compiler and fail if we don't
 include(CheckCXXCompilerFlag)
-CHECK_CXX_COMPILER_FLAG("-std=c++11" COMPILER_SUPPORTS_CXX11)
-CHECK_CXX_COMPILER_FLAG("-std=c++0x" COMPILER_SUPPORTS_CXX0X)
+check_cxx_compiler_flag("-std=c++11" COMPILER_SUPPORTS_CXX11)
+check_cxx_compiler_flag("-std=c++0x" COMPILER_SUPPORTS_CXX0X)
 
 if(COMPILER_SUPPORTS_CXX11)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
@@ -80,7 +80,7 @@ else()
 endif()
 
 # set common source files
-SET( COMMON_SOURCES "tmux-mem-cpu-load.cpp" "graph.cc" "argParse/argParse.cc" )
+set( COMMON_SOURCES "tmux-mem-cpu-load.cpp" "graph.cc" )
 
 # add binary tree so we find version.h
 include_directories("${PROJECT_BINARY_DIR}" )
