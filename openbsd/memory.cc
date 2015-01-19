@@ -25,7 +25,7 @@
 #include <sys/types.h>
 #include <sys/vmmeter.h> // vmtotal struct
 
-#include "common.h"
+#include "error.h"
 #include "memory.h"
 #include "../luts.h"
 

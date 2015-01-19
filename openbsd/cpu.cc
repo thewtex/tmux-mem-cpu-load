@@ -23,7 +23,7 @@
 #include <sys/sysctl.h>
 #include <sys/types.h>
 
-#include "common.h"
+#include "error.h"
 #include "cpu.h"
 
 uint8_t get_cpu_count() 
