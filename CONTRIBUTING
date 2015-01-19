@@ -46,6 +46,8 @@ You'll need to follow the subsequent rules in order to get your code merged:
 * Use 2 space indentation (no tabs)
 * Use spaces around operators, except for unary operators, such as `!`.
 * Add LICENSE header in new files you create.
+* Put vim modeline as the first line of file header
+* Use the lower-case for CMake commands
 
 .. _`submit a pull request`: https://github.com/thewtex/tmux-mem-cpu-load/compare/
 .. _Allman: http://en.wikipedia.org/wiki/Indent_style#Allman_style
