@@ -86,18 +86,34 @@ Edit ``$HOME/.tmux.conf`` to display the program's output in *status-left* or
 *status-right*.  For example::
 
   set -g status-interval 2
-  set -g status-left "#S #[fg=green,bg=black]#(tmux-mem-cpu-load --colors 2)#[default]"
+  set -g status-left "#S #[fg=green,bg=black]#(tmux-mem-cpu-load --colors --interval 2)#[default]"
 
-Note that the first argument to `tmux-mem-cpu-load` should be the same number
+Note that the *interval* argument to `tmux-mem-cpu-load` should be the same number
 of seconds that *status-interval* is set at.
 
-An optional second argument is the number of bars in the bar graph, which
+Another optional argument is the number of bars in the bar graph, which
 defaults to 10.  This can, for instance, be set to the number of cores in a
 multi-core system.
 
+The *colors* option will add graded colors for each of the measures.
 
-Author
-======
+The full usage::
+
+  Usage: tmux-mem-cpu-load [OPTIONS]
+
+  Available options:
+  -h, --help
+           Prints this help message
+  --colors
+          Use tmux colors in output
+  -i <value>, --interval <value>
+          Set tmux status refresh interval in seconds. Default: 1 second
+  -g <value>, --graph-lines <value>
+          Set how many lines should be drawn in a graph. Default: 10
+
+
+Authors
+=======
 
 Matt McCormick (thewtex) <matt@mmmccormick.com>
 
