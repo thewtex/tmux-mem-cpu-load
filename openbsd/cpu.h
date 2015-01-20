@@ -10,7 +10,7 @@
 #define CP_IDLE   4
 #define CPUSTATES 5
 
-float cpu_percentage(unsigned);
-uint8_t getCpuCount();
+float cpu_percentage( unsigned );
+uint8_t get_cpu_count();
 
 #endif
