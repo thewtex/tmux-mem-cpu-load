@@ -77,7 +77,7 @@ else()
 endif()
 
 # set common source files
-set(COMMON_SOURCES "common/tmux-mem-cpu-load.cc" "common/graph.cc")
+set(COMMON_SOURCES "common/main.cc" "common/graph.cc")
 
 # add binary tree so we find version.h
 include_directories("${PROJECT_BINARY_DIR}")
