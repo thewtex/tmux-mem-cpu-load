@@ -28,7 +28,7 @@
 
 #include "getsysctl.h"
 #include "load.h"
-#include "../luts.h"
+#include "luts.h"
 
 // Load Averages
 std::string load_string( bool use_colors = false )

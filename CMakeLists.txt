@@ -46,7 +46,7 @@ endif()
 
 # generate header file to handle version
 configure_file(
-  "${PROJECT_SOURCE_DIR}/version.h.in" "${PROJECT_SOURCE_DIR}/version.h"
+  "${PROJECT_SOURCE_DIR}/common/version.h.in" "${PROJECT_BINARY_DIR}/version.h"
   )
 
 # set build type
@@ -77,10 +77,11 @@ else()
 endif()
 
 # set common source files
-set(COMMON_SOURCES "tmux-mem-cpu-load.cc" "graph.cc")
+set(COMMON_SOURCES "common/tmux-mem-cpu-load.cc" "common/graph.cc")
 
 # add binary tree so we find version.h
 include_directories("${PROJECT_BINARY_DIR}")
+include_directories("${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/common")
 
 add_executable(tmux-mem-cpu-load ${COMMON_SOURCES} ${METER_SOURCES})
 install(TARGETS tmux-mem-cpu-load RUNTIME DESTINATION bin)

@@ -21,7 +21,7 @@
 #include <unistd.h> // usleep
 
 #include "cpu.h"
-#include "../luts.h"
+#include "luts.h"
 
 float cpu_percentage( unsigned cpu_usage_delay )
 {

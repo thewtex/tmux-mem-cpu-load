@@ -21,8 +21,8 @@
 #include <sys/sysinfo.h>
 
 #include "memory.h"
-#include "../luts.h"
-#include "../conversions.h"
+#include "luts.h"
+#include "conversions.h"
 
 std::string mem_string( bool use_colors = false )
 {

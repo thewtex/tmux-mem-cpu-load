@@ -25,7 +25,7 @@
 #include <stdlib.h> // getloadavg()
 
 #include "load.h"
-#include "../luts.h"
+#include "luts.h"
 
 std::string load_string( bool use_colors = false )
 {
