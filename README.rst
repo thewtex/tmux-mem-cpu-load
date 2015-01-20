@@ -53,7 +53,7 @@ Building
 ~~~~~~~~
 
 * >= CMake_ -2.6
-* C++ compiler (e.g. gcc/g++)
+* C++ compiler with C++11 support (e.g. gcc/g++ >= 4.6)
 
 Download
 --------
@@ -106,9 +106,11 @@ Contributions from:
 * Justin Crawford <justinc@pci-online.net>
 * krieiter <krieiter@gmail.com>
 * Mark Palmeri <mlp6@duke.edu>
+* `Pawel 'l0ner' Soltys`_ <pwslts@gmail.com>
 
 
 .. _tmux: http://tmux.sourceforge.net/
 .. _CMake: http://www.cmake.org
 .. _`project homepage`: http://github.com/thewtex/tmux-mem-cpu-load
 .. _`terminals with 256 color support`: http://misc.flogisoft.com/bash/tip_colors_and_formatting#terminals_compatibility
+.. _`Pawel 'l0ner' Soltys` : http://l0ner.github.io/
