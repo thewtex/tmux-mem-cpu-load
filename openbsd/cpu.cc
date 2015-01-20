@@ -25,7 +25,7 @@
 #include "error.h"
 #include "cpu.h"
 
-uint8_t get_cpu_count() 
+uint8_t get_cpu_count()
 {
   int cpu_count = 1; // default to 1
   int mib[2] = { CTL_HW, HW_NCPU };
