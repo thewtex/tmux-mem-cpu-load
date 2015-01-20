@@ -87,17 +87,17 @@ void print_help()
 {
   using std::cout;
   using std::endl;
-  
+
   cout << "tmux-mem-cpu-load v" << tmux_mem_cpu_load_VERSION << endl
     << "Usage: tmux-mem-cpu-load [OPTIONS]\n\n"
     << "Available options:\n"
     << "-h, --help\n"
     << "\t Prints this help message\n"
-    << "--colors\n" 
+    << "--colors\n"
     << "\tUse tmux colors in output\n"
-    << "-i <value>, --interval <value>\n" 
+    << "-i <value>, --interval <value>\n"
     << "\tSet tmux status refresh interval in seconds. Default: 1 second\n"
-    << "-g <value>, --graph-lines <value>\n" 
+    << "-g <value>, --graph-lines <value>\n"
     << "\tSet how many lines should be drawn in a graph. Default: 10\n"
     << endl;
 }
@@ -121,7 +121,7 @@ int main( int argc, char** argv )
     { 0, 0, 0, 0 } // used to handle unknown long options
   };
 
-  int c; 
+  int c;
   // while c != -1
   while( (c = getopt_long( argc, argv, "hi:g:", long_options, NULL) ) != -1 )
   {
@@ -160,8 +160,8 @@ int main( int argc, char** argv )
     }
   }
 
-  std::cout << mem_string( use_colors ) << ' ' 
-    << cpu_string( cpu_usage_delay, graph_lines, use_colors ) << ' ' 
+  std::cout << mem_string( use_colors ) << ' '
+    << cpu_string( cpu_usage_delay, graph_lines, use_colors ) << ' '
     << load_string( use_colors );
 
   return EXIT_SUCCESS;
