@@ -33,7 +33,7 @@ std::string load_string( bool use_colors = false )
 {
   std::stringstream ss;
   // Only get 3 load averages
-  cont int nelem = 3;
+  const int nelem = 3;
   double averages[nelem];
   // based on: opensource.apple.com/source/Libc/Libc-262/gen/getloadavg.c
 
@@ -46,7 +46,7 @@ std::string load_string( bool use_colors = false )
 	if( use_colors )
 	{
 	  // may not work
-	  uint8_t cpu_count = getCpuCount();
+	  uint8_t cpu_count = get_cpu_count();
 
 	  unsigned load_percent = static_cast<unsigned int>(
 		  averages[0] / cpu_count * 0.5f * 100.0f);

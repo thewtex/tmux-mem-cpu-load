@@ -21,6 +21,7 @@
 
 #include <sstream>
 #include <string>
+#include <sys/mount.h> // VFS_* which we use to get cache
 #include <sys/sysctl.h>
 #include <sys/types.h>
 #include <sys/vmmeter.h> // vmtotal struct
@@ -28,6 +29,7 @@
 #include "error.h"
 #include "memory.h"
 #include "../luts.h"
+#include "../conversions.h"
 
 static int pageshift;
 
