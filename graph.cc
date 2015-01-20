@@ -28,11 +28,11 @@ std::string get_graph_by_percentage( unsigned value, unsigned len )
 
   unsigned bar_count = ( static_cast<float>(value) / 99.9 * len );
 
-  for( step; step < bar_count; step++ )
+  for( ; step < bar_count; step++ )
   {
     bars.append( "|" );
   }
-  for( step; step < len; step++ )
+  for( ; step < len; step++ )
   {
     bars.append( " " );
   }
@@ -48,11 +48,11 @@ std::string get_graph_by_value( unsigned value, unsigned max, unsigned len )
 
   unsigned bar_count = ( static_cast<float>( value / ( max - 0.1 ) ) * len );
 
-  for( step; step < bar_count; step++ )
+  for( ; step < bar_count; step++ )
   {
     bars.append( "|" );
   }
-  for( step; step < len; step++ )
+  for( ; step < len; step++ )
   {
     bars.append( " " );
   }

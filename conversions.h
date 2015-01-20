@@ -27,7 +27,7 @@ enum
 template <class T>
 inline T convert_unit( T num, int to, int from = BYTES)
 {
-  for(from; from < to; from++)
+  for( ; from < to; from++)
   {
     num /= 1024;
   }
