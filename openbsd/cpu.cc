@@ -1,5 +1,7 @@
-/*
+/* vim: tabstop=2 shiftwidth=2 expandtab textwidth=80 linebreak wrap
+ *
  * Copyright 2012 Matthew McCormick
+ * Copyright 2015 Pawel 'l0ner' Soltys
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,10 +14,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * */
-// This file was Authored by Justin Crawford <Justasic@gmail.com>
-// Based on: github.com/freebsd/freebsd/blob/master/usr.bin/top/machine.c
-// Based on: Apple.cpp for load_string/mem_string and apple's documentation
+ */
 
 #include <sys/types.h>
 #include <unistd.h> // usleep
@@ -34,7 +33,7 @@ uint8_t get_cpu_count()
 
   if(sysctl(mib, 2, &cpu_count, &len, NULL, 0) < 0)
   {
-	error("sysctl: error getting cpu count");
+    error("sysctl: error getting cpu count");
   }
 
   return cpu_count;
@@ -52,7 +51,7 @@ float cpu_percentage( unsigned int cpu_usage_delay )
   // get cpu times
   if(sysctl(cpu_ctl, 2, &load1, &size, NULL, 0) < 0)
   {
-	error("sysctl: error getting cpu stats");
+    error("sysctl: error getting cpu stats");
   }
 
   usleep(cpu_usage_delay);
@@ -60,7 +59,7 @@ float cpu_percentage( unsigned int cpu_usage_delay )
   // update cpu times
   if(sysctl(cpu_ctl, 2, &load2, &size, NULL, 0) < 0)
   {
-	error("sysctl: error getting cpu stats");
+    error("sysctl: error getting cpu stats");
   }
 
   // Current load times
@@ -80,6 +79,6 @@ float cpu_percentage( unsigned int cpu_usage_delay )
   unsigned long long diff_idle = next_idle - current_idle;
 
   return static_cast<float>(diff_user + diff_system + diff_nice) /
-	static_cast<float>(diff_user + diff_system + diff_nice + diff_idle) *
-	100.0;
+    static_cast<float>(diff_user + diff_system + diff_nice + diff_idle) *
+    100.0;
 }
