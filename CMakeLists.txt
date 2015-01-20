@@ -65,51 +65,58 @@ elseif(CMAKE_SYSTEM_NAME MATCHES "Darwin")
   set(METER_SOURCES "osx/memory.cc" "osx/cpu.cc" "osx/load.cc")
 elseif(CMAKE_SYSTEM_NAME MATCHES "FreeBSD")
   message("FreeBSD detected")
-  message( WARNING "FreeBSD is still experimental!" )
-  set( METER_SOURCES "bsd/memory_freebsd.cc" "bsd/cpu.cc" "bsd/load.cc" )
+  message(WARNING "FreeBSD is still experimental!")
+  set(METER_SOURCES "bsd/memory_freebsd.cc" "bsd/cpu.cc" "bsd/load.cc")
 elseif(CMAKE_SYSTEM_NAME MATCHES "OpenBSD")
   message(STATUS "OpenBSD detected")
-  message( FATAL_ERROR "OpenBSD is not supported! See bsd/openBSD.txt for more
-  info" )
-  set( METER_SOURCES "bsd/memory_openbsd.cc" "bsd/cpu.cc" "bsd/load.cc" )
+  message(FATAL_ERROR
+    "OpenBSD is not supported! See bsd/openBSD.txt for more info")
+  set(METER_SOURCES "bsd/memory_openbsd.cc" "bsd/cpu.cc" "bsd/load.cc")
 else()
-  message( FATAL_ERROR "Cannot be compiled on this system" )
+  message(FATAL_ERROR "Cannot be compiled on this system" )
 endif()
 
 # set common source files
-set( COMMON_SOURCES "tmux-mem-cpu-load.cpp" "graph.cc" )
+set(COMMON_SOURCES "tmux-mem-cpu-load.cpp" "graph.cc")
 
 # add binary tree so we find version.h
-include_directories("${PROJECT_BINARY_DIR}" )
+include_directories("${PROJECT_BINARY_DIR}")
 
 add_executable(tmux-mem-cpu-load ${COMMON_SOURCES} ${METER_SOURCES})
 install(TARGETS tmux-mem-cpu-load RUNTIME DESTINATION bin)
 
-include( CTest )
-if( BUILD_TESTING )
-  add_test( NAME usage
-    COMMAND tmux-mem-cpu-load -h )
+include(CTest)
+if(BUILD_TESTING)
+  add_test(NAME usage
+    COMMAND tmux-mem-cpu-load -h
+    )
 
-  add_test( NAME no_arguments
-    COMMAND tmux-mem-cpu-load )
+  add_test(NAME no_arguments
+    COMMAND tmux-mem-cpu-load
+    )
 
-  add_test( NAME custom_interval
-    COMMAND tmux-mem-cpu-load -i 3 )
+  add_test(NAME custom_interval
+    COMMAND tmux-mem-cpu-load -i 3
+    )
 
-  add_test( NAME no_cpu_graph
-    COMMAND tmux-mem-cpu-load -g 0 )
+  add_test(NAME no_cpu_graph
+    COMMAND tmux-mem-cpu-load -g 0
+    )
 
-  add_test( NAME colors
-    COMMAND tmux-mem-cpu-load --colors )
+  add_test(NAME colors
+    COMMAND tmux-mem-cpu-load --colors
+    )
 
-  add_test( NAME invalid_status_interval
-    COMMAND tmux-mem-cpu-load -i -1 )
+  add_test(NAME invalid_status_interval
+    COMMAND tmux-mem-cpu-load -i -1
+    )
 
-  add_test( NAME invalid_graph_lines
-    COMMAND tmux-mem-cpu-load --graph_lines -2 )
+  add_test(NAME invalid_graph_lines
+    COMMAND tmux-mem-cpu-load --graph_lines -2
+    )
 
-  set_tests_properties( usage
+  set_tests_properties(usage
     invalid_status_interval
     invalid_graph_lines
-    PROPERTIES WILL_FAIL TRUE )
+    PROPERTIES WILL_FAIL TRUE)
 endif()
