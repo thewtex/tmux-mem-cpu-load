@@ -73,4 +73,3 @@ std::string load_string( bool use_colors = false )
 
   return ss.str();
 }
-

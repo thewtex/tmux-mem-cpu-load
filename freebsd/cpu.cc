@@ -51,7 +51,7 @@ float cpu_percentage( unsigned int cpu_usage_delay )
   unsigned long long diff_nice = next_nice - current_nice;
   unsigned long long diff_idle = next_idle - current_idle;
 
-  return static_cast<float>( diff_user + diff_system + diff_nice ) / 
-    static_cast<float>( diff_user + diff_system + diff_nice + diff_idle ) * 
+  return static_cast<float>( diff_user + diff_system + diff_nice ) /
+    static_cast<float>( diff_user + diff_system + diff_nice + diff_idle ) *
     100.0;
 }
