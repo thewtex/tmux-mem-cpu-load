@@ -9,7 +9,7 @@ guide:
 
     git clone git@github.com:your-username/tmux-mem-cpu-load
 
-2. Make your change. Add tests for your change. 
+2. Make your change. Add tests for your change.
 3. See if it compiles and runs like it should.
 4. Run tests to check if you didn't break anything:
 
@@ -31,8 +31,8 @@ You'll need to follow the subsequent rules in order to get your code merged:
 * Add space after each `(` and before each `)`
 * Use braces single line statements
 * Don't use mixed case naming style, use underscores instead.
-  Bad example: 
-  
+  Bad example:
+
     int myAwesomeVariable = 0;
     doSomething( myAwesomeVariable );
 
@@ -48,6 +48,7 @@ You'll need to follow the subsequent rules in order to get your code merged:
 * Add LICENSE header in new files you create.
 * Put vim modeline as the first line of file header
 * Use the lower-case for CMake commands
+* Do not add trailing whitespace
 
 .. _`submit a pull request`: https://github.com/thewtex/tmux-mem-cpu-load/compare/
 .. _Allman: http://en.wikipedia.org/wiki/Indent_style#Allman_style
