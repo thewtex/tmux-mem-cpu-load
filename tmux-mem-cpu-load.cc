@@ -155,7 +155,7 @@ int main( int argc, char** argv )
         return EXIT_FAILURE;
         break;
       default:
-        std::cout << "?? getopt returned character code 0 " << c << std::endl;
+        std::cerr << "?? getopt returned character code 0 " << c << std::endl;
         return EXIT_FAILURE;
     }
   }
