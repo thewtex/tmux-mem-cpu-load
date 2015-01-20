@@ -58,20 +58,17 @@ endif(NOT CMAKE_BUILD_TYPE)
 
 # detect system type
 if(CMAKE_SYSTEM_NAME MATCHES "Linux")
-  message("Linux detected")
+  message(STATUS "Linux detected")
   set(METER_SOURCES "linux/memory.cc" "linux/cpu.cc" "linux/load.cc")
 elseif(CMAKE_SYSTEM_NAME MATCHES "Darwin")
-  # Mac OS X source setting will go here
-  message( "Darwin detected")
+  message(STATUS "Darwin detected")
   set(METER_SOURCES "osx/memory.cc" "osx/cpu.cc" "osx/load.cc")
 elseif(CMAKE_SYSTEM_NAME MATCHES "FreeBSD")
-  # FreeBSD STUFF HERE
   message("FreeBSD detected")
   message( WARNING "FreeBSD is still experimental!" )
   set( METER_SOURCES "bsd/memory_freebsd.cc" "bsd/cpu.cc" "bsd/load.cc" )
 elseif(CMAKE_SYSTEM_NAME MATCHES "OpenBSD")
-  # OpenBSD Stuff Here
-  message( "OpenBSD detected")
+  message(STATUS "OpenBSD detected")
   message( FATAL_ERROR "OpenBSD is not supported! See bsd/openBSD.txt for more
   info" )
   set( METER_SOURCES "bsd/memory_openbsd.cc" "bsd/cpu.cc" "bsd/load.cc" )
