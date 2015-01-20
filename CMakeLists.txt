@@ -115,8 +115,13 @@ if(BUILD_TESTING)
     COMMAND tmux-mem-cpu-load --graph_lines -2
     )
 
+  add_test(NAME old_option_specification
+    COMMAND tmux-mem-cpu-load 2 8
+    )
+
   set_tests_properties(usage
     invalid_status_interval
     invalid_graph_lines
+    old_option_specification
     PROPERTIES WILL_FAIL TRUE)
 endif()
