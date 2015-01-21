@@ -25,8 +25,8 @@
 
 #include "error.h"
 #include "memory.h"
-#include "../luts.h"
-#include "../conversions.h"
+#include "luts.h"
+#include "conversions.h"
 
 static int pageshift;
 
