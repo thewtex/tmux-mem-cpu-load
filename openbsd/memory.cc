@@ -18,9 +18,22 @@
 
 #include <sstream>
 #include <string>
+
+// Ugly fix to compilation on OpenBSD 5.6
+// these need to be before include sys/mount.h
+// and be in this exact order. Otherwise compiling on
+// OpenBSD 5.6 will fail with missing NGROUPS define
+// or missing gid_t typedefs
+#ifdef OPENBSD_WORKAROUND
+#include <sys/types.h> // typedefs
+#include <sys/param.h> // missing NGROUPS
+#include <sys/ucred.h>
+#else
+#include <sys/types.h>
+#endif
+
 #include <sys/mount.h> // VFS_* which we use to get cache
 #include <sys/sysctl.h>
-#include <sys/types.h>
 #include <sys/vmmeter.h> // vmtotal struct
 
 #include "error.h"
