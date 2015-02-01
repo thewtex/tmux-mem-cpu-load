@@ -30,9 +30,9 @@ uint8_t get_cpu_count()
   int mib[2] = { CTL_HW, HW_NCPU };
   size_t len = sizeof( cpu_count );
 
-  if(sysctl(mib, 2, &cpu_count, &len, NULL, 0) < 0)
+  if( sysctl( mib, 2, &cpu_count, &len, NULL, 0 ) < 0 )
   {
-    error("sysctl: error getting cpu count");
+    error( "sysctl: error getting cpu count" );
   }
 
   return cpu_count;
@@ -48,17 +48,17 @@ float cpu_percentage( unsigned int cpu_usage_delay )
   size_t size = sizeof( load1 );
 
   // get cpu times
-  if(sysctl(cpu_ctl, 2, &load1, &size, NULL, 0) < 0)
+  if( sysctl( cpu_ctl, 2, &load1, &size, NULL, 0 ) < 0 )
   {
-    error("sysctl: error getting initial cpu stats");
+    error( "sysctl: error getting initial cpu stats" );
   }
 
-  usleep(cpu_usage_delay);
+  usleep( cpu_usage_delay );
 
   // update cpu times
-  if(sysctl(cpu_ctl, 2, &load2, &size, NULL, 0) < 0)
+  if( sysctl( cpu_ctl, 2, &load2, &size, NULL, 0 ) < 0 )
   {
-    error("sysctl: error getting updated cpu stats");
+    error( "sysctl: error getting updated cpu stats" );
   }
 
   // Current load times
@@ -77,7 +77,7 @@ float cpu_percentage( unsigned int cpu_usage_delay )
   unsigned long long diff_nice = next_nice - current_nice;
   unsigned long long diff_idle = next_idle - current_idle;
 
-  return static_cast<float>(diff_user + diff_system + diff_nice) /
-    static_cast<float>(diff_user + diff_system + diff_nice + diff_idle) *
+  return static_cast<float>( diff_user + diff_system + diff_nice ) /
+    static_cast<float>( diff_user + diff_system + diff_nice + diff_idle ) *
     100.0;
 }

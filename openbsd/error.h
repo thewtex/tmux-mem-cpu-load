@@ -20,10 +20,17 @@
 #define BSD_ERROR_H_
 
 #include <iostream>
+#include <sys/errno.h>
+#include <cerrno>
+#include <cstring> // strerror
 
-inline void error(const char * error) {
-  std::cerr << error << std::endl;
-  exit(23);
+inline void error( const char * error )
+{
+  using std::cerr;
+  using std::endl;
+
+  cerr << error << ": " << strerror( errno ) << endl;
+  exit( 23 );
 }
 
 #endif

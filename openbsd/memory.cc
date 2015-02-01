@@ -59,10 +59,9 @@ std::string mem_string( bool use_colors = false )
   static int hw_pagesize[] = { CTL_HW, HW_PAGESIZE };
   int page_size = 0;
   size = sizeof( page_size );
-  if( sysctl( hw_pagesize, 2, &page_size, &size, NULL, 0) < 0)
+  if( sysctl( hw_pagesize, 2, &page_size, &size, NULL, 0 ) < 0 )
   {
-    error("memory: error getting page size");
-    exit(23);
+    error( "memory: error getting page size" );
   }
 
   // calculate how far we must shift the variables
@@ -79,8 +78,7 @@ std::string mem_string( bool use_colors = false )
   size = sizeof( vm_total );
   if( sysctl( vm_totalmem, 2, &vm_total, &size, NULL, 0 ) < 0 )
   {
-    error("memory: error getting vm memory stats");
-    exit(23);
+    error( "memory: error getting vm memory stats" );
   }
 
   // In case we need it, this gets the cached memory (bcstats.numbufpages)
@@ -90,7 +88,6 @@ std::string mem_string( bool use_colors = false )
   if( sysctl( vm_bcstats, 3, &bcstats, &size, NULL, 0 ) < 0 )
   {
     error( "memory: error getting cached memory size" );
-    exit( 23 );
   }
 
   // calculations based on conky openbsd port
