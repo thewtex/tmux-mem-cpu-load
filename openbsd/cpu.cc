@@ -16,7 +16,6 @@
  * limitations under the License.
  */
 
-#include <sys/types.h>
 #include <unistd.h> // usleep
 
 #include <sys/sysctl.h>
@@ -51,7 +50,7 @@ float cpu_percentage( unsigned int cpu_usage_delay )
   // get cpu times
   if(sysctl(cpu_ctl, 2, &load1, &size, NULL, 0) < 0)
   {
-    error("sysctl: error getting cpu stats");
+    error("sysctl: error getting initial cpu stats");
   }
 
   usleep(cpu_usage_delay);
@@ -59,7 +58,7 @@ float cpu_percentage( unsigned int cpu_usage_delay )
   // update cpu times
   if(sysctl(cpu_ctl, 2, &load2, &size, NULL, 0) < 0)
   {
-    error("sysctl: error getting cpu stats");
+    error("sysctl: error getting updated cpu stats");
   }
 
   // Current load times
