@@ -31,40 +31,48 @@
 std::string mem_string( bool use_colors = false )
 {
   // These values are in bytes
-  int32_t total_mem = 0;
-  int64_t used_mem = 0;
-  int64_t unused_mem = 0;
-  int32_t inactive_mem = 0;
-  int32_t active_mem = 0;
-  int32_t free_mem = 0;
-  int32_t wired_mem = 0;
-  int32_t page_size = 0;
-  int32_t cache_mem = 0;
+  //u_int total;
+  //u_int free;
+  //u_int inactive;
+  //u_int cache;
+  u_int wired;
+  u_int active;
+  u_int page_size;
+  u_int page_count;
   std::ostringstream oss;
 
   // Get total physical memory, page size, and some other needed info
-  GETSYSCTL( "hw.realmem", total_mem );
+  // instead of using realmem which reports quantity of ram installed on
+  // platform, use physmem which reports ram available to system.
+  //GETSYSCTL( "hw.physmem", total );
   GETSYSCTL( "hw.pagesize", page_size );
+  // page count reflects actual size of memory we have available for
+  // applications. it will be less than realmem or physmem, since it doesn't
+  // include what's been allocated for kernel, but it will be equal to
+  // free + inactive + cache + wired + active, and thus will reflect better
+  // what's actually available.
+  GETSYSCTL( "vm.stats.vm.v_page_count", page_count );
 
-  GETSYSCTL( "vm.stats.vm.v_free_count", free_mem );
-  GETSYSCTL( "vm.stats.vm.v_inactive_count", inactive_mem );
-  GETSYSCTL( "vm.stats.vm.v_cache_count", cache_mem );
-  GETSYSCTL( "vm.stats.vm.v_wire_count", wired_mem );
-  GETSYSCTL( "vm.stats.vm.v_active_count", active_mem );
+  //GETSYSCTL( "vm.stats.vm.v_free_count", free );
+  //GETSYSCTL( "vm.stats.vm.v_inactive_count", inactive );
+  //GETSYSCTL( "vm.stats.vm.v_cache_count", cache );
+  GETSYSCTL( "vm.stats.vm.v_wire_count", wired ); // Buffers
+  GETSYSCTL( "vm.stats.vm.v_active_count", active );
 
-  // Get all memory which can be allocated
-  //unused_mem = (cache_mem + free_mem) * page_size;
-  used_mem = ( static_cast<int64_t>( active_mem ) + 
-      static_cast<int64_t>( inactive_mem ) + 
-      static_cast<int64_t>( wired_mem ) ) * static_cast<int64_t>( page_size );
+  // Get all memory which can be allocated, which on FreeBSD is:
+  // cached + inactive + free
+  //u_int unused = ( cache + inactive + free ) * page_size;
+
+  // Used memory on FreeBSD is active + wired.
+  u_int used = ( active + wired ) * page_size;
 
   if( use_colors )
   {
-    oss << mem_lut[( 100 * used_mem ) / total_mem];
+    oss << mem_lut[ ( 100 * used ) / ( page_count * page_size ) ];
   }
 
-  oss << convert_unit( used_mem, MEGABYTES ) << '/' 
-    << convert_unit( total_mem, MEGABYTES ) << "MB";
+  oss << convert_unit( used, MEGABYTES ) << '/'
+    << convert_unit( page_count * page_size, MEGABYTES ) << "MB";
 
   if( use_colors )
   {
@@ -73,4 +81,3 @@ std::string mem_string( bool use_colors = false )
 
   return oss.str();
 }
-
