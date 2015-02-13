@@ -28,8 +28,13 @@
 
 float cpu_percentage( unsigned int cpu_usage_delay )
 {
-  int32_t load1[CPUSTATES];
-  int32_t load2[CPUSTATES];
+#if __x86_64__ || __ppc64__
+  u_int64_t load1[CPUSTATES];
+  u_int64_t load2[CPUSTATES];
+#else
+  u_int32_t load1[CPUSTATES];
+  u_int32_t load2[CPUSTATES];
+#endif
 
   GETSYSCTL( "kern.cp_time", load1 );
   usleep( cpu_usage_delay );
