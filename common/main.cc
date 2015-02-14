@@ -34,12 +34,17 @@
    #include "osx/cpu.h"
    #include "osx/memory.h"
    #include "osx/load.h"
-#elif defined(__FreeBSD__) || defined(__OpenBSD__) || defined(__NetBSD__)
+#elif defined(__FreeBSD__) || defined(__NetBSD__)
    // BSD system
    #define BSD_BASED 1
-   #include "bsd/cpu.h"
-   #include "bsd/load.h"
-   #include "bsd/memory.h"
+   #include "freebsd/cpu.h"
+   #include "freebsd/load.h"
+   #include "freebsd/memory.h"
+#elif defined(__OpenBSD)
+   #define BSD_BASED 1
+   #include "freebsd/cpu.h"
+   #include "freebsd/load.h"
+   #include "freebsd/memory.h"
 #else
    // assume linux system
    #include "linux/cpu.h"
@@ -68,7 +73,7 @@ std::string cpu_string( unsigned int cpu_usage_delay, unsigned int graph_lines,
 
   if( graph_lines > 0)
   {
-    oss << "[";
+    oss << " [";
     oss << get_graph_by_percentage( unsigned( percentage ), graph_lines );
     oss << "]";
   }
@@ -168,7 +173,7 @@ int main( int argc, char** argv )
     return EXIT_FAILURE;
   }
 
-  std::cout << mem_string( use_colors ) << ' '
+  std::cout << mem_string( use_colors )
     << cpu_string( cpu_usage_delay, graph_lines, use_colors ) << ' '
     << load_string( use_colors );
 

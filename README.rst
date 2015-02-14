@@ -47,7 +47,7 @@ Installation
 Dependencies
 ------------
 
-Currently, Linux and Mac OSX are supported.
+Currently, Linux, Mac OSX, FreeBSD and OpenBSD are supported.
 
 Building
 ~~~~~~~~

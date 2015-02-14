@@ -49,6 +49,8 @@ You'll need to follow the subsequent rules in order to get your code merged:
 * Put vim modeline as the first line of file header
 * Use the lower-case for CMake commands
 * Do not add trailing whitespace
+  You can use this bash script to strip unnecessary whitespaces:
+  http://git.io/z_GA3A
 
 .. _`submit a pull request`: https://github.com/thewtex/tmux-mem-cpu-load/compare/
 .. _Allman: http://en.wikipedia.org/wiki/Indent_style#Allman_style

@@ -27,14 +27,6 @@
 #include <sys/sysctl.h>
 #include <sys/types.h>
 
-// CPU percentages stuff
-#define CP_USER   0
-#define CP_NICE   1
-#define CP_SYS    2
-#define CP_INTR   3
-#define CP_IDLE   4
-#define CPUSTATES 5
-
 #define GETSYSCTL(name, var) getsysctl(name, &(var), sizeof(var))
 static inline void getsysctl( const char *name, void *ptr, size_t len )
 {
