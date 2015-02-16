@@ -31,25 +31,29 @@
 
 #if defined(__APPLE__) && defined(__MACH__)
    // Apple osx system
-   #include "osx/cpu.h"
-   #include "osx/memory.h"
-   #include "osx/load.h"
+  #include "osx/cpu.h"
+  #include "osx/memory.h"
+  #include "osx/load.h"
 #elif defined(__FreeBSD__) || defined(__NetBSD__)
    // BSD system
-   #define BSD_BASED 1
-   #include "freebsd/cpu.h"
-   #include "freebsd/load.h"
-   #include "freebsd/memory.h"
-#elif defined(__OpenBSD)
-   #define BSD_BASED 1
-   #include "freebsd/cpu.h"
-   #include "freebsd/load.h"
-   #include "freebsd/memory.h"
+  #define BSD_BASED 1
+  #include "freebsd/cpu.h"
+  #include "freebsd/load.h"
+  #include "freebsd/memory.h"
+#elif defined(__OpenBSD__)
+  #define BSD_BASED 1
+  #include "freebsd/cpu.h"
+  #include "freebsd/load.h"
+  #include "freebsd/memory.h"
+#elif defined(__NetBSD__)
+  #include "freebsd/cpu.h"
+  #include "freebsd/load.h"
+  #include "netbsd/memory.h"
 #else
-   // assume linux system
-   #include "linux/cpu.h"
-   #include "linux/memory.h"
-   #include "linux/load.h"
+  // assume linux system
+  #include "linux/cpu.h"
+  #include "linux/memory.h"
+  #include "linux/load.h"
 #endif
 
 std::string cpu_string( unsigned int cpu_usage_delay, unsigned int graph_lines,

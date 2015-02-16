@@ -16,21 +16,16 @@
  * limitations under the License.
  */
 
-#ifndef BSD_ERROR_H_
-#define BSD_ERROR_H_
+#ifndef CPU_H_
+#define CPU_H_
 
-#include <iostream>
-#include <sys/errno.h>
-#include <cerrno>
-#include <cstring> // strerror
+#define CP_USER   0
+#define CP_NICE   1
+#define CP_SYS    2
+#define CP_INTR   3
+#define CP_IDLE   4
+#define CPUSTATES 5
 
-inline void error( const char * error )
-{
-  using std::cerr;
-  using std::endl;
-
-  cerr << error << ": " << strerror( errno ) << endl;
-  exit( 23 );
-}
+float cpu_percentage( unsigned );
 
 #endif
