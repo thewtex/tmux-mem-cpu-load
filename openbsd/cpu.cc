@@ -42,18 +42,8 @@ float cpu_percentage( unsigned int cpu_usage_delay )
 {
   int cpu_ctl[] = { CTL_KERN, KERN_CPTIME };
 
-  // on 64bit systems KERN_CPTIME gets reported as 64bit
-  // uint. Detect 64bit system and define array to hold the 
-  // stats accordingly.
-  // NOTE: the following test may need to be extended to cover
-  // more 64bit platforms.
-#if __x86_64__ || __ppc64__
-  u_int64_t load1[CPUSTATES];
-  u_int64_t load2[CPUSTATES];
-#else
-  u_int32_t load1[CPUSTATES];
-  u_int32_t load2[CPUSTATES];
-#endif
+  u_long load1[CPUSTATES];
+  u_long load2[CPUSTATES];
 
   size_t size = sizeof( load1 );
 
