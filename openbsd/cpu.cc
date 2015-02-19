@@ -42,8 +42,8 @@ float cpu_percentage( unsigned int cpu_usage_delay )
 {
   int cpu_ctl[] = { CTL_KERN, KERN_CPTIME };
 
-  u_long load1[CPUSTATES];
-  u_long load2[CPUSTATES];
+  u_long load1[CP_STATES];
+  u_long load2[CP_STATES];
 
   size_t size = sizeof( load1 );
 

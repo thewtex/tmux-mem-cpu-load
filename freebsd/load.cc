@@ -27,6 +27,7 @@
 #include <sys/types.h>
 
 #include "getsysctl.h"
+#include "cpu.h"
 #include "load.h"
 #include "luts.h"
 
@@ -48,11 +49,9 @@ std::string load_string( bool use_colors = false )
     if( use_colors )
     {
       // may not work
-      int32_t cpu_count = 0;
-      GETSYSCTL( "hw.ncpu", cpu_count );
 
       unsigned load_percent = static_cast<unsigned int>( averages[0] / 
-          cpu_count * 0.5f * 100.0f );
+          get_cpu_count() * 0.5f * 100.0f );
 
       if( load_percent > 100 )
       {

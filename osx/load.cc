@@ -25,6 +25,7 @@
 #include <stdlib.h> // getloadavg()
 
 #include "load.h"
+#include "cpu.h"
 #include "luts.h"
 
 std::string load_string( bool use_colors = false )
@@ -57,9 +58,6 @@ std::string load_string( bool use_colors = false )
 
   if( use_colors )
   {
-    // Likely does not work on BSD, but not tested
-    unsigned number_of_cpus = sysconf( _SC_NPROCESSORS_ONLN );
-
     std::istringstream iss( load_line.substr( 0, 4 ) );
     float recent_load;
     iss >> recent_load;
@@ -67,7 +65,7 @@ std::string load_string( bool use_colors = false )
     // cpu's for the most recent load metric
 
     unsigned load_percent = static_cast< unsigned int >( 
-        recent_load / number_of_cpus * 0.5f * 100.0f );
+        recent_load / get_cpu_count() * 0.5f * 100.0f );
 
     if( load_percent > 100 )
     {

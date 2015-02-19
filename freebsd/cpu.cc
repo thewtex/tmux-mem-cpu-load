@@ -26,10 +26,18 @@
 #include "getsysctl.h"
 #include "cpu.h"
 
+uint8_t get_cpu_cout()
+{
+  int32_t cpu_count = 0;
+  GETSYSCTL( "hw.ncpu", cpu_count );
+
+  return static_cast<uint8_t>( cpu_count );
+}
+
 float cpu_percentage( unsigned int cpu_usage_delay )
 {
-  u_long load1[CPUSTATES];
-  u_long load2[CPUSTATES];
+  u_long load1[CP_STATES];
+  u_long load2[CP_STATES];
 
   GETSYSCTL( "kern.cp_time", load1 );
   usleep( cpu_usage_delay );
