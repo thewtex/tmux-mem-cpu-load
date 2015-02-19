@@ -1,6 +1,7 @@
 /* vim: tabstop=2 shiftwidth=2 expandtab textwidth=80 linebreak wrap
  *
  * Copyright 2012 Matthew McCormick
+ * Copyright 2013 Justin Crawford <Justasic@gmail.com>
  * Copyright 2015 Pawel 'l0ner' Soltys
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,6 +17,9 @@
  * limitations under the License.
  */
 
+// Based on: github.com/freebsd/freebsd/blob/master/usr.bin/top/machine.c
+// Based on: Apple.cpp for load_string/mem_string and apple's documentation
+
 #include <sstream>
 #include <string>
 #include <stdlib.h> // getloadavg()
@@ -30,12 +34,12 @@
 std::string load_string( bool use_colors = false )
 {
   std::stringstream ss;
-  // Only get 3 load averages
+  // Get only 3 load averages
   const int nelem = 3;
   double averages[nelem];
   // based on: opensource.apple.com/source/Libc/Libc-262/gen/getloadavg.c
 
-  if( getloadavg( averages, nelem ) < 0)
+  if( getloadavg( averages, nelem ) < 0 )
   {
     ss << "0.00 0.00 0.00"; // couldn't get averages.
   }
@@ -43,21 +47,20 @@ std::string load_string( bool use_colors = false )
   {
     if( use_colors )
     {
-      unsigned load_percent = static_cast<unsigned int>(
-          averages[0] / get_cpu_count() * 0.5f * 100.0f);
+      unsigned load_percent = static_cast<unsigned int>( averages[0] / 
+          get_cpu_count() * 0.5f * 100.0f );
 
       if( load_percent > 100 )
       {
         load_percent = 100;
       }
-
       ss << load_lut[load_percent];
     }
 
     for( int i = 0; i < nelem; ++i )
     {
       // Round to nearest, make sure this is only a 0.00 value not a 0.0000
-      float avg = floorf( static_cast<float> (averages[i] ) * 100 + 0.5 ) / 100;
+      float avg = floorf( static_cast<float>( averages[i] ) * 100 + 0.5 ) / 100;
       ss << avg << " ";
     }
 
@@ -65,8 +68,8 @@ std::string load_string( bool use_colors = false )
     {
       ss << "#[fg=default,bg=default]";
     }
-
   }
 
   return ss.str();
 }
+

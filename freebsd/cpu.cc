@@ -26,7 +26,7 @@
 #include "getsysctl.h"
 #include "cpu.h"
 
-uint8_t get_cpu_cout()
+uint8_t get_cpu_count()
 {
   int32_t cpu_count = 0;
   GETSYSCTL( "hw.ncpu", cpu_count );
