@@ -26,6 +26,8 @@
 #include <cerrno>
 #include <sys/sysctl.h>
 #include <sys/types.h>
+#include <cstdlib>  //exit()
+#include <string.h> //strerror()
 
 #define GETSYSCTL(name, var) getsysctl(name, &(var), sizeof(var))
 static inline void getsysctl( const char *name, void *ptr, size_t len )
@@ -36,7 +38,7 @@ static inline void getsysctl( const char *name, void *ptr, size_t len )
   {
     std::cerr << "sysctl(" << name << "...) failed: " << strerror( errno )
       << std::endl;
-    exit( 23 );
+    exit( EXIT_FAILURE );
   }
 
   if( nlen != len )

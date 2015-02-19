@@ -21,6 +21,11 @@
 
 #include "cpu.h"
 
+uint8_t get_cpu_count()
+{
+  return sysconf( _SC_NPROCESSORS_ONLN );
+}
+
 // OSX or BSD based system, use BSD APIs instead
 // See: http://www.opensource.apple.com/source/xnu/xnu-201/osfmk/mach/host_info.h
 // and: http://web.mit.edu/darwin/src/modules/xnu/osfmk/man/
@@ -53,15 +58,15 @@ float cpu_percentage( unsigned int cpu_usage_delay )
   host_cpu_load_info_data_t load2 = _get_cpu_percentage();
 
   // Current load times
-  unsigned long long current_user = load1.cpu_ticks[CPU_STATE_USER];
-  unsigned long long current_system = load1.cpu_ticks[CPU_STATE_SYSTEM];
-  unsigned long long current_nice = load1.cpu_ticks[CPU_STATE_NICE];
-  unsigned long long current_idle = load1.cpu_ticks[CPU_STATE_IDLE];
+  unsigned long long current_user = load1.cpu_ticks[CP_USER];
+  unsigned long long current_system = load1.cpu_ticks[CP_SYS];
+  unsigned long long current_nice = load1.cpu_ticks[CP_NICE];
+  unsigned long long current_idle = load1.cpu_ticks[CP_IDLE];
   // Next load times
-  unsigned long long next_user = load2.cpu_ticks[CPU_STATE_USER];
-  unsigned long long next_system = load2.cpu_ticks[CPU_STATE_SYSTEM];
-  unsigned long long next_nice = load2.cpu_ticks[CPU_STATE_NICE];
-  unsigned long long next_idle = load2.cpu_ticks[CPU_STATE_IDLE];
+  unsigned long long next_user = load2.cpu_ticks[CP_USER];
+  unsigned long long next_system = load2.cpu_ticks[CP_SYS];
+  unsigned long long next_nice = load2.cpu_ticks[CP_NICE];
+  unsigned long long next_idle = load2.cpu_ticks[CP_IDLE];
   // Difference between the two
   unsigned long long diff_user = next_user - current_user;
   unsigned long long diff_system = next_system - current_system;
