@@ -29,28 +29,9 @@
 // Tmux color lookup tables for the different metrics.
 #include "luts.h"
 
-#if defined(__APPLE__) && defined(__MACH__)
-   // Apple osx system
-   #include "osx/cpu.h"
-   #include "osx/memory.h"
-   #include "osx/load.h"
-#elif defined(__FreeBSD__) || defined(__NetBSD__)
-   // BSD system
-   #define BSD_BASED 1
-   #include "freebsd/cpu.h"
-   #include "freebsd/load.h"
-   #include "freebsd/memory.h"
-#elif defined(__OpenBSD)
-   #define BSD_BASED 1
-   #include "freebsd/cpu.h"
-   #include "freebsd/load.h"
-   #include "freebsd/memory.h"
-#else
-   // assume linux system
-   #include "linux/cpu.h"
-   #include "linux/memory.h"
-   #include "linux/load.h"
-#endif
+#include "cpu.h"
+#include "memory.h"
+#include "load.h"
 
 std::string cpu_string( unsigned int cpu_usage_delay, unsigned int graph_lines,
 	bool use_colors = false )

@@ -1,4 +1,5 @@
-/*
+/* vim: tabstop=2 shiftwidth=2 expandtab textwidth=80 linebreak wrap
+ *
  * Copyright 2012 Matthew McCormick
  * Copyright 2015 Pawel 'l0ner' Soltys
  *
@@ -18,6 +19,32 @@
 #ifndef CPU_H_
 #define CPU_H_
 
-float cpu_percentage ( unsigned );
+#include <sys/types.h>
+
+#if defined(__APPLE__) && defined(__MACH__)
+  #define CP_USER 0
+  #define CP_SYS  1
+  #define CP_IDLE 2
+  #define CP_NICE 3
+  #define CP_STATES 4
+#else
+  #define CP_USER   0
+  #define CP_NICE   1
+  #define CP_SYS    2
+
+  #if defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__)
+    // *BSD or OSX
+    #define CP_INTR   3
+    #define CP_IDLE   4
+    #define CP_STATES 5
+  #else
+    //linux
+    #define CP_IDLE 3
+    #define CP_STATES 4
+  #endif
+#endif
+
+float cpu_percentage( unsigned );
+uint8_t get_cpu_count();
 
 #endif

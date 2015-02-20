@@ -1,4 +1,5 @@
-/*
+/* vim: tabstop=2 shiftwidth=2 expandtab textwidth=80 linebreak wrap
+ *
  * Copyright 2012 Matthew McCormick
  * Copyright 2015 Pawel 'l0ner' Soltys
  *
@@ -15,11 +16,22 @@
  * limitations under the License.
  */
 
-#ifndef LOAD_H_
-#define LOAD_H_
+#ifndef BSD_ERROR_H_
+#define BSD_ERROR_H_
 
-#include <string>
+#include <iostream>
+#include <sys/errno.h>
+#include <cerrno>
+#include <cstring> // strerror
+#include <cstdlib> // exit()
 
-std::string load_string( bool );
+inline void error( const char * error )
+{
+  using std::cerr;
+  using std::endl;
+
+  cerr << error << ": " << strerror( errno ) << endl;
+  exit( EXIT_FAILURE );
+}
 
 #endif

@@ -28,7 +28,7 @@
 
 uint8_t get_cpu_count()
 {
-  int32_t cpu_count = 0;
+  int cpu_count = 0;
   GETSYSCTL( "hw.ncpu", cpu_count );
 
   return static_cast<uint8_t>( cpu_count );
@@ -36,8 +36,8 @@ uint8_t get_cpu_count()
 
 float cpu_percentage( unsigned int cpu_usage_delay )
 {
-  u_long load1[CP_STATES];
-  u_long load2[CP_STATES];
+  u_int64_t load1[CP_STATES];
+  u_int64_t load2[CP_STATES];
 
   GETSYSCTL( "kern.cp_time", load1 );
   usleep( cpu_usage_delay );
