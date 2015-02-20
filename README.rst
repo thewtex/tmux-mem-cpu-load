@@ -87,6 +87,7 @@ Edit ``$HOME/.tmux.conf`` to display the program's output in *status-left* or
 
   set -g status-interval 2
   set -g status-left "#S #[fg=green,bg=black]#(tmux-mem-cpu-load --colors --interval 2)#[default]"
+  set -g status-left-length 60
 
 Note that the *interval* argument to `tmux-mem-cpu-load` should be the same number
 of seconds that *status-interval* is set at.
