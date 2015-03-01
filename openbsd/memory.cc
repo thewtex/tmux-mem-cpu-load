@@ -54,15 +54,11 @@ std::string mem_string( bool use_colors = false )
   int64_t used_mem = 0;
   int32_t free_mem = 0;
   size_t size;
+  int page_size;
 
   // get page size
-  static int hw_pagesize[] = { CTL_HW, HW_PAGESIZE };
-  int page_size = 0;
-  size = sizeof( page_size );
-  if( sysctl( hw_pagesize, 2, &page_size, &size, NULL, 0 ) < 0 )
-  {
-    error( "memory: error getting page size" );
-  }
+  if ((page_size = sysconf(_SC_PAGESIZE)) == -1)
+	  error( "memory: error getting page size" );
 
   // calculate how far we must shift the variables
   pageshift = 0;
