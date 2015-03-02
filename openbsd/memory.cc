@@ -34,7 +34,6 @@
 
 #include <sys/mount.h> // VFS_* which we use to get cache
 #include <sys/sysctl.h>
-#include <sys/vmmeter.h> // vmtotal struct
 
 #include "error.h"
 #include "memory.h"
@@ -43,6 +42,9 @@
 
 static int pageshift;
 
+#ifndef LOG1024
+#define LOG1024	10
+#endif
 #define pagesh(size) ((size) << pageshift)
 
 std::string mem_string( bool use_colors = false )
@@ -72,11 +74,13 @@ std::string mem_string( bool use_colors = false )
     page_size >>= 1;
   }
 
+  pageshift -= LOG1024;
+
   // get vm memory stats
-  static int vm_totalmem[] = { CTL_VM, VM_METER };
-  struct vmtotal vm_total;
-  size = sizeof( vm_total );
-  if( sysctl( vm_totalmem, 2, &vm_total, &size, NULL, 0 ) < 0 )
+  static int uvmexp_mib[] = { CTL_VM, VM_UVMEXP };
+  struct uvmexp uvmexp;
+  size = sizeof( uvmexp );
+  if( sysctl( uvmexp_mib, 2, &uvmexp, &size, NULL, 0 ) < 0 )
   {
     error( "memory: error getting vm memory stats" );
   }
@@ -90,16 +94,17 @@ std::string mem_string( bool use_colors = false )
     error( "memory: error getting cached memory size" );
   }
 
-  // calculations based on conky openbsd port
-  used_mem = pagesh( vm_total.t_rm );
-  free_mem = pagesh( vm_total.t_free );
+  // calculations based on libgtop
+  used_mem = (uint64_t) pagesh (uvmexp.npages - uvmexp.free) << LOG1024;
+
+  free_mem = (uint64_t) pagesh( uvmexp.free ) << LOG1024;
 
   // from nagios-memory plugin
   used_mem -= pagesh( bcstats.numbufpages );
   free_mem += pagesh( bcstats.numbufpages );
 
   // calculate total memory
-  total_mem = used_mem + free_mem;
+  total_mem = (uint64_t) pagesh( uvmexp.npages ) << LOG1024;
 
   if( use_colors )
   {
