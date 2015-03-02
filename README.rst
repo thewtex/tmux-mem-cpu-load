@@ -120,6 +120,7 @@ Matt McCormick (thewtex) <matt@mmmccormick.com>
 
 Contributions from:
 
+* Jasper Lievisse Adriaanse <jasper@humppa.nl>
 * Justin Crawford <justinc@pci-online.net>
 * krieiter <krieiter@gmail.com>
 * Mark Palmeri <mlp6@duke.edu>
