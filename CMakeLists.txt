@@ -25,7 +25,7 @@ endif(COMMAND cmake_policy)
 project(tmux-mem-cpu-load)
 set(tmux-mem-cpu-load_VERSION_MAJOR 3)
 set(tmux-mem-cpu-load_VERSION_MINOR 2)
-set(tmux-mem-cpu-load_VERSION_PATCH 0)
+set(tmux-mem-cpu-load_VERSION_PATCH 1)
 #Compute full version string
 set(tmux-mem-cpu-load_VERSION
   ${tmux-mem-cpu-load_VERSION_MAJOR}.${tmux-mem-cpu-load_VERSION_MINOR}.${tmux-mem-cpu-load_VERSION_PATCH})
