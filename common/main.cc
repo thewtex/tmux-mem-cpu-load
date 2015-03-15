@@ -33,6 +33,21 @@
 #include "memory.h"
 #include "load.h"
 
+std::string space( size_t width, bool use_colors = false )
+{
+  std::ostringstream oss;
+  if( use_colors )
+  {
+    oss << "#[fg=brightwhite,bg=colour16]";
+  }
+  oss << std::string( width, ' ' );
+  if( use_colors )
+  {
+    oss << "#[fg=default,bg=default]";
+  }
+  return oss.str();
+}
+
 std::string cpu_string( unsigned int cpu_usage_delay, unsigned int graph_lines,
 	bool use_colors = false )
 {
@@ -155,9 +170,9 @@ int main( int argc, char** argv )
   }
 
   std::cout << mem_string( use_colors )
-    << cpu_string( cpu_usage_delay, graph_lines, use_colors ) << ' '
+    << cpu_string( cpu_usage_delay, graph_lines, use_colors )
+    << space( 2, use_colors )
     << load_string( use_colors );
 
   return EXIT_SUCCESS;
 }
-
