@@ -62,7 +62,15 @@ std::string load_string( bool use_colors = false )
     {
       // Round to nearest, make sure this is only a 0.00 value not a 0.0000
       float avg = floorf( static_cast<float>( averages[i] ) * 100 + 0.5 ) / 100;
-      ss << avg << " ";
+      // Don't print trailing whitespace for last element
+      if ( i == nelem-1 )
+      {
+        ss << avg;
+      }
+      else
+      {
+        ss << avg << " ";
+      }
     }
 
     if( use_colors )
