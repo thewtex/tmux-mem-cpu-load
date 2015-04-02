@@ -41,13 +41,13 @@ std::string load_string( bool use_colors = false )
 
   if( getloadavg( averages, nelem ) < 0 )
   {
-    ss << "0.00 0.00 0.00"; // couldn't get averages.
+    ss << " 0.00 0.00 0.00"; // couldn't get averages.
   }
   else
   {
     if( use_colors )
     {
-      unsigned load_percent = static_cast<unsigned int>( averages[0] / 
+      unsigned load_percent = static_cast<unsigned int>( averages[0] /
           get_cpu_count() * 0.5f * 100.0f );
 
       if( load_percent > 100 )
@@ -57,6 +57,7 @@ std::string load_string( bool use_colors = false )
       ss << load_lut[load_percent];
     }
 
+    ss << ' ';
     for( int i = 0; i < nelem; ++i )
     {
       // Round to nearest, make sure this is only a 0.00 value not a 0.0000
