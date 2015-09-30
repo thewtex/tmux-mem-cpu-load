@@ -83,7 +83,9 @@ Install
 
 Build and Install Using [Antigen](https:/github.com/zsh-users/antigen)
 --------
+
 Include the bundle in your ``.zshrc``
+
 ``antigen bundle thewtex/tmux-mem-cpu-load``
 
 Configuring tmux_
