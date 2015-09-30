@@ -81,13 +81,12 @@ Install
   make install
   logout
 
-Build and Install Using [Antigen](https://github.com/zsh-users/antigen "Antigen is a ZSH Package Manager")
-
+Build and Install Using `Antigen`
 -------
 
 Include the bundle in your ``.zshrc``
 
-``antigen bundle thewtex/tmux-mem-cpu-load``
+  ``antigen bundle thewtex/tmux-mem-cpu-load``
 
 Configuring tmux_
 =================
@@ -140,5 +139,6 @@ Contributions from:
 .. _tmux: http://tmux.sourceforge.net/
 .. _CMake: http://www.cmake.org
 .. _`project homepage`: http://github.com/thewtex/tmux-mem-cpu-load
+.. _`Antigen`: https://github.com/zsh-users/antigen
 .. _`terminals with 256 color support`: http://misc.flogisoft.com/bash/tip_colors_and_formatting#terminals_compatibility
 .. _`Pawel 'l0ner' Soltys` : http://l0ner.github.io/
