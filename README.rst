@@ -81,12 +81,14 @@ Install
   make install
   logout
 
-Build and Install Using `Antigen`
+Build and Install Using `Antigen`_
 -------
 
 Include the bundle in your ``.zshrc``
 
-  ``antigen bundle thewtex/tmux-mem-cpu-load``
+::
+
+  antigen bundle thewtex/tmux-mem-cpu-load
 
 Configuring tmux_
 =================
