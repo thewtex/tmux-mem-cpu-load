@@ -136,6 +136,8 @@ Contributions from:
 * krieiter <krieiter@gmail.com>
 * Mark Palmeri <mlp6@duke.edu>
 * `Pawel 'l0ner' Soltys`_ <pwslts@gmail.com>
+* Travil Heller <trav.heller@gmail.com>
+* Tony Narlock <tony@git-pull.com>
 
 
 .. _tmux: http://tmux.sourceforge.net/
