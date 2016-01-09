@@ -22,6 +22,7 @@
 #include <sstream>
 #include <string>
 #include <sys/types.h>
+#include <unistd.h>
 
 #include "getsysctl.h"
 #include "memory.h"
@@ -45,7 +46,7 @@ std::string mem_string( bool use_colors = false )
   // instead of using realmem which reports quantity of ram installed on
   // platform, use physmem which reports ram available to system.
   //GETSYSCTL( "hw.physmem", total );
-  GETSYSCTL( "hw.pagesize", page_size );
+  page_size = getpagesize();
   // page count reflects actual size of memory we have available for
   // applications. it will be less than realmem or physmem, since it doesn't
   // include what's been allocated for kernel, but it will be equal to
@@ -72,7 +73,7 @@ std::string mem_string( bool use_colors = false )
   }
 
   oss << convert_unit( used, MEGABYTES ) << '/'
-    << convert_unit( page_count * page_size, MEGABYTES ) << "MB";
+    << convert_unit( page_count * (page_size >> 10), MEGABYTES, KILOBYTES) << "MB";
 
   if( use_colors )
   {
