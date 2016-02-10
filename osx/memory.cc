@@ -48,8 +48,8 @@ std::string mem_string( bool use_colors, MEMORY_MODE mode )
   mach_port_t mach_port = mach_host_self();
   mach_msg_type_number_t count = sizeof( vm_stats ) / sizeof( natural_t );
   if( KERN_SUCCESS == host_page_size( mach_port, &page_size ) &&
-      KERN_SUCCESS == host_statistics( mach_port, HOST_VM_INFO, 
-        ( host_info_t )&vm_stats, &count ) 
+      KERN_SUCCESS == host_statistics( mach_port, HOST_VM_INFO,
+        ( host_info_t )&vm_stats, &count )
     )
   {
     //unused_mem = static_cast<u_int64_t>( vm_stats.free_count * page_size );
@@ -77,22 +77,22 @@ std::string mem_string( bool use_colors, MEMORY_MODE mode )
       if(  free_mem_in_gigabytes < 1 )
       {
         oss << convert_unit( free_mem, MEGABYTES ) << "MB";
-      } 
-      else 
+      }
+      else
       {
         oss << free_mem_in_gigabytes << "GB";
       }
       break;
     case MEMORY_MODE_USAGE_PERCENTAGE:
       // Calculate the percentage of used memory
-      percentage_mem = used_mem / 
+      percentage_mem = used_mem /
         static_cast<float>( total_mem ) * 100.0;
 
       oss << percentage_mem << '%';
       break;
-    default: // Default mode, just show the used/total memory in MB 
-      oss << convert_unit( used_mem, MEGABYTES ) << '/' 
-        << convert_unit( total_mem, MEGABYTES ) << "MB"; 
+    default: // Default mode, just show the used/total memory in MB
+      oss << convert_unit( used_mem, MEGABYTES ) << '/'
+        << convert_unit( total_mem, MEGABYTES ) << "MB";
   }
 
   if( use_colors )
