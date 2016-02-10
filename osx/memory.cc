@@ -25,13 +25,14 @@
 #include "luts.h"
 #include "conversions.h"
 
-std::string mem_string( bool use_colors )
+std::string mem_string( bool use_colors, int mode )
 {
   std::ostringstream oss;
 
   // These values are in bytes
   u_int64_t total_mem;
-  u_int64_t used_mem;
+  float used_mem;
+  float percentage_mem;
   //u_int64_t unused_mem;
 
   vm_size_t page_size;
@@ -51,17 +52,35 @@ std::string mem_string( bool use_colors )
   {
     //unused_mem = static_cast<u_int64_t>( vm_stats.free_count * page_size );
 
-    used_mem = static_cast<u_int64_t>(
+    used_mem = static_cast<float>(
         ( vm_stats.active_count + vm_stats.wire_count ) * page_size);
   }
 
   if( use_colors )
   {
-    oss << mem_lut[( 100 * used_mem ) / total_mem];
+    oss << mem_lut[( 100 * static_cast<u_int64_t>(used_mem) ) / total_mem];
   }
 
-  oss << convert_unit( used_mem, MEGABYTES ) << '/' 
-    << convert_unit( total_mem, MEGABYTES ) << "MB";
+
+  percentage_mem = static_cast<float>(used_mem) / static_cast<float>(total_mem) * 100.0;
+
+  oss.precision( 2 );
+  oss.setf( std::ios::fixed | std::ios::right );
+
+  if( mode == 0 ) {
+    oss << convert_unit( used_mem, MEGABYTES ) << '/' 
+      << convert_unit( total_mem, MEGABYTES ) << "MB";
+  } else if ( mode == 1 ) {
+    float free_mem = total_mem - used_mem;
+
+    if( free_mem < 1 ) {
+      oss << convert_unit( free_mem, MEGABYTES ) << "MB";
+    } else {
+      oss << convert_unit( free_mem, GIGABYTES ) << "GB";
+    }
+  } else {
+    oss << percentage_mem << '%';
+  }
 
   if( use_colors )
   {

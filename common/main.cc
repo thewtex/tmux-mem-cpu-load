@@ -93,6 +93,7 @@ int main( int argc, char** argv )
   unsigned cpu_usage_delay = 990000;
   short graph_lines = 10; // max 32767 should be enough
   bool use_colors = false;
+  int mem_mode = 0;
 
   static struct option long_options[] =
   {
@@ -109,7 +110,7 @@ int main( int argc, char** argv )
 
   int c;
   // while c != -1
-  while( (c = getopt_long( argc, argv, "hi:g:", long_options, NULL) ) != -1 )
+  while( (c = getopt_long( argc, argv, "hi:g:m:", long_options, NULL) ) != -1 )
   {
     switch( c )
     {
@@ -136,6 +137,14 @@ int main( int argc, char** argv )
           }
         graph_lines = atoi( optarg );
         break;
+      case 'm': // --mem-mode, -m
+        if( atoi( optarg ) < 0 )
+          {
+            std::cerr << "Memory mode argument must be zero or greater.\n";
+            return EXIT_FAILURE;
+          }
+        mem_mode = atoi( optarg );
+        break;
       case '?':
         // getopt_long prints error message automatically
         return EXIT_FAILURE;
@@ -154,7 +163,7 @@ int main( int argc, char** argv )
     return EXIT_FAILURE;
   }
 
-  std::cout << mem_string( use_colors )
+  std::cout << mem_string( use_colors, mem_mode )
     << cpu_string( cpu_usage_delay, graph_lines, use_colors )
     << load_string( use_colors );
 

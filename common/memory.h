@@ -21,6 +21,6 @@
 
 #include <string>
 
-std::string mem_string( bool );
+std::string mem_string( bool, int );
 
 #endif
