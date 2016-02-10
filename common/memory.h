@@ -16,17 +16,17 @@
  * limitations under the License.
  */
 
+#ifndef MEMORY_H_
+#define MEMORY_H_
+
+#include <string>
+
 enum
 {
   MEMORY_MODE_DEFAULT,
   MEMORY_MODE_FREE_MEMORY,
   MEMORY_MODE_USAGE_PERCENTAGE
 };
-
-#ifndef MEMORY_H_
-#define MEMORY_H_
-
-#include <string>
 
 std::string mem_string( bool, int );
 
