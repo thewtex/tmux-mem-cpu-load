@@ -124,6 +124,7 @@ The full usage::
           Set how many lines should be drawn in a graph. Default: 10
   -m <value>, --mem-mode
           Set the memory presentation mode, 0 for used/total, 1 for free memory and 2 for percentage.
+          Currently supported only by OSX
           Default: 0
 
 
