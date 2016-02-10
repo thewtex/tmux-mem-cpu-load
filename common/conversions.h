@@ -16,6 +16,9 @@
  * limitations under the License.
  */
 
+#ifndef CONVERSIONS_H_
+#define CONVERSIONS_H_
+
 enum
 {
   BYTES = 0,
@@ -33,3 +36,5 @@ inline T convert_unit( T num, int to, int from = BYTES)
   }
   return num;
 }
+
+#endif
