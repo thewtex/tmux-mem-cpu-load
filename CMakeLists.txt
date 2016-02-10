@@ -123,6 +123,14 @@ if(BUILD_TESTING)
     COMMAND tmux-mem-cpu-load 2 8
     )
 
+  add_test(NAME memory_mode_free_memory
+    COMMAND tmux-mem-cpu-load -m 1
+    )
+
+  add_test(NAME memory_mode_used_percentage
+    COMMAND tmux-mem-cpu-load -m 2
+    )
+
   set_tests_properties(usage
     invalid_status_interval
     invalid_graph_lines

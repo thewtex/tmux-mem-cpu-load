@@ -24,7 +24,7 @@
 #include "luts.h"
 #include "conversions.h"
 
-std::string mem_string( bool use_colors = false )
+std::string mem_string( bool use_colors = false, int mode = 0 )
 {
   using std::string;
   using std::ifstream;
