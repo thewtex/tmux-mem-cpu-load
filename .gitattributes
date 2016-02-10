@@ -1,0 +1,4 @@
+*.cc             whitespace=tab-in-indent,no-lf-at-eof,trailing-whitespace
+*.h              whitespace=tab-in-indent,no-lf-at-eof,trailing-whitespace
+*.rst              whitespace=tab-in-indent,no-lf-at-eof,trailing-whitespace
+*.txt              whitespace=tab-in-indent,no-lf-at-eof,trailing-whitespace
