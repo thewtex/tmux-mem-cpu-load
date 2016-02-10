@@ -93,7 +93,7 @@ int main( int argc, char** argv )
   unsigned cpu_usage_delay = 990000;
   short graph_lines = 10; // max 32767 should be enough
   bool use_colors = false;
-  int mem_mode = 0;
+  int mem_mode = MEMORY_MODE_DEFAULT;
 
   static struct option long_options[] =
   {

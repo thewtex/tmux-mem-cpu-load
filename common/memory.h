@@ -16,6 +16,13 @@
  * limitations under the License.
  */
 
+enum
+{
+  MEMORY_MODE_DEFAULT,
+  MEMORY_MODE_FREE_MEMORY,
+  MEMORY_MODE_USAGE_PERCENTAGE
+};
+
 #ifndef MEMORY_H_
 #define MEMORY_H_
 
