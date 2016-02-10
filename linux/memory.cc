@@ -38,12 +38,12 @@ std::string mem_string( bool use_colors = false, int mode = 0 )
 
   unsigned int total_mem, used_mem;
 
-  /* Since linux uses some RAM for disk caching, the actuall used ram is lower 
-   * than what sysinfo(), top or free reports. htop reports the usage in a 
+  /* Since linux uses some RAM for disk caching, the actuall used ram is lower
+   * than what sysinfo(), top or free reports. htop reports the usage in a
    * correct way. The memory used for caching doesn't count as used, since it
    * can be freed in any moment. Usually it hapens automatically, when an
    * application requests memory.
-   * In order to calculate the ram that's actually used we need to use the 
+   * In order to calculate the ram that's actually used we need to use the
    * following formula:
    *    total_ram - free_ram - buffered_ram - cached_ram
    *
@@ -89,10 +89,10 @@ std::string mem_string( bool use_colors = false, int mode = 0 )
     oss << mem_lut[(100 * used_mem) / total_mem];
   }
 
-  // we want megabytes on output, but since the values already come as 
+  // we want megabytes on output, but since the values already come as
   // kilobytes we need to divide them by 1024 only once, thus we use
   // KILOBYTES
-  oss << convert_unit(used_mem, MEGABYTES, KILOBYTES) << '/' 
+  oss << convert_unit(used_mem, MEGABYTES, KILOBYTES) << '/'
     << convert_unit(total_mem, MEGABYTES, KILOBYTES) << "MB";
 
   if( use_colors )
