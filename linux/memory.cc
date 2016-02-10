@@ -21,22 +21,17 @@
 #include <sys/sysinfo.h>
 
 #include "memory.h"
-#include "luts.h"
 #include "conversions.h"
 
-std::string mem_string( bool use_colors = false, MEMORY_MODE mode )
+void mem_status( MemoryStatus & status )
 {
-  using std::string;
-  using std::ifstream;
-  using std::stoi;
-
-  std::ostringstream oss;
-
-  string line, substr;
+  std::string line;
+  std::string substr;
   size_t substr_start;
   size_t substr_len;
 
-  unsigned int total_mem, used_mem;
+  unsigned int total_mem;
+  unsigned int used_mem;
 
   /* Since linux uses some RAM for disk caching, the actuall used ram is lower
    * than what sysinfo(), top or free reports. htop reports the usage in a
@@ -59,9 +54,9 @@ std::string mem_string( bool use_colors = false, MEMORY_MODE mode )
    * SwapFree:        60352 kB    old
    */
 
-  ifstream memory_info("/proc/meminfo");
+  std::ifstream memory_info("/proc/meminfo");
 
-  while( getline( memory_info, line ) )
+  while( std::getline( memory_info, line ) )
   {
     substr_start = 0;
     substr_len = line.find_first_of( ':' );
@@ -84,22 +79,10 @@ std::string mem_string( bool use_colors = false, MEMORY_MODE mode )
     }
   }
 
-  if( use_colors )
-  {
-    oss << mem_lut[(100 * used_mem) / total_mem];
-  }
-
   // we want megabytes on output, but since the values already come as
   // kilobytes we need to divide them by 1024 only once, thus we use
   // KILOBYTES
-  oss << convert_unit(used_mem, MEGABYTES, KILOBYTES) << '/'
-    << convert_unit(total_mem, MEGABYTES, KILOBYTES) << "MB";
-
-  if( use_colors )
-  {
-    oss << "#[fg=default,bg=default]";
-  }
-
-  return oss.str();
+  status.used_mem = convert_unit(static_cast< float >( used_mem ), MEGABYTES, KILOBYTES);
+  status.total_mem = convert_unit(static_cast< float >( total_mem ), MEGABYTES, KILOBYTES);
 }
 

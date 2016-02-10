@@ -37,7 +37,6 @@
 
 #include "error.h"
 #include "memory.h"
-#include "luts.h"
 #include "conversions.h"
 
 static int pageshift;
@@ -47,10 +46,8 @@ static int pageshift;
 #endif
 #define pagesh(size) ((size) << pageshift)
 
-std::string mem_string( bool use_colors = false, MEMORY_MODE mode )
+void mem_status( MemoryStatus & status )
 {
-  std::ostringstream oss;
-
   // These values are in bytes
   int64_t total_mem = 0;
   int64_t used_mem = 0;
@@ -106,18 +103,6 @@ std::string mem_string( bool use_colors = false, MEMORY_MODE mode )
   // calculate total memory
   total_mem = (uint64_t) pagesh( uvmexp.npages ) << LOG1024;
 
-  if( use_colors )
-  {
-    oss << mem_lut[( 100 * used_mem ) / total_mem];
-  }
-
-  oss << convert_unit( used_mem, MEGABYTES )
-    << '/' << convert_unit( total_mem, MEGABYTES ) << "MB";
-
-  if( use_colors )
-  {
-    oss << "#[fg=default,bg=default]";
-  }
-
-  return oss.str();
+  status.used_mem = convert_unit(static_cast< float >( used_mem ), MEGABYTES );
+  status.total_mem = convert_unit(static_cast< float >( total_mem ), MEGABYTES );
 }

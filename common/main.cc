@@ -163,7 +163,9 @@ int main( int argc, char** argv )
     return EXIT_FAILURE;
   }
 
-  std::cout << mem_string( use_colors, mem_mode )
+  MemoryStatus memory_status;
+  mem_status( memory_status );
+  std::cout << mem_string( memory_status, mem_mode, use_colors )
     << cpu_string( cpu_usage_delay, graph_lines, use_colors )
     << load_string( use_colors );
 

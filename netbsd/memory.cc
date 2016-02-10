@@ -24,14 +24,11 @@
 #include <uvm/uvm_extern.h> // uvmexp struct
 
 #include "error.h"
-#include "luts.h"
 #include "conversions.h"
 #include "memory.h"
 
-std::string mem_string( bool use_colors = false, MEMORY_MODE mode )
+void mem_status( MemoryStatus & status )
 {
-  std::ostringstream oss;
-
   // get vm memory stats
   static int vm_totalmem[] = { CTL_VM, VM_UVMEXP2 };
   struct uvmexp_sysctl mem;
@@ -42,23 +39,10 @@ std::string mem_string( bool use_colors = false, MEMORY_MODE mode )
   }
 
   int64_t total_mem = ( mem.npages << mem.pageshift );
-  int64_t used_mem = 
+  int64_t used_mem =
     ( mem.active + mem.wired - mem.filepages ) << mem.pageshift;
 
-  if( use_colors )
-  {
-    oss << mem_lut[( 100 * used_mem ) / total_mem];
-  }
-
   // add 1 to used which gets lost somewhere along conversions
-  oss << convert_unit( used_mem, MEGABYTES )
-    << '/' << convert_unit( total_mem, MEGABYTES ) << "MB";
-
-  if( use_colors )
-  {
-    oss << "#[fg=default,bg=default]";
-  }
-
-  return oss.str();
-
+  status.used_mem = convert_unit(static_cast< float >( used_mem ), MEGABYTES );
+  status.total_mem = convert_unit(static_cast< float >( total_mem ), MEGABYTES );
 }

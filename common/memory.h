@@ -21,6 +21,25 @@
 
 #include <string>
 
+/** Memory status in megabytes */
+struct MemoryStatus
+{
+  float used_mem;
+  float total_mem;
+};
+
+/** Get the current memory status */
+void mem_status( MemoryStatus & status );
+
+
+/** Memory status string output mode.
+ *
+ * Examples:
+ *
+ * MEMORY_MODE_DEFAULT:          11156/16003MB
+ * MEMORY_MODE_FREE_MEMORY:
+ * MEMORY_MODE_USAGE_PERCENTAGE: 
+ */
 enum MEMORY_MODE
 {
   MEMORY_MODE_DEFAULT,
@@ -28,7 +47,8 @@ enum MEMORY_MODE
   MEMORY_MODE_USAGE_PERCENTAGE
 };
 
-std::string mem_string( bool,
-  MEMORY_MODE mode = MEMORY_MODE_DEFAULT );
+std::string mem_string( const MemoryStatus & mem_status,
+  MEMORY_MODE mode = MEMORY_MODE_DEFAULT,
+  bool use_colors = false );
 
 #endif
