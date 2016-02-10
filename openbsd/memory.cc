@@ -47,7 +47,7 @@ static int pageshift;
 #endif
 #define pagesh(size) ((size) << pageshift)
 
-std::string mem_string( bool use_colors = false, int mode = 0 )
+std::string mem_string( bool use_colors = false, MEMORY_MODE mode )
 {
   std::ostringstream oss;
 

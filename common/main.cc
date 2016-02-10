@@ -93,7 +93,7 @@ int main( int argc, char** argv )
   unsigned cpu_usage_delay = 990000;
   short graph_lines = 10; // max 32767 should be enough
   bool use_colors = false;
-  int mem_mode = MEMORY_MODE_DEFAULT;
+  MEMORY_MODE mem_mode = MEMORY_MODE_DEFAULT;
 
   static struct option long_options[] =
   {
@@ -143,7 +143,7 @@ int main( int argc, char** argv )
             std::cerr << "Memory mode argument must be zero or greater.\n";
             return EXIT_FAILURE;
           }
-        mem_mode = atoi( optarg );
+        mem_mode = static_cast< MEMORY_MODE >( atoi( optarg ) );
         break;
       case '?':
         // getopt_long prints error message automatically

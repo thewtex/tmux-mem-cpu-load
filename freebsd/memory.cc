@@ -29,7 +29,7 @@
 #include "luts.h"
 #include "conversions.h"
 
-std::string mem_string( bool use_colors = false, int mode = 0 )
+std::string mem_string( bool use_colors = false, MEMORY_MODE mode )
 {
   // These values are in bytes
   //u_int total;

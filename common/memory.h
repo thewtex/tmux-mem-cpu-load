@@ -21,13 +21,14 @@
 
 #include <string>
 
-enum
+enum MEMORY_MODE
 {
   MEMORY_MODE_DEFAULT,
   MEMORY_MODE_FREE_MEMORY,
   MEMORY_MODE_USAGE_PERCENTAGE
 };
 
-std::string mem_string( bool, int );
+std::string mem_string( bool,
+  MEMORY_MODE mode = MEMORY_MODE_DEFAULT );
 
 #endif

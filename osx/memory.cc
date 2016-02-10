@@ -25,7 +25,7 @@
 #include "luts.h"
 #include "conversions.h"
 
-std::string mem_string( bool use_colors, int mode )
+std::string mem_string( bool use_colors, MEMORY_MODE mode )
 {
   std::ostringstream oss;
 

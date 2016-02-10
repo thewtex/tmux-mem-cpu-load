@@ -28,7 +28,7 @@
 #include "conversions.h"
 #include "memory.h"
 
-std::string mem_string( bool use_colors = false, int mode = 0 )
+std::string mem_string( bool use_colors = false, MEMORY_MODE mode )
 {
   std::ostringstream oss;
 
