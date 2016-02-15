@@ -85,6 +85,8 @@ void print_help()
     << "\tSet tmux status refresh interval in seconds. Default: 1 second\n"
     << "-g <value>, --graph-lines <value>\n"
     << "\tSet how many lines should be drawn in a graph. Default: 10\n"
+    << "-m <value>, --mem-mode <value>\n"
+    << "\tSet memory display mode. 0: Default, 1: Free memory, 2: Usage percent.\n"
     << endl;
 }
 
@@ -105,6 +107,7 @@ int main( int argc, char** argv )
     { "colors", no_argument, NULL, 'c' },
     { "interval", required_argument, NULL, 'i' },
     { "graph-lines", required_argument, NULL, 'g' },
+    { "mem-mode", required_argument, NULL, 'm' },
     { 0, 0, 0, 0 } // used to handle unknown long options
   };
 
