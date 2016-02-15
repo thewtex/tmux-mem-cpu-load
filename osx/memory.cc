@@ -22,13 +22,10 @@
 #include <sys/sysctl.h> // for sysctl
 
 #include "memory.h"
-#include "luts.h"
 #include "conversions.h"
 
-std::string mem_string( bool use_colors, int mode )
+void mem_status( MemoryStatus & status )
 {
-  std::ostringstream oss;
-
   // These values are in bytes
   u_int64_t total_mem;
   float used_mem;
@@ -48,8 +45,8 @@ std::string mem_string( bool use_colors, int mode )
   mach_port_t mach_port = mach_host_self();
   mach_msg_type_number_t count = sizeof( vm_stats ) / sizeof( natural_t );
   if( KERN_SUCCESS == host_page_size( mach_port, &page_size ) &&
-      KERN_SUCCESS == host_statistics( mach_port, HOST_VM_INFO, 
-        ( host_info_t )&vm_stats, &count ) 
+      KERN_SUCCESS == host_statistics( mach_port, HOST_VM_INFO,
+        ( host_info_t )&vm_stats, &count )
     )
   {
     //unused_mem = static_cast<u_int64_t>( vm_stats.free_count * page_size );
@@ -58,47 +55,6 @@ std::string mem_string( bool use_colors, int mode )
         ( vm_stats.active_count + vm_stats.wire_count ) * page_size);
   }
 
-  if( use_colors )
-  {
-    oss << mem_lut[( 100 * static_cast<u_int64_t>(used_mem) ) / total_mem];
-  }
-
-  // Change the percision for floats, for a pretty output
-  oss.precision( 2 );
-  oss.setf( std::ios::fixed | std::ios::right );
-
-  switch( mode )
-  {
-    case MEMORY_MODE_FREE_MEMORY: // Show free memory in MB or GB
-      free_mem = total_mem - used_mem;
-      free_mem_in_gigabytes = convert_unit( free_mem, GIGABYTES  );
-
-      // if free memory is less than 1 GB, use MB instead
-      if(  free_mem_in_gigabytes < 1 )
-      {
-        oss << convert_unit( free_mem, MEGABYTES ) << "MB";
-      } 
-      else 
-      {
-        oss << free_mem_in_gigabytes << "GB";
-      }
-      break;
-    case MEMORY_MODE_USAGE_PERCENTAGE:
-      // Calculate the percentage of used memory
-      percentage_mem = used_mem / 
-        static_cast<float>( total_mem ) * 100.0;
-
-      oss << percentage_mem << '%';
-      break;
-    default: // Default mode, just show the used/total memory in MB 
-      oss << convert_unit( used_mem, MEGABYTES ) << '/' 
-        << convert_unit( total_mem, MEGABYTES ) << "MB"; 
-  }
-
-  if( use_colors )
-  {
-    oss << "#[fg=default,bg=default]";
-  }
-
-  return oss.str();
+  status.used_mem = convert_unit(static_cast< float >( used_mem ), MEGABYTES );
+  status.total_mem = convert_unit(static_cast< float >( total_mem ), MEGABYTES );
 }

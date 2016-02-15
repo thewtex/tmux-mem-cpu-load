@@ -26,10 +26,9 @@
 
 #include "getsysctl.h"
 #include "memory.h"
-#include "luts.h"
 #include "conversions.h"
 
-std::string mem_string( bool use_colors = false, int mode = 0 )
+void mem_status( MemoryStatus & status )
 {
   // These values are in bytes
   //u_int total;
@@ -40,7 +39,6 @@ std::string mem_string( bool use_colors = false, int mode = 0 )
   u_int active;
   u_int page_size;
   u_int page_count;
-  std::ostringstream oss;
 
   // Get total physical memory, page size, and some other needed info
   // instead of using realmem which reports quantity of ram installed on
@@ -67,18 +65,6 @@ std::string mem_string( bool use_colors = false, int mode = 0 )
   // Used memory on FreeBSD is active + wired.
   u_int used = ( active + wired ) * page_size;
 
-  if( use_colors )
-  {
-    oss << mem_lut[ ( 100 * used ) / ( page_count * page_size ) ];
-  }
-
-  oss << convert_unit( used, MEGABYTES ) << '/'
-    << convert_unit( page_count * (page_size >> 10), MEGABYTES, KILOBYTES) << "MB";
-
-  if( use_colors )
-  {
-    oss << "#[fg=default,bg=default]";
-  }
-
-  return oss.str();
+  status.used_mem = convert_unit( static_cast< float >( used ), MEGABYTES );
+  status.total_mem = convert_unit( static_cast< float >( page_count * (page_size >> 10) ), MEGABYTES, KILOBYTES);
 }

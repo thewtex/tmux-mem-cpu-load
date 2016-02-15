@@ -85,6 +85,8 @@ void print_help()
     << "\tSet tmux status refresh interval in seconds. Default: 1 second\n"
     << "-g <value>, --graph-lines <value>\n"
     << "\tSet how many lines should be drawn in a graph. Default: 10\n"
+    << "-m <value>, --mem-mode <value>\n"
+    << "\tSet memory display mode. 0: Default, 1: Free memory, 2: Usage percent.\n"
     << endl;
 }
 
@@ -93,7 +95,7 @@ int main( int argc, char** argv )
   unsigned cpu_usage_delay = 990000;
   short graph_lines = 10; // max 32767 should be enough
   bool use_colors = false;
-  int mem_mode = MEMORY_MODE_DEFAULT;
+  MEMORY_MODE mem_mode = MEMORY_MODE_DEFAULT;
 
   static struct option long_options[] =
   {
@@ -105,6 +107,7 @@ int main( int argc, char** argv )
     { "colors", no_argument, NULL, 'c' },
     { "interval", required_argument, NULL, 'i' },
     { "graph-lines", required_argument, NULL, 'g' },
+    { "mem-mode", required_argument, NULL, 'm' },
     { 0, 0, 0, 0 } // used to handle unknown long options
   };
 
@@ -143,7 +146,7 @@ int main( int argc, char** argv )
             std::cerr << "Memory mode argument must be zero or greater.\n";
             return EXIT_FAILURE;
           }
-        mem_mode = atoi( optarg );
+        mem_mode = static_cast< MEMORY_MODE >( atoi( optarg ) );
         break;
       case '?':
         // getopt_long prints error message automatically
@@ -163,7 +166,9 @@ int main( int argc, char** argv )
     return EXIT_FAILURE;
   }
 
-  std::cout << mem_string( use_colors, mem_mode )
+  MemoryStatus memory_status;
+  mem_status( memory_status );
+  std::cout << mem_string( memory_status, mem_mode, use_colors )
     << cpu_string( cpu_usage_delay, graph_lines, use_colors )
     << load_string( use_colors );
 

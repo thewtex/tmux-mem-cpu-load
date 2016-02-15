@@ -16,18 +16,39 @@
  * limitations under the License.
  */
 
-enum
+#ifndef MEMORY_H_
+#define MEMORY_H_
+
+#include <string>
+
+/** Memory status in megabytes */
+struct MemoryStatus
+{
+  float used_mem;
+  float total_mem;
+};
+
+/** Get the current memory status */
+void mem_status( MemoryStatus & status );
+
+
+/** Memory status string output mode.
+ *
+ * Examples:
+ *
+ * MEMORY_MODE_DEFAULT:          11156/16003MB
+ * MEMORY_MODE_FREE_MEMORY:
+ * MEMORY_MODE_USAGE_PERCENTAGE: 
+ */
+enum MEMORY_MODE
 {
   MEMORY_MODE_DEFAULT,
   MEMORY_MODE_FREE_MEMORY,
   MEMORY_MODE_USAGE_PERCENTAGE
 };
 
-#ifndef MEMORY_H_
-#define MEMORY_H_
-
-#include <string>
-
-std::string mem_string( bool, int );
+std::string mem_string( const MemoryStatus & mem_status,
+  MEMORY_MODE mode = MEMORY_MODE_DEFAULT,
+  bool use_colors = false );
 
 #endif
