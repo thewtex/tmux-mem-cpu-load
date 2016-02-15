@@ -122,10 +122,8 @@ The full usage::
           Set tmux status refresh interval in seconds. Default: 1 second
   -g <value>, --graph-lines <value>
           Set how many lines should be drawn in a graph. Default: 10
-  -m <value>, --mem-mode
-          Set the memory presentation mode, 0 for used/total, 1 for free memory and 2 for percentage.
-          Currently supported only by OSX
-          Default: 0
+  -m <value>, --mem-mode <value>
+        Set memory display mode. 0: Default, 1: Free memory, 2: Usage percent.
 
 
 Authors
@@ -135,6 +133,7 @@ Matt McCormick (thewtex) <matt@mmmccormick.com>
 
 Contributions from:
 
+* cousine <iam@cousine.me>
 * Jasper Lievisse Adriaanse <jasper@humppa.nl>
 * Justin Crawford <justinc@pci-online.net>
 * krieiter <krieiter@gmail.com>
