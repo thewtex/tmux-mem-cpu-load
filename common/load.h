@@ -21,6 +21,6 @@
 
 #include <string>
 
-std::string load_string( bool );
+std::string load_string( bool use_colors = false, bool use_powerline = false );
 
 #endif

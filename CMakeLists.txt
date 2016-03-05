@@ -59,7 +59,7 @@ endif(NOT CMAKE_BUILD_TYPE)
 # detect system type
 if(CMAKE_SYSTEM_NAME MATCHES "Linux")
   message(STATUS "Linux detected")
-  set(METER_SOURCES "linux/memory.cc" "linux/cpu.cc" "common/load.cc")
+  set(METER_SOURCES "linux/memory.cc" "linux/cpu.cc" "common/load.cc" "common/powerline.cc")
 elseif(CMAKE_SYSTEM_NAME MATCHES "Darwin")
   message(STATUS "Darwin detected")
   set(METER_SOURCES "osx/memory.cc" "osx/cpu.cc" "common/load.cc")
@@ -109,6 +109,10 @@ if(BUILD_TESTING)
 
   add_test(NAME colors
     COMMAND tmux-mem-cpu-load --colors
+    )
+
+  add_test(NAME powerline
+    COMMAND tmux-mem-cpu-load --powerline
     )
 
   add_test(NAME invalid_status_interval

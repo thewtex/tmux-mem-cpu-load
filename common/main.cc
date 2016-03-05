@@ -33,8 +33,10 @@
 #include "memory.h"
 #include "load.h"
 
+#include "powerline.h"
+
 std::string cpu_string( unsigned int cpu_usage_delay, unsigned int graph_lines,
-	bool use_colors = false )
+    bool use_colors = false, bool use_powerline = false )
 {
 
   float percentage;
@@ -49,7 +51,8 @@ std::string cpu_string( unsigned int cpu_usage_delay, unsigned int graph_lines,
 
   if( use_colors )
   {
-    oss << cpu_percentage_lut[static_cast<unsigned int>( percentage )];
+    unsigned int percent = static_cast<unsigned int>( percentage );
+    powerline(oss, cpu_percentage_lut[percent], use_powerline);
   }
 
   if( graph_lines > 0)
@@ -63,7 +66,10 @@ std::string cpu_string( unsigned int cpu_usage_delay, unsigned int graph_lines,
   oss << "%";
   if( use_colors )
   {
-    oss << "#[fg=default,bg=default]";
+    if( use_powerline )
+      oss << ' ';
+    else
+      oss << "#[fg=default,bg=default]";
   }
 
   return oss.str();
@@ -79,8 +85,11 @@ void print_help()
     << "Available options:\n"
     << "-h, --help\n"
     << "\t Prints this help message\n"
+    << "-c, --colors\n"
     << "--colors\n"
     << "\tUse tmux colors in output\n"
+    << "-p, --powerline\n"
+    << "\tUse powerline symbols throughout the output, DO NOT reset background color at the end, enables --colors\n"
     << "-i <value>, --interval <value>\n"
     << "\tSet tmux status refresh interval in seconds. Default: 1 second\n"
     << "-g <value>, --graph-lines <value>\n"
@@ -95,6 +104,7 @@ int main( int argc, char** argv )
   unsigned cpu_usage_delay = 990000;
   short graph_lines = 10; // max 32767 should be enough
   bool use_colors = false;
+  bool use_powerline = false;
   MEMORY_MODE mem_mode = MEMORY_MODE_DEFAULT;
 
   static struct option long_options[] =
@@ -105,6 +115,7 @@ int main( int argc, char** argv )
     // otherwise it's a value to set the variable *flag points to
     { "help", no_argument, NULL, 'h' },
     { "colors", no_argument, NULL, 'c' },
+    { "powerline", no_argument, NULL, 'p' },
     { "interval", required_argument, NULL, 'i' },
     { "graph-lines", required_argument, NULL, 'g' },
     { "mem-mode", required_argument, NULL, 'm' },
@@ -123,6 +134,10 @@ int main( int argc, char** argv )
         break;
       case 'c': // --colors
         use_colors = true;
+        break;
+      case 'p': // --powerline
+        use_colors = true;
+        use_powerline = true;
         break;
       case 'i': // --interval, -i
         if( atoi( optarg ) < 1 )
@@ -168,9 +183,9 @@ int main( int argc, char** argv )
 
   MemoryStatus memory_status;
   mem_status( memory_status );
-  std::cout << mem_string( memory_status, mem_mode, use_colors )
-    << cpu_string( cpu_usage_delay, graph_lines, use_colors )
-    << load_string( use_colors );
+  std::cout << mem_string( memory_status, mem_mode, use_colors, use_powerline )
+    << cpu_string( cpu_usage_delay, graph_lines, use_colors, use_powerline )
+    << load_string( use_colors, use_powerline );
 
   return EXIT_SUCCESS;
 }

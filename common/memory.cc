@@ -21,10 +21,12 @@
 #include "memory.h"
 #include "luts.h"
 #include "conversions.h"
+#include "powerline.h"
 
 std::string mem_string( const MemoryStatus & mem_status,
   MEMORY_MODE mode,
-  bool use_colors )
+  bool use_colors,
+  bool use_powerline )
 {
   std::ostringstream oss;
   // Change the percision for floats, for a pretty output
@@ -33,7 +35,8 @@ std::string mem_string( const MemoryStatus & mem_status,
 
   if( use_colors )
   {
-    oss << mem_lut[static_cast< unsigned int >((100 * mem_status.used_mem) / mem_status.total_mem)];
+    unsigned int color = static_cast< unsigned int >((100 * mem_status.used_mem) / mem_status.total_mem);
+    powerline(oss, mem_lut[color], use_powerline);
   }
 
   switch( mode )
@@ -70,7 +73,14 @@ std::string mem_string( const MemoryStatus & mem_status,
 
   if( use_colors )
   {
-    oss << "#[fg=default,bg=default]";
+    if( use_powerline )
+    {
+      oss << " ";
+    }
+    else
+    {
+      oss << "#[fg=default,bg=default]";
+    }
   }
 
   return oss.str();
