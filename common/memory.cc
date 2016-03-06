@@ -65,7 +65,7 @@ std::string mem_string( const MemoryStatus & mem_status,
     }
   default: // Default mode, just show the used/total memory in MB
     oss << static_cast< unsigned int >( mem_status.used_mem ) << '/'
-      << static_cast< unsigned int >( mem_status.used_mem ) << "MB";
+      << static_cast< unsigned int >( mem_status.total_mem ) << "MB";
   }
 
   if( use_colors )
