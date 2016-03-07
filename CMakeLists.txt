@@ -59,7 +59,7 @@ endif(NOT CMAKE_BUILD_TYPE)
 # detect system type
 if(CMAKE_SYSTEM_NAME MATCHES "Linux")
   message(STATUS "Linux detected")
-  set(METER_SOURCES "linux/memory.cc" "linux/cpu.cc" "common/load.cc" "common/powerline.cc")
+  set(METER_SOURCES "linux/memory.cc" "linux/cpu.cc" "common/load.cc")
 elseif(CMAKE_SYSTEM_NAME MATCHES "Darwin")
   message(STATUS "Darwin detected")
   set(METER_SOURCES "osx/memory.cc" "osx/cpu.cc" "common/load.cc")
@@ -80,7 +80,7 @@ else()
 endif()
 
 # set common source files
-set(COMMON_SOURCES "common/main.cc" "common/memory.cc" "common/graph.cc")
+set(COMMON_SOURCES "common/main.cc" "common/memory.cc" "common/graph.cc""common/powerline.cc")
 
 # add binary tree so we find version.h
 include_directories("${PROJECT_BINARY_DIR}")
