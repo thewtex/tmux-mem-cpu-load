@@ -77,10 +77,14 @@ std::string load_string( bool use_colors, bool use_powerline )
 
     if( use_colors )
     {
-      if(use_powerline)
+      if( use_powerline )
+      {
         ss << ' ';
+      }
       else
+      {
         ss << "#[fg=default,bg=default]";
+      }
     }
   }
 

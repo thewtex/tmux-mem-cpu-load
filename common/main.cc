@@ -67,9 +67,13 @@ std::string cpu_string( unsigned int cpu_usage_delay, unsigned int graph_lines,
   if( use_colors )
   {
     if( use_powerline )
+    {
       oss << ' ';
+    }
     else
+    {
       oss << "#[fg=default,bg=default]";
+    }
   }
 
   return oss.str();
@@ -88,7 +92,7 @@ void print_help()
     << "-c, --colors\n"
     << "--colors\n"
     << "\tUse tmux colors in output\n"
-    << "-p, --powerline\n"
+    << "-p, --powerline-right\n"
     << "\tUse powerline symbols throughout the output, DO NOT reset background color at the end, enables --colors\n"
     << "-i <value>, --interval <value>\n"
     << "\tSet tmux status refresh interval in seconds. Default: 1 second\n"
@@ -115,7 +119,7 @@ int main( int argc, char** argv )
     // otherwise it's a value to set the variable *flag points to
     { "help", no_argument, NULL, 'h' },
     { "colors", no_argument, NULL, 'c' },
-    { "powerline", no_argument, NULL, 'p' },
+    { "powerline-right", no_argument, NULL, 'p' },
     { "interval", required_argument, NULL, 'i' },
     { "graph-lines", required_argument, NULL, 'g' },
     { "mem-mode", required_argument, NULL, 'm' },
@@ -135,7 +139,7 @@ int main( int argc, char** argv )
       case 'c': // --colors
         use_colors = true;
         break;
-      case 'p': // --powerline
+      case 'p': // --powerline-right
         use_colors = true;
         use_powerline = true;
         break;
