@@ -1,7 +1,7 @@
 /* vim: tabstop=2 shiftwidth=2 expandtab textwidth=80 linebreak wrap
  *
  * Copyright 2012 Matthew McCormick
- * Copyright 2015 Pawel 'l0ner' Soltys
+ * Copyright 2016 Michał Goliński
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,11 @@
  * limitations under the License.
  */
 
-#ifndef LOAD_H_
-#define LOAD_H_
+#ifndef POWERLINE_H
+#define POWERLINE_H
 
-#include <string>
+#include <sstream>
 
-std::string load_string( bool use_colors = false, bool use_powerline = false );
+void powerline(std::ostringstream &oss, const char s[], bool);
 
-#endif
+#endif // POWERLINE_H

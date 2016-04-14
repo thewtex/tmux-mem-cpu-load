@@ -30,10 +30,12 @@
 #include "load.h"
 #include "luts.h"
 
+#include "powerline.h"
+
 // Load Averages
-std::string load_string( bool use_colors = false )
+std::string load_string( bool use_colors, bool use_powerline )
 {
-  std::stringstream ss;
+  std::ostringstream ss;
   // Get only 3 load averages
   const int nelem = 3;
   double averages[nelem];
@@ -54,7 +56,7 @@ std::string load_string( bool use_colors = false )
       {
         load_percent = 100;
       }
-      ss << load_lut[load_percent];
+      powerline(ss,  load_lut[load_percent], use_powerline);
     }
 
     ss << ' ';
@@ -75,7 +77,14 @@ std::string load_string( bool use_colors = false )
 
     if( use_colors )
     {
-      ss << "#[fg=default,bg=default]";
+      if( use_powerline )
+      {
+        ss << ' ';
+      }
+      else
+      {
+        ss << "#[fg=default,bg=default]";
+      }
     }
   }
 

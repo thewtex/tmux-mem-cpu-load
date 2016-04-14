@@ -80,7 +80,7 @@ else()
 endif()
 
 # set common source files
-set(COMMON_SOURCES "common/main.cc" "common/memory.cc" "common/graph.cc")
+set(COMMON_SOURCES "common/main.cc" "common/memory.cc" "common/graph.cc" "common/powerline.cc")
 
 # add binary tree so we find version.h
 include_directories("${PROJECT_BINARY_DIR}")
@@ -109,6 +109,10 @@ if(BUILD_TESTING)
 
   add_test(NAME colors
     COMMAND tmux-mem-cpu-load --colors
+    )
+
+  add_test(NAME powerline
+    COMMAND tmux-mem-cpu-load --powerline
     )
 
   add_test(NAME invalid_status_interval
