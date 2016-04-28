@@ -100,12 +100,15 @@ void print_help()
     << "\tSet how many lines should be drawn in a graph. Default: 10\n"
     << "-m <value>, --mem-mode <value>\n"
     << "\tSet memory display mode. 0: Default, 1: Free memory, 2: Usage percent.\n"
+    << "-a <value>, --averages-count <value>\n"
+    << "\tSet how many load-averages should be drawn. Default: 3\n"
     << endl;
 }
 
 int main( int argc, char** argv )
 {
   unsigned cpu_usage_delay = 990000;
+  short averages_count = 3;
   short graph_lines = 10; // max 32767 should be enough
   bool use_colors = false;
   bool use_powerline = false;
@@ -123,12 +126,13 @@ int main( int argc, char** argv )
     { "interval", required_argument, NULL, 'i' },
     { "graph-lines", required_argument, NULL, 'g' },
     { "mem-mode", required_argument, NULL, 'm' },
+    { "averages-count", required_argument, NULL, 'a' },
     { 0, 0, 0, 0 } // used to handle unknown long options
   };
 
   int c;
   // while c != -1
-  while( (c = getopt_long( argc, argv, "hi:g:m:", long_options, NULL) ) != -1 )
+  while( (c = getopt_long( argc, argv, "hi:g:m:a:", long_options, NULL) ) != -1 )
   {
     switch( c )
     {
@@ -167,6 +171,14 @@ int main( int argc, char** argv )
           }
         mem_mode = static_cast< MEMORY_MODE >( atoi( optarg ) );
         break;
+      case 'a': // --averages-count, -a
+        if( atoi( optarg ) < 0 || atoi( optarg ) > 3 )
+          {
+            std::cerr << "Valid averages-count arguments are: 0, 1, 2, 3\n";
+            return EXIT_FAILURE;
+          }
+        averages_count = atoi( optarg );
+        break;
       case '?':
         // getopt_long prints error message automatically
         return EXIT_FAILURE;
@@ -189,7 +201,7 @@ int main( int argc, char** argv )
   mem_status( memory_status );
   std::cout << mem_string( memory_status, mem_mode, use_colors, use_powerline )
     << cpu_string( cpu_usage_delay, graph_lines, use_colors, use_powerline )
-    << load_string( use_colors, use_powerline );
+    << load_string( use_colors, use_powerline, averages_count );
 
   return EXIT_SUCCESS;
 }
