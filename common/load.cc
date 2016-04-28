@@ -40,58 +40,57 @@ std::string load_string( bool use_colors, bool use_powerline, short num_averages
   double averages[num_averages];
   // based on: opensource.apple.com/source/Libc/Libc-262/gen/getloadavg.c
 
-  if( num_averages > 0)
+  if( num_averages <= 0 || num_averages > 3)
   {
-    if( getloadavg( averages, num_averages ) < 0 )
-    {
-      ss << " 0.00 0.00 0.00"; // couldn't get averages.
-    }
-    else
-    {
-      if( use_colors )
-      {
-        unsigned load_percent = static_cast<unsigned int>( averages[0] /
-            get_cpu_count() * 0.5f * 100.0f );
+    ss << (char) 0;
+    return ss.str();
+  }
 
-        if( load_percent > 100 )
-        {
-          load_percent = 100;
-        }
-        powerline(ss,  load_lut[load_percent], use_powerline);
-      }
-
-      ss << ' ';
-      for( int i = 0; i < num_averages; ++i )
-      {
-        // Round to nearest, make sure this is only a 0.00 value not a 0.0000
-        float avg = floorf( static_cast<float>( averages[i] ) * 100 + 0.5 ) / 100;
-        // Don't print trailing whitespace for last element
-        if ( i == num_averages-1 )
-        {
-          ss << avg;
-        }
-        else
-        {
-          ss << avg << " ";
-        }
-      }
-
-      if( use_colors )
-      {
-        if( use_powerline )
-        {
-          ss << ' ';
-        }
-        else
-        {
-          ss << "#[fg=default,bg=default]";
-        }
-      }
-    }
+  if( getloadavg( averages, num_averages ) < 0 )
+  {
+    ss << " 0.00 0.00 0.00"; // couldn't get averages.
   }
   else
   {
-    ss << (char) 0;
+    if( use_colors )
+    {
+      unsigned load_percent = static_cast<unsigned int>( averages[0] /
+          get_cpu_count() * 0.5f * 100.0f );
+
+      if( load_percent > 100 )
+      {
+        load_percent = 100;
+      }
+      powerline(ss,  load_lut[load_percent], use_powerline);
+    }
+
+    ss << ' ';
+    for( int i = 0; i < num_averages; ++i )
+    {
+      // Round to nearest, make sure this is only a 0.00 value not a 0.0000
+      float avg = floorf( static_cast<float>( averages[i] ) * 100 + 0.5 ) / 100;
+      // Don't print trailing whitespace for last element
+      if ( i == num_averages-1 )
+      {
+        ss << avg;
+      }
+      else
+      {
+        ss << avg << " ";
+      }
+    }
+
+    if( use_colors )
+    {
+      if( use_powerline )
+      {
+        ss << ' ';
+      }
+      else
+      {
+        ss << "#[fg=default,bg=default]";
+      }
+    }
   }
 
   return ss.str();
