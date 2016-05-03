@@ -39,13 +39,6 @@
 #include "memory.h"
 #include "conversions.h"
 
-static int pageshift;
-
-#ifndef LOG1024
-#define LOG1024	10
-#endif
-#define pagesh(size) ((size) << pageshift)
-
 void mem_status( MemoryStatus & status )
 {
   // These values are in bytes
@@ -62,16 +55,6 @@ void mem_status( MemoryStatus & status )
   {
     error( "memory: error getting page size" );
   }
-
-  // calculate how far we must shift the variables
-  pageshift = 0;
-  while( page_size > 1 )
-  {
-    pageshift++;
-    page_size >>= 1;
-  }
-
-  pageshift -= LOG1024;
 
   // get vm memory stats
   static int uvmexp_mib[] = { CTL_VM, VM_UVMEXP };
@@ -92,16 +75,15 @@ void mem_status( MemoryStatus & status )
   }
 
   // calculations based on libgtop
-  used_mem = (uint64_t) pagesh (uvmexp.npages - uvmexp.free) << LOG1024;
-
-  free_mem = (uint64_t) pagesh( uvmexp.free ) << LOG1024;
+  used_mem = ( (uint64_t) uvmexp.npages - uvmexp.free ) << uvmexp.pageshift;
+  free_mem = ( (uint64_t) uvmexp.free ) << uvmexp.pageshift;
 
   // from nagios-memory plugin
-  used_mem -= pagesh( bcstats.numbufpages );
-  free_mem += pagesh( bcstats.numbufpages );
+  used_mem -= ( (uint64_t) bcstats.numbufpages ) << uvmexp.pageshift;
+  free_mem += ( (uint64_t) bcstats.numbufpages ) << uvmexp.pageshift;
 
   // calculate total memory
-  total_mem = (uint64_t) pagesh( uvmexp.npages ) << LOG1024;
+  total_mem = ( (uint64_t) uvmexp.npages ) << uvmexp.pageshift;
 
   status.used_mem = convert_unit(static_cast< float >( used_mem ), MEGABYTES );
   status.total_mem = convert_unit(static_cast< float >( total_mem ), MEGABYTES );
