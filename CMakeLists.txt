@@ -41,7 +41,7 @@ elseif(COMPILER_SUPPORTS_CXX0X)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
 else()
   message(FATAL_ERROR
-"Compiler ${CMAKE_CXX_COMPILER_ID} ${CMAKE_CXX_COMPILER_VERSION} has no C++11 support.")
+    "Compiler ${CMAKE_CXX_COMPILER_ID} ${CMAKE_CXX_COMPILER_VERSION} has no C++11 support.")
 endif()
 
 # generate header file to handle version
@@ -133,6 +133,22 @@ if(BUILD_TESTING)
 
   add_test(NAME memory_mode_used_percentage
     COMMAND tmux-mem-cpu-load -m 2
+    )
+
+  add_test(NAME averages_count_0
+    COMMAND tmux-mem-cpu-load -a 0
+    )
+
+  add_test(NAME averages_count_1
+    COMMAND tmux-mem-cpu-load -a 1
+    )
+
+  add_test(NAME averages_count_2
+    COMMAND tmux-mem-cpu-load -a 2
+    )
+
+  add_test(NAME averages_count_3
+    COMMAND tmux-mem-cpu-load -a 3
     )
 
   set_tests_properties(usage
