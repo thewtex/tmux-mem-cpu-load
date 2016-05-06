@@ -2,6 +2,7 @@
  *
  * Copyright 2012 Matthew McCormick
  * Copyright 2015 Pawel 'l0ner' Soltys
+ * Copyright 2016 Compilenix
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +22,6 @@
 
 #include <string>
 
-std::string load_string( bool use_colors = false, bool use_powerline = false );
+std::string load_string( bool use_colors = false, bool use_powerline = false, short num_averages = 3 );
 
 #endif

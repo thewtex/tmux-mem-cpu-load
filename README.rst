@@ -126,6 +126,9 @@ The full usage::
           Set how many lines should be drawn in a graph. Default: 10
   -m <value>, --mem-mode <value>
         Set memory display mode. 0: Default, 1: Free memory, 2: Usage percent.
+  -a <value>, --averages-count <value>
+        Set how many load-averages should be drawn. Default: 3
+
 
 
 Authors
@@ -143,6 +146,7 @@ Contributions from:
 * `Pawel 'l0ner' Soltys`_ <pwslts@gmail.com>
 * Travil Heller <trav.heller@gmail.com>
 * Tony Narlock <tony@git-pull.com>
+* Compilenix <Compilenix@compilenix.org>
 
 
 .. _tmux: http://tmux.sourceforge.net/
