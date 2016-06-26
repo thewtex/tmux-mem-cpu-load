@@ -141,7 +141,7 @@ int main( int argc, char** argv )
 
   int c;
   // while c != -1
-  while( (c = getopt_long( argc, argv, "hi:g:m:a:t:", long_options, NULL) ) != -1 )
+  while( (c = getopt_long( argc, argv, "hi:c:g:m:a:t:", long_options, NULL) ) != -1 )
   {
     switch( c )
     {
