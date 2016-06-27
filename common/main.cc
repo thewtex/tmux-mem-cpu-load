@@ -51,8 +51,15 @@ std::string cpu_string( CPU_MODE cpu_mode, unsigned int cpu_usage_delay, unsigne
   percentage = cpu_percentage( cpu_usage_delay );
 
   // set multiplier to number of threads ?
-  if ( cpu_mode == CPU_MODE_THREADS ) {
+  if ( cpu_mode == CPU_MODE_THREADS )
+  {
     multiplier = get_cpu_count();
+  }
+
+  // if percentage*multiplier >= 100, remove decimal point to keep number short
+  if ( percentage*multiplier >= 100.0f )
+  {
+    oss.precision( 0 );
   }
 
   if( use_colors )

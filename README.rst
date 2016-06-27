@@ -116,7 +116,7 @@ The full usage::
   Available options:
   -h, --help
            Prints this help message
-  --colors
+  -c, --colors
           Use tmux colors in output
   --powerline-right
           Use powerline symbols throughout the output, DO NOT reset background color at the end, enables --colors
