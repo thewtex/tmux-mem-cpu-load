@@ -35,11 +35,12 @@
 
 #include "powerline.h"
 
-std::string cpu_string( unsigned int cpu_usage_delay, unsigned int graph_lines,
+std::string cpu_string( CPU_MODE cpu_mode, unsigned int cpu_usage_delay, unsigned int graph_lines,
     bool use_colors = false, bool use_powerline = false )
 {
 
   float percentage;
+  float multiplier = 1.0f;
 
   //output stuff
   std::ostringstream oss;
@@ -48,6 +49,18 @@ std::string cpu_string( unsigned int cpu_usage_delay, unsigned int graph_lines,
 
   // get %
   percentage = cpu_percentage( cpu_usage_delay );
+
+  // set multiplier to number of threads ?
+  if ( cpu_mode == CPU_MODE_THREADS )
+  {
+    multiplier = get_cpu_count();
+  }
+
+  // if percentage*multiplier >= 100, remove decimal point to keep number short
+  if ( percentage*multiplier >= 100.0f )
+  {
+    oss.precision( 0 );
+  }
 
   if( use_colors )
   {
@@ -62,7 +75,7 @@ std::string cpu_string( unsigned int cpu_usage_delay, unsigned int graph_lines,
     oss << "]";
   }
   oss.width( 5 );
-  oss << percentage;
+  oss << percentage * multiplier;
   oss << "%";
   if( use_colors )
   {
@@ -90,7 +103,6 @@ void print_help()
     << "-h, --help\n"
     << "\t Prints this help message\n"
     << "-c, --colors\n"
-    << "--colors\n"
     << "\tUse tmux colors in output\n"
     << "-p, --powerline-right\n"
     << "\tUse powerline symbols throughout the output, DO NOT reset background color at the end, enables --colors\n"
@@ -100,6 +112,8 @@ void print_help()
     << "\tSet how many lines should be drawn in a graph. Default: 10\n"
     << "-m <value>, --mem-mode <value>\n"
     << "\tSet memory display mode. 0: Default, 1: Free memory, 2: Usage percent.\n"
+    << "-t <value>, --cpu-mode <value>\n"
+    << "\tSet cpu % display mode. 0: Default max 100%, 1: Max 100% * number of threads. \n"
     << "-a <value>, --averages-count <value>\n"
     << "\tSet how many load-averages should be drawn. Default: 3\n"
     << endl;
@@ -113,6 +127,7 @@ int main( int argc, char** argv )
   bool use_colors = false;
   bool use_powerline = false;
   MEMORY_MODE mem_mode = MEMORY_MODE_DEFAULT;
+  CPU_MODE cpu_mode = CPU_MODE_DEFAULT;
 
   static struct option long_options[] =
   {
@@ -126,13 +141,14 @@ int main( int argc, char** argv )
     { "interval", required_argument, NULL, 'i' },
     { "graph-lines", required_argument, NULL, 'g' },
     { "mem-mode", required_argument, NULL, 'm' },
+    { "cpu-mode", required_argument, NULL, 't' },
     { "averages-count", required_argument, NULL, 'a' },
     { 0, 0, 0, 0 } // used to handle unknown long options
   };
 
   int c;
   // while c != -1
-  while( (c = getopt_long( argc, argv, "hi:g:m:a:", long_options, NULL) ) != -1 )
+  while( (c = getopt_long( argc, argv, "hi:cg:m:a:t:", long_options, NULL) ) != -1 )
   {
     switch( c )
     {
@@ -171,6 +187,14 @@ int main( int argc, char** argv )
           }
         mem_mode = static_cast< MEMORY_MODE >( atoi( optarg ) );
         break;
+      case 't': // --cpu-mode, -t
+        if( atoi( optarg ) < 0 )
+          {
+            std::cerr << "CPU mode argument must be zero or greater.\n";
+            return EXIT_FAILURE;
+          }
+        cpu_mode = static_cast< CPU_MODE >( atoi( optarg ) );
+        break;
       case 'a': // --averages-count, -a
         if( atoi( optarg ) < 0 || atoi( optarg ) > 3 )
           {
@@ -200,7 +224,7 @@ int main( int argc, char** argv )
   MemoryStatus memory_status;
   mem_status( memory_status );
   std::cout << mem_string( memory_status, mem_mode, use_colors, use_powerline )
-    << cpu_string( cpu_usage_delay, graph_lines, use_colors, use_powerline )
+    << cpu_string( cpu_mode, cpu_usage_delay, graph_lines, use_colors, use_powerline )
     << load_string( use_colors, use_powerline, averages_count );
 
   return EXIT_SUCCESS;

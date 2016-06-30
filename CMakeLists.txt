@@ -111,6 +111,10 @@ if(BUILD_TESTING)
     COMMAND tmux-mem-cpu-load --colors
     )
 
+  add_test(NAME colors_short
+    COMMAND tmux-mem-cpu-load -c
+    )
+
   add_test(NAME powerline
     COMMAND tmux-mem-cpu-load --powerline
     )
@@ -149,6 +153,22 @@ if(BUILD_TESTING)
 
   add_test(NAME averages_count_3
     COMMAND tmux-mem-cpu-load -a 3
+    )
+
+  add_test(NAME cpu_mode_0
+    COMMAND tmux-mem-cpu-load --cpu-mode 0
+    )
+
+  add_test(NAME cpu_mode_1
+    COMMAND tmux-mem-cpu-load --cpu-mode 1
+    )
+
+  add_test(NAME cpu_mode_short_0
+    COMMAND tmux-mem-cpu-load -t 0
+    )
+
+  add_test(NAME cpu_mode_short_1
+    COMMAND tmux-mem-cpu-load -t 1
     )
 
   set_tests_properties(usage

@@ -47,4 +47,17 @@
 float cpu_percentage( unsigned );
 uint8_t get_cpu_count();
 
+/** CPU percentage output mode.
+ *
+ * Examples:
+ *
+ * CPU_MODE_DEFAULT: 100%
+ * CPU_MODE_THREADS: 800% (8 cores, fully loaded)
+ */
+enum CPU_MODE
+{
+  CPU_MODE_DEFAULT,
+  CPU_MODE_THREADS
+};
+
 #endif

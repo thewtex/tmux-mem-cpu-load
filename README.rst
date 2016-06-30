@@ -116,7 +116,7 @@ The full usage::
   Available options:
   -h, --help
            Prints this help message
-  --colors
+  -c, --colors
           Use tmux colors in output
   --powerline-right
           Use powerline symbols throughout the output, DO NOT reset background color at the end, enables --colors
@@ -126,6 +126,8 @@ The full usage::
           Set how many lines should be drawn in a graph. Default: 10
   -m <value>, --mem-mode <value>
         Set memory display mode. 0: Default, 1: Free memory, 2: Usage percent.
+  -t <value>, --cpu-mode <value>
+        Set cpu % display mode. 0: Default max 100%, 1: Max 100% * number of threads.
   -a <value>, --averages-count <value>
         Set how many load-averages should be drawn. Default: 3
 
@@ -147,6 +149,7 @@ Contributions from:
 * Travil Heller <trav.heller@gmail.com>
 * Tony Narlock <tony@git-pull.com>
 * Compilenix <Compilenix@compilenix.org>
+* jodavies <jodavies1010@gmail.com>
 
 
 .. _tmux: http://tmux.sourceforge.net/
