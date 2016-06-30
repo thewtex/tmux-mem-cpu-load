@@ -149,6 +149,7 @@ Contributions from:
 * Travil Heller <trav.heller@gmail.com>
 * Tony Narlock <tony@git-pull.com>
 * Compilenix <Compilenix@compilenix.org>
+* jodavies <jodavies1010@gmail.com>
 
 
 .. _tmux: http://tmux.sourceforge.net/
