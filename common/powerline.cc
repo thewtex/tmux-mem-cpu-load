@@ -18,12 +18,14 @@
 
 #include "powerline.h"
 
+#include <string>
 #include <cstring>
 #include <sstream>
 
+#define PWL_LEFT_FILLED ""
 #define PWL_RIGHT_FILLED ""
 
-const char * bg2fg(const char s[])
+const char * bg2fg( const char s[] )
 {
   static char buf[40] = {0};
   const char *substr = index(s, ',');
@@ -34,16 +36,35 @@ const char * bg2fg(const char s[])
   return buf;
 }
 
-void powerline(std::ostringstream &oss, const char s[], bool use_powerline)
+
+void powerline( std::ostringstream & oss, const char color[],
+  POWERLINE_DIRECTION direction, bool background_only )
 {
-    if( use_powerline )
+  switch( direction )
     {
-        oss << bg2fg(s)
-            << PWL_RIGHT_FILLED
-            << s << ' ';
-    }
+  case NONE:
+    oss << color;
+    break;
+  case POWERLINE_LEFT:
+    if( background_only )
+      {
+      oss << ' ' << bg2fg( color );
+      }
     else
-    {
-        oss << s;
-    }
+      {
+      std::string colorstr( color );
+      oss << "#[" << colorstr.substr( colorstr.find( "," ) + 1 )
+          << PWL_LEFT_FILLED
+          << color
+          << ' ';
+      }
+    break;
+  case POWERLINE_RIGHT:
+    oss << ' '
+        << bg2fg( color )
+        << PWL_RIGHT_FILLED
+        << color
+        << ' ';
+    break;
+    };
 }

@@ -19,7 +19,7 @@
 #ifndef CONVERSIONS_H_
 #define CONVERSIONS_H_
 
-enum
+enum BYTE_UNITS
 {
   BYTES = 0,
   KILOBYTES = 1,

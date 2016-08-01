@@ -21,6 +21,18 @@
 
 #include <sstream>
 
-void powerline(std::ostringstream &oss, const char s[], bool);
+enum POWERLINE_DIRECTION
+{
+  NONE,
+  POWERLINE_LEFT,
+  POWERLINE_RIGHT
+};
+
+/** Print out a powerline left character inverted version of the given
+ * color. In the case of of using powerline left, the background color needs
+ * to be inverted to the foreground before the powerline character is printed
+ * in the next entr. */
+void powerline( std::ostringstream & oss, const char color[],
+  POWERLINE_DIRECTION direction, bool background_only = false );
 
 #endif // POWERLINE_H

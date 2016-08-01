@@ -36,7 +36,8 @@
 #include "powerline.h"
 
 std::string cpu_string( CPU_MODE cpu_mode, unsigned int cpu_usage_delay, unsigned int graph_lines,
-    bool use_colors = false, bool use_powerline = false )
+    bool use_colors = false,
+    bool use_powerline_left = false, bool use_powerline_right = false )
 {
 
   float percentage;
@@ -62,10 +63,21 @@ std::string cpu_string( CPU_MODE cpu_mode, unsigned int cpu_usage_delay, unsigne
     oss.precision( 0 );
   }
 
+  unsigned int percent = static_cast<unsigned int>( percentage );
   if( use_colors )
   {
-    unsigned int percent = static_cast<unsigned int>( percentage );
-    powerline(oss, cpu_percentage_lut[percent], use_powerline);
+    if( use_powerline_right )
+    {
+      powerline( oss, cpu_percentage_lut[percent], POWERLINE_RIGHT );
+    }
+    else if( use_powerline_left )
+    {
+      powerline( oss, cpu_percentage_lut[percent], POWERLINE_LEFT );
+    }
+    else
+    {
+      powerline( oss, cpu_percentage_lut[percent], NONE );
+    }
   }
 
   if( graph_lines > 0)
@@ -79,11 +91,11 @@ std::string cpu_string( CPU_MODE cpu_mode, unsigned int cpu_usage_delay, unsigne
   oss << "%";
   if( use_colors )
   {
-    if( use_powerline )
+    if( use_powerline_left )
     {
-      oss << ' ';
+      powerline( oss, cpu_percentage_lut[percent], POWERLINE_LEFT, true );
     }
-    else
+    else if( !use_powerline_right )
     {
       oss << "#[fg=default,bg=default]";
     }
@@ -125,7 +137,8 @@ int main( int argc, char** argv )
   short averages_count = 3;
   short graph_lines = 10; // max 32767 should be enough
   bool use_colors = false;
-  bool use_powerline = false;
+  bool use_powerline_left = false;
+  bool use_powerline_right = false;
   MEMORY_MODE mem_mode = MEMORY_MODE_DEFAULT;
   CPU_MODE cpu_mode = CPU_MODE_DEFAULT;
 
@@ -137,7 +150,8 @@ int main( int argc, char** argv )
     // otherwise it's a value to set the variable *flag points to
     { "help", no_argument, NULL, 'h' },
     { "colors", no_argument, NULL, 'c' },
-    { "powerline-right", no_argument, NULL, 'p' },
+    { "powerline-left", no_argument, NULL, 'p' },
+    { "powerline-right", no_argument, NULL, 'q' },
     { "interval", required_argument, NULL, 'i' },
     { "graph-lines", required_argument, NULL, 'g' },
     { "mem-mode", required_argument, NULL, 'm' },
@@ -148,7 +162,7 @@ int main( int argc, char** argv )
 
   int c;
   // while c != -1
-  while( (c = getopt_long( argc, argv, "hi:cpg:m:a:t:", long_options, NULL) ) != -1 )
+  while( (c = getopt_long( argc, argv, "hi:cpqg:m:a:t:", long_options, NULL) ) != -1 )
   {
     switch( c )
     {
@@ -159,9 +173,13 @@ int main( int argc, char** argv )
       case 'c': // --colors
         use_colors = true;
         break;
-      case 'p': // --powerline-right
+      case 'p': // --powerline-left
         use_colors = true;
-        use_powerline = true;
+        use_powerline_left = true;
+        break;
+      case 'q': // --powerline-right
+        use_colors = true;
+        use_powerline_right = true;
         break;
       case 'i': // --interval, -i
         if( atoi( optarg ) < 1 )
@@ -223,9 +241,9 @@ int main( int argc, char** argv )
 
   MemoryStatus memory_status;
   mem_status( memory_status );
-  std::cout << mem_string( memory_status, mem_mode, use_colors, use_powerline )
-    << cpu_string( cpu_mode, cpu_usage_delay, graph_lines, use_colors, use_powerline )
-    << load_string( use_colors, use_powerline, averages_count );
+  std::cout << mem_string( memory_status, mem_mode, use_colors, use_powerline_left, use_powerline_right )
+    << cpu_string( cpu_mode, cpu_usage_delay, graph_lines, use_colors, use_powerline_left, use_powerline_right )
+    << load_string( use_colors, use_powerline_left, use_powerline_right, averages_count );
 
   return EXIT_SUCCESS;
 }

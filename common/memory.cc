@@ -26,17 +26,32 @@
 std::string mem_string( const MemoryStatus & mem_status,
   MEMORY_MODE mode,
   bool use_colors,
-  bool use_powerline )
+  bool use_powerline_left,
+  bool use_powerline_right )
 {
   std::ostringstream oss;
   // Change the percision for floats, for a pretty output
   oss.precision( 2 );
   oss.setf( std::ios::fixed | std::ios::right );
 
+  unsigned int color = static_cast< unsigned int >((100 * mem_status.used_mem) / mem_status.total_mem);
   if( use_colors )
   {
-    unsigned int color = static_cast< unsigned int >((100 * mem_status.used_mem) / mem_status.total_mem);
-    powerline(oss, mem_lut[color], use_powerline);
+    if( use_powerline_right )
+    {
+      powerline( oss, mem_lut[color], POWERLINE_RIGHT );
+    }
+    else if( use_powerline_left )
+    {
+      //powerline( oss, mem_lut[color], POWERLINE_LEFT );
+      // We do not know how to invert the default background color
+      powerline( oss, mem_lut[color], NONE );
+      oss << ' ';
+    }
+    else
+    {
+      powerline( oss, mem_lut[color], NONE );
+    }
   }
 
   switch( mode )
@@ -73,11 +88,11 @@ std::string mem_string( const MemoryStatus & mem_status,
 
   if( use_colors )
   {
-    if( use_powerline )
+    if( use_powerline_left )
     {
-      oss << " ";
+      powerline( oss, mem_lut[color], POWERLINE_LEFT, true );
     }
-    else
+    else if( !use_powerline_right )
     {
       oss << "#[fg=default,bg=default]";
     }

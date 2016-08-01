@@ -34,7 +34,9 @@
 #include "powerline.h"
 
 // Load Averages
-std::string load_string( bool use_colors, bool use_powerline, short num_averages )
+std::string load_string( bool use_colors,
+  bool use_powerline_left, bool use_powerline_right,
+  short num_averages )
 {
   std::ostringstream ss;
   double averages[num_averages];
@@ -52,16 +54,27 @@ std::string load_string( bool use_colors, bool use_powerline, short num_averages
   }
   else
   {
+    unsigned load_percent = static_cast<unsigned int>( averages[0] /
+        get_cpu_count() * 0.5f * 100.0f );
+
+    if( load_percent > 100 )
+    {
+      load_percent = 100;
+    }
     if( use_colors )
     {
-      unsigned load_percent = static_cast<unsigned int>( averages[0] /
-          get_cpu_count() * 0.5f * 100.0f );
-
-      if( load_percent > 100 )
+      if( use_powerline_right )
       {
-        load_percent = 100;
+        powerline( ss, load_lut[load_percent], POWERLINE_RIGHT );
       }
-      powerline(ss,  load_lut[load_percent], use_powerline);
+      else if( use_powerline_left )
+      {
+        powerline( ss, load_lut[load_percent], POWERLINE_LEFT );
+      }
+      else
+      {
+        powerline( ss, load_lut[load_percent], NONE );
+      }
     }
 
     ss << ' ';
@@ -82,11 +95,12 @@ std::string load_string( bool use_colors, bool use_powerline, short num_averages
 
     if( use_colors )
     {
-      if( use_powerline )
+      if( use_powerline_left )
       {
-        ss << ' ';
+        powerline( ss, load_lut[load_percent], POWERLINE_LEFT, true );
+        powerline( ss, "#[fg=default,bg=default]", POWERLINE_LEFT );
       }
-      else
+      else if( !use_powerline_right )
       {
         ss << "#[fg=default,bg=default]";
       }

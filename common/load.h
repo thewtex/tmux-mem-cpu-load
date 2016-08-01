@@ -22,6 +22,8 @@
 
 #include <string>
 
-std::string load_string( bool use_colors = false, bool use_powerline = false, short num_averages = 3 );
+std::string load_string( bool use_colors = false,
+  bool use_powerline_left = false, bool use_powerline_right = false,
+  short num_averages = 3 );
 
 #endif
