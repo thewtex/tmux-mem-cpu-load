@@ -55,8 +55,7 @@ void powerline( std::ostringstream & oss, const char color[],
       std::string colorstr( color );
       oss << "#[" << colorstr.substr( colorstr.find( "," ) + 1 )
           << PWL_LEFT_FILLED
-          << color
-          << ' ';
+          << color;
       }
     break;
   case POWERLINE_RIGHT:
