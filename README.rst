@@ -118,8 +118,10 @@ The full usage::
            Prints this help message
   -c, --colors
           Use tmux colors in output
-  --powerline-right
-          Use powerline symbols throughout the output, DO NOT reset background color at the end, enables --colors
+  -p, --powerline-left
+	  Use powerline left symbols throughout the output, DO NOT reset background color at the end, enables --colors
+  -q, --powerline-right
+	  Use powerline right symbols throughout the output, DO NOT reset background color at the end, enables --colors
   -i <value>, --interval <value>
           Set tmux status refresh interval in seconds. Default: 1 second
   -g <value>, --graph-lines <value>
