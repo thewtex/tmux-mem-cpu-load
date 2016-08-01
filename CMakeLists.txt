@@ -115,8 +115,12 @@ if(BUILD_TESTING)
     COMMAND tmux-mem-cpu-load -c
     )
 
-  add_test(NAME powerline
-    COMMAND tmux-mem-cpu-load --powerline
+  add_test(NAME powerline-right
+    COMMAND tmux-mem-cpu-load --powerline-right
+    )
+
+  add_test(NAME powerline-left
+    COMMAND tmux-mem-cpu-load --powerline-left
     )
 
   add_test(NAME invalid_status_interval
