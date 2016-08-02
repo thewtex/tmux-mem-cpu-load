@@ -40,6 +40,7 @@ std::string mem_string( const MemoryStatus & mem_status,
     if( use_powerline_right )
     {
       powerline( oss, mem_lut[color], POWERLINE_RIGHT );
+      oss << ' ';
     }
     else if( use_powerline_left )
     {

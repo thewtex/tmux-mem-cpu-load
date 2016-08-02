@@ -62,8 +62,7 @@ void powerline( std::ostringstream & oss, const char color[],
     oss << ' '
         << bg2fg( color )
         << PWL_RIGHT_FILLED
-        << color
-        << ' ';
+        << color;
     break;
     };
 }
