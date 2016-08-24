@@ -81,7 +81,16 @@ Install
   make install
   logout
 
-Build and Install Using `Antigen`_
+Build and Install Using tpm_
+-------
+
+Include the plugin in your ``.tmux.conf``
+
+::
+
+  set -g @plugin 'thewtex/tmux-mem-cpu-load'
+
+Build and Install Using Antigen_
 -------
 
 Include the bundle in your ``.zshrc``
@@ -99,6 +108,11 @@ Edit ``$HOME/.tmux.conf`` to display the program's output in *status-left* or
   set -g status-interval 2
   set -g status-left "#S #[fg=green,bg=black]#(tmux-mem-cpu-load --colors --interval 2)#[default]"
   set -g status-left-length 60
+
+If you installed using tpm, you must specify the full path to the
+``tmux-mem-cpu-load`` script, like below::
+
+  set -g status-right "#[fg=green]#($TMUX_PLUGIN_MANAGER_PATH/tmux-mem-cpu-load/tmux-mem-cpu-load --colors --powerline-right --interval 2)#[default]"
 
 Note that the *interval* argument to `tmux-mem-cpu-load` should be the same number
 of seconds that *status-interval* is set at.
@@ -157,6 +171,7 @@ Contributions from:
 .. _tmux: http://tmux.sourceforge.net/
 .. _CMake: http://www.cmake.org
 .. _`project homepage`: http://github.com/thewtex/tmux-mem-cpu-load
+.. _`tpm`: http://github.com/tmux-plugins/tpm
 .. _`Antigen`: https://github.com/zsh-users/antigen
 .. _`terminals with 256 color support`: http://misc.flogisoft.com/bash/tip_colors_and_formatting#terminals_compatibility
 .. _`Pawel 'l0ner' Soltys` : http://l0ner.github.io/
