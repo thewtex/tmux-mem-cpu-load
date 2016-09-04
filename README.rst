@@ -81,23 +81,29 @@ Install
   make install
   logout
 
-Build and Install Using tpm_
--------
+Install with Package Managers
+-----------------------------
 
-Include the plugin in your ``.tmux.conf``
-
-::
-
-  set -g @plugin 'thewtex/tmux-mem-cpu-load'
+* Gentoo: `emerge tmux-mem-cpu-load`
+* Homebrew: `brew install tmux-mem-cpu-load`
 
 Build and Install Using Antigen_
--------
+--------------------------------
 
 Include the bundle in your ``.zshrc``
 
 ::
 
   antigen bundle thewtex/tmux-mem-cpu-load
+
+Build and Install Using tpm_
+-----------------------------
+
+Include the plugin in your ``.tmux.conf``
+
+::
+
+  set -g @plugin 'thewtex/tmux-mem-cpu-load'
 
 Configuring tmux_
 =================
