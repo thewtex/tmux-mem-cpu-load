@@ -81,6 +81,16 @@ Install
   make install
   logout
 
+Build and Install Using tpm_
+-----------------------------
+
+Include the plugin in your ``.tmux.conf``, the same file you'll set the
+configuration in, below.
+
+::
+
+  set -g @plugin 'thewtex/tmux-mem-cpu-load'
+
 Install with Package Managers
 -----------------------------
 
@@ -95,15 +105,6 @@ Include the bundle in your ``.zshrc``
 ::
 
   antigen bundle thewtex/tmux-mem-cpu-load
-
-Build and Install Using tpm_
------------------------------
-
-Include the plugin in your ``.tmux.conf``
-
-::
-
-  set -g @plugin 'thewtex/tmux-mem-cpu-load'
 
 Configuring tmux_
 =================
@@ -172,6 +173,7 @@ Contributions from:
 * Tony Narlock <tony@git-pull.com>
 * Compilenix <Compilenix@compilenix.org>
 * jodavies <jodavies1010@gmail.com>
+* `@nhdaly`_ (Nathan Daly) <nhdaly@gmail.com>
 
 
 .. _tmux: http://tmux.sourceforge.net/
@@ -181,3 +183,4 @@ Contributions from:
 .. _`Antigen`: https://github.com/zsh-users/antigen
 .. _`terminals with 256 color support`: http://misc.flogisoft.com/bash/tip_colors_and_formatting#terminals_compatibility
 .. _`Pawel 'l0ner' Soltys` : http://l0ner.github.io/
+.. _`@nhdaly` : http://github.com/nhdaly
