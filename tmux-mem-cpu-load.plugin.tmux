@@ -21,12 +21,12 @@ CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 pushd $CURRENT_DIR #Pushd to the directory where this plugin is located.
 
 # Attempt to rebuild the plugin and log any errors in the tmux display window.
-output=$(cmake . 2>&1) || tmux run-shell "echo \"'cmake $CURRENT_DIR' failed.
+if output=$(cmake . 2>&1); then tmux run-shell "echo \"'cmake $CURRENT_DIR' failed.
 $output
-\"" && exit 1
+\""; else exit 1; fi
 
-output=$(make 2>&1) || tmux run-shell "echo \"tmux-mem-cpu-load failed to build.
+if output=$(make 2>&1); then tmux run-shell "echo \"tmux-mem-cpu-load failed to build.
 $output
-\"" && exit 1
+\""; else exit 1; fi
 
 popd
