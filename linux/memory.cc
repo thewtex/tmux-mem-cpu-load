@@ -40,7 +40,7 @@ void mem_status( MemoryStatus & status )
    * application requests memory.
    * In order to calculate the ram that's actually used we need to use the
    * following formula:
-   *    total_ram - free_ram - buffered_ram - cached_ram
+   *    total_ram + shmem - free_ram - buffered_ram - cached_ram - srclaimable
    *
    * example data, junk removed, with comments added:
    *
@@ -72,8 +72,13 @@ void mem_status( MemoryStatus & status )
     {
       used_mem = total_mem - stoi( line.substr( substr_start, substr_len ) );
     }
+    else if( substr.compare( "Shmem" ) == 0 )
+    {
+      used_mem += stoi( line.substr( substr_start, substr_len ) );
+    }
     else if( substr.compare( "Buffers" ) == 0 ||
-             substr.compare( "Cached" ) == 0 )
+             substr.compare( "Cached" ) == 0  ||
+             substr.compare( "SReclaimable" ) == 0 )
     {
       used_mem -= stoi( line.substr( substr_start, substr_len ) );
     }
