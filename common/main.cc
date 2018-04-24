@@ -247,6 +247,8 @@ int main( int argc, char** argv )
     << cpu_string( cpu_mode, cpu_usage_delay, graph_lines, use_colors, use_powerline_left, use_powerline_right )
     << load_string( use_colors, use_powerline_left, use_powerline_right, averages_count );
 
+  std::cout << std::endl;
+
   return EXIT_SUCCESS;
 }
 
