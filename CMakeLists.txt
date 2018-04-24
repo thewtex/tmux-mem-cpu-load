@@ -16,10 +16,7 @@
 # limitations under the License.
 #
 
-cmake_minimum_required(VERSION 2.6)
-if(COMMAND cmake_policy)
-  cmake_policy(VERSION 2.6)
-endif(COMMAND cmake_policy)
+cmake_minimum_required(VERSION 3.5)
 
 ### General Package stuff
 project(tmux-mem-cpu-load)
@@ -67,26 +64,32 @@ elseif(CMAKE_SYSTEM_NAME MATCHES "FreeBSD")
   message(STATUS "FreeBSD detected")
   set(METER_SOURCES "freebsd/memory.cc" "freebsd/cpu.cc" "common/load.cc")
 elseif(CMAKE_SYSTEM_NAME MATCHES "OpenBSD")
-  # OpenBSD Stuff Here
   message(STATUS "OpenBSD detected")
   set(METER_SOURCES "openbsd/memory.cc" "openbsd/cpu.cc" "common/load.cc")
   if(CMAKE_SYSTEM_VERSION VERSION_LESS 5.7)
     add_definitions(-DOPENBSD_WORKAROUND=1)
   endif()
 elseif(CMAKE_SYSTEM_NAME MATCHES "NetBSD")
+  message(STATUS "NetBSD detected")
   set(METER_SOURCES "netbsd/memory.cc" "netbsd/cpu.cc" "common/load.cc")
+elseif(CMAKE_SYSTEM_NAME MATCHES "Windows")
+  message(STATUS "Windows detected")
+  set(METER_SOURCES "windows/memory.cc" "windows/cpu.cc" "windows/load.cc")
 else()
+  message(FATAL_ERROR "${CMAKE_SYSTEM_NAME} Cannot be compiled on this system")
   message(FATAL_ERROR "Cannot be compiled on this system")
 endif()
 
 # set common source files
 set(COMMON_SOURCES "common/main.cc" "common/memory.cc" "common/graph.cc" "common/powerline.cc")
 
-# add binary tree so we find version.h
-include_directories("${PROJECT_BINARY_DIR}")
-include_directories("${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/common")
-
 add_executable(tmux-mem-cpu-load ${COMMON_SOURCES} ${METER_SOURCES})
+# add binary tree so we find version.h
+target_include_directories(tmux-mem-cpu-load PUBLIC "${PROJECT_BINARY_DIR}")
+target_include_directories(tmux-mem-cpu-load PUBLIC "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/common")
+if(CMAKE_SYSTEM_NAME MATCHES "Windows")
+  target_link_libraries(tmux-mem-cpu-load Pdh)
+endif()
 install(TARGETS tmux-mem-cpu-load RUNTIME DESTINATION bin)
 
 include(CTest)

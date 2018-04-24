@@ -28,7 +28,7 @@
 const char * bg2fg( const char s[] )
 {
   static char buf[40] = {0};
-  const char *substr = index(s, ',');
+  const char *substr = strchr(s, ',');
   buf[0] = '#';
   buf[1] = '[';
   buf[2] = 'f';
