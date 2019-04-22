@@ -21,6 +21,12 @@ config.h
 CTestTestfile.cmake
 DartConfiguration.tcl
 
+# Ninja generated #
+###################
+.ninja_deps
+.ninja_log
+*.ninja
+
 # Packages #
 ############
 # it's better to unpack this files and commit raw source
