@@ -27,7 +27,7 @@
 uint8_t get_cpu_count()
 {
   int cpu_count = 1; // default to 1
-  int mib[2] = { CTL_HW, HW_NCPU };
+  int mib[2] = { CTL_HW, HW_NCPUONLINE };
   size_t len = sizeof( cpu_count );
 
   if( sysctl( mib, 2, &cpu_count, &len, NULL, 0 ) < 0 )
