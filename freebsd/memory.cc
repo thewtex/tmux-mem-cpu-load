@@ -63,8 +63,8 @@ void mem_status( MemoryStatus & status )
   //u_int unused = ( cache + inactive + free ) * page_size;
 
   // Used memory on FreeBSD is active + wired.
-  u_int used = ( active + wired ) * page_size;
+  u_int used = ( active + wired );
 
-  status.used_mem = convert_unit( static_cast< float >( used ), MEGABYTES );
+  status.used_mem = convert_unit( static_cast< float >( used * (page_size >> 10) ), MEGABYTES, KILOBYTES );
   status.total_mem = convert_unit( static_cast< float >( page_count * (page_size >> 10) ), MEGABYTES, KILOBYTES);
 }
