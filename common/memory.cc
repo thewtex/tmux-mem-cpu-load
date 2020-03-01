@@ -16,6 +16,7 @@
  * limitations under the License.
  */
 
+#include <bits/stdint-uintn.h>
 #include <sstream>
 
 #include "memory.h"
@@ -84,8 +85,9 @@ std::string mem_string( const MemoryStatus & mem_status,
     break;
     }
   default: // Default mode, just show the used/total memory in MB
-    oss << static_cast< unsigned int >( mem_status.used_mem ) << '/'
-      << static_cast< unsigned int >( mem_status.total_mem ) << "MB";
+    if(mem_status.used_mem>100000 && mem_status.total_mem>100000) oss<<static_cast<unsigned int>(mem_status.used_mem/1024)<<"/"<<static_cast<unsigned int>(mem_status.total_mem/1024)<<"GB";
+    else if(mem_status.used_mem<100000 && mem_status.total_mem>100000) oss<<static_cast<unsigned int>(mem_status.used_mem)<<"MB/"<<static_cast<unsigned int>(mem_status.total_mem/1024)<<"GB";
+    else oss<<static_cast<unsigned int>(mem_status.used_mem)<<"/"<<static_cast<unsigned int>(mem_status.total_mem)<<"MB";
   }
 
   if( use_colors )
