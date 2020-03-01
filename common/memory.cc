@@ -16,7 +16,6 @@
  * limitations under the License.
  */
 
-#include <bits/stdint-uintn.h>
 #include <sstream>
 
 #include "memory.h"
