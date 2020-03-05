@@ -31,9 +31,9 @@ static PDH_HCOUNTER cpuTotal;
 #include "cpu.h"
 #include "luts.h"
 
-uint8_t get_cpu_count()
+uint32_t get_cpu_count()
 {
-  return static_cast< uint8_t >( std::thread::hardware_concurrency() );
+  return static_cast< uint32_t >( std::thread::hardware_concurrency() );
 }
 
 float cpu_percentage( unsigned cpu_usage_delay )

@@ -45,7 +45,7 @@
 #endif
 
 float cpu_percentage( unsigned );
-uint8_t get_cpu_count();
+uint32_t get_cpu_count();
 
 /** CPU percentage output mode.
  *

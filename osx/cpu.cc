@@ -21,7 +21,7 @@
 
 #include "cpu.h"
 
-uint8_t get_cpu_count()
+uint32_t get_cpu_count()
 {
   return sysconf( _SC_NPROCESSORS_ONLN );
 }
