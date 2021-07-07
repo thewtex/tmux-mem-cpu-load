@@ -174,7 +174,7 @@ Contributions from:
 * Compilenix <Compilenix@compilenix.org>
 * jodavies <jodavies1010@gmail.com>
 * `@nhdaly`_ (Nathan Daly) <nhdaly@gmail.com>
-
+* bensuperpc <bensuperpc@gmail.com>
 
 .. _tmux: http://tmux.sourceforge.net/
 .. _CMake: http://www.cmake.org

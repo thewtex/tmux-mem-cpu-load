@@ -1,0 +1,62 @@
+name: "tagged-release"
+
+on:
+  push:
+    tags:
+      - "v[0-9]+.[0-9]+.[0-9]+*"
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: build ${{ matrix.arch_name }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # Disable: unsupported system: android-arm, android-arm64, android-x86, android-x86_64, web-wasm,
+        # Disable: missing header in linux(GCC): windows-static-x64, windows-static-x64-posix, windows-static-x86, windows-shared-x64, windows-shared-x64-posix, windows-shared-x86,
+        arch_name: [linux-arm64, linux-arm64-musl, linux-armv5, linux-armv5-musl, linux-armv6, linux-armv6-musl, linux-armv7, linux-armv7a, linux-armv7l-musl, linux-x64-clang, linux-s390x, linux-x64, linux-x86, linux-mips, linux-ppc64le, manylinux1-x64, manylinux1-x86, manylinux2010-x64, manylinux2010-x86, manylinux2014-x64, manylinux2014-x86, manylinux2014-aarch64, linux-riscv64, linux-riscv32]
+    steps:
+      - name: "📥 Checkout Code"
+        uses: actions/checkout@v2
+        with:
+          submodules: 'recursive'
+          fetch-depth: 0
+      - name: "🛠️ cmake"
+        run: ./builder/cmake.sh ${{ matrix.arch_name }}:latest -DCMAKE_BUILD_TYPE=Release
+      - name: "✅ checksum"
+        run: cd build-${{ matrix.arch_name }} && find . -maxdepth 1 -name "tmux-mem-cpu-load*" | xargs sha256sum > checksum.sha256
+      - name: "🗜️ compress"
+        run: cd build-${{ matrix.arch_name }} && find . -maxdepth 1 -name "tmux-mem-cpu-load*" -o -name "*.sha256" | XZ_OPT=-e9 tar -cJf tmux-mem-cpu-load-${{ matrix.arch_name }}.tar.xz -T - && mv tmux-mem-cpu-load-${{ matrix.arch_name }}.tar.xz ..
+      - name: "💾 save binaries"
+        uses: actions/upload-artifact@v2
+        with:
+          name: bin-artifact
+          path: tmux-mem-cpu-load-${{ matrix.arch_name }}.tar.xz
+          retention-days: 1        
+  release:
+    name: release
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: "📥 Checkout Code"
+        uses: actions/checkout@v2
+        with:
+          submodules: 'recursive'
+          fetch-depth: 0
+      - name: get artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: bin-artifact
+          path: .
+      - name: "✅ checksum"
+        run: find . -maxdepth 1 -name "*.tar.xz" | xargs sha256sum > checksum_all.sha256
+      - uses: "marvinpinto/action-automatic-releases@latest"
+        name: "📤 upload to github"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          prerelease: false
+          files: |
+            LICENSE
+            *.tar.xz
+            *.sha256

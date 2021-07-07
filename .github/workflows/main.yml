@@ -1,0 +1,33 @@
+name: tmux-mem-cpu-load
+
+on:
+  push:
+    branches:
+    - '*'
+    paths-ignore:
+      - '**/README.md'
+      - '**/README.rst'
+  pull_request:
+    branches:
+    - '*'
+  workflow_dispatch:
+
+jobs:
+  image:
+    name: build ${{ matrix.arch_name }} ${{ matrix.build_type }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # Disable: unsupported system: android-arm, android-arm64, android-x86, android-x86_64, web-wasm,
+        # Disable: missing header in linux(GCC): windows-static-x64, windows-static-x64-posix, windows-static-x86, windows-shared-x64, windows-shared-x64-posix, windows-shared-x86,
+        arch_name: [linux-arm64, linux-arm64-musl, linux-armv5, linux-armv5-musl, linux-armv6, linux-armv6-musl, linux-armv7, linux-armv7a, linux-armv7l-musl, linux-x64-clang, linux-s390x, linux-x64, linux-x86, linux-mips, linux-ppc64le, manylinux1-x64, manylinux1-x86, manylinux2010-x64, manylinux2010-x86, manylinux2014-x64, manylinux2014-x86, manylinux2014-aarch64, linux-riscv64, linux-riscv32]
+        build_type: [Release, Debug]
+    steps:
+      - name: "📥 Checkout Code"
+        uses: actions/checkout@v2
+        with:
+          submodules: 'recursive'
+          fetch-depth: 0
+      - name: "🛠️ build"
+        run: ./builder/cmake.sh ${{ matrix.arch_name }}:latest -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
