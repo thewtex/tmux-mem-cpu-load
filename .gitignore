@@ -57,3 +57,5 @@ Thumbs.db
 *.swp
 *.swo
 *~
+dockcross-*
+build-*
