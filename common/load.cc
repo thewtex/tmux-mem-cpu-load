@@ -39,6 +39,8 @@ std::string load_string( bool use_colors,
   short num_averages )
 {
   std::ostringstream ss;
+  ss.setf( std::ios::fixed, std::ios::floatfield );
+  ss.precision( 2 );
   double averages[num_averages];
   // based on: opensource.apple.com/source/Libc/Libc-262/gen/getloadavg.c
 
