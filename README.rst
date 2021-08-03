@@ -10,6 +10,9 @@ CPU, RAM, and load monitor for use with tmux_
 
 .. image:: https://circleci.com/gh/thewtex/tmux-mem-cpu-load.svg?style=svg
   :target: https://circleci.com/gh/thewtex/tmux-mem-cpu-load
+  
+.. image:: https://github.com/thewtex/tmux-mem-cpu-load/actions/workflows/main.yml/badge.svg
+   :target: https://github.com/thewtex/tmux-mem-cpu-load/actions/workflows/main.yml
 
 Description
 ===========
