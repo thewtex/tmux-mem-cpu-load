@@ -17,6 +17,7 @@
  */
 
 #include <sstream>
+#include <string>
 
 #include "memory.h"
 #include "luts.h"
