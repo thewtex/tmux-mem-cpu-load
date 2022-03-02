@@ -18,7 +18,7 @@ jobs:
         arch_name: [linux-arm64, linux-arm64-musl, linux-armv5, linux-armv5-musl, linux-armv6, linux-armv6-musl, linux-armv7, linux-armv7a, linux-armv7l-musl, linux-x64-clang, linux-s390x, linux-x64, linux-x86, linux-mips, linux-ppc64le, manylinux1-x64, manylinux1-x86, manylinux2010-x64, manylinux2010-x86, manylinux2014-x64, manylinux2014-x86, manylinux2014-aarch64, linux-riscv64, linux-riscv32]
     steps:
       - name: "📥 Checkout Code"
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           submodules: 'recursive'
           fetch-depth: 0
@@ -40,7 +40,7 @@ jobs:
     needs: build
     steps:
       - name: "📥 Checkout Code"
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           submodules: 'recursive'
           fetch-depth: 0
