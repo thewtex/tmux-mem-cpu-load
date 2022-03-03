@@ -28,18 +28,8 @@ set(tmux-mem-cpu-load_VERSION
   ${tmux-mem-cpu-load_VERSION_MAJOR}.${tmux-mem-cpu-load_VERSION_MINOR}.${tmux-mem-cpu-load_VERSION_PATCH})
 
 # Check whether we have support for c++11 in compiler and fail if we don't
-include(CheckCXXCompilerFlag)
-check_cxx_compiler_flag("-std=c++11" COMPILER_SUPPORTS_CXX11)
-check_cxx_compiler_flag("-std=c++0x" COMPILER_SUPPORTS_CXX0X)
-
-if(COMPILER_SUPPORTS_CXX11)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-elseif(COMPILER_SUPPORTS_CXX0X)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
-else()
-  message(FATAL_ERROR
-    "Compiler ${CMAKE_CXX_COMPILER_ID} ${CMAKE_CXX_COMPILER_VERSION} has no C++11 support.")
-endif()
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # generate header file to handle version
 configure_file(
