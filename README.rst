@@ -58,7 +58,7 @@ Currently, Linux, Mac OSX, FreeBSD, OpenBSD, and NetBSD are supported.
 Building
 ~~~~~~~~
 
-* >= CMake_ -2.6
+* >= CMake_ -3.5
 * C++ compiler with C++11 support (e.g. gcc/g++ >= 4.6)
 
 Download
