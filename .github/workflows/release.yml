@@ -29,7 +29,7 @@ jobs:
       - name: "🗜️ compress"
         run: cd build-${{ matrix.arch_name }} && find . -maxdepth 1 -name "tmux-mem-cpu-load*" -o -name "*.sha256" | XZ_OPT=-e9 tar -cJf tmux-mem-cpu-load-${{ matrix.arch_name }}.tar.xz -T - && mv tmux-mem-cpu-load-${{ matrix.arch_name }}.tar.xz ..
       - name: "💾 save binaries"
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: bin-artifact
           path: tmux-mem-cpu-load-${{ matrix.arch_name }}.tar.xz
