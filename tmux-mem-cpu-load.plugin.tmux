@@ -18,27 +18,32 @@
 # The directory where this plugin is located.
 CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-pushd $CURRENT_DIR #Pushd to the directory where this plugin is located.
+if [ ! -f $CURRENT_DIR/tmux-mem-cpu-load ] && ! $(builtin type -P "tmux-mem-cpu-load" &> /dev/null) ; then
+   tmux run-shell "echo \"tmux-mem-cpu-load not found. Attempting to build.
+   \""
 
-# Attempt to rebuild the plugin and log any errors in the tmux display window.
-if output=$(cmake . 2>&1); then
-   tmux run-shell "echo \"'cmake $CURRENT_DIR' completed successfully.
-   \""
-else
-   tmux run-shell "echo \"'cmake $CURRENT_DIR' failed. Error logged below.
-   $output
-   \""
-   exit 1
+   pushd $CURRENT_DIR #Pushd to the directory where this plugin is located.
+
+   # Attempt to rebuild the plugin and log any errors in the tmux display window.
+   if output=$(cmake . 2>&1); then
+      tmux run-shell "echo \"'cmake $CURRENT_DIR' completed successfully.
+      \""
+   else
+      tmux run-shell "echo \"'cmake $CURRENT_DIR' failed. Error logged below.
+      $output
+      \""
+      exit 1
+   fi
+
+   if output=$(make 2>&1); then 
+      tmux run-shell "echo \"tmux-mem-cpu-load built successfully.
+      \""
+   else
+      tmux run-shell "echo \"tmux-mem-cpu-load failed to build. Error logged below.
+      $output
+      \""
+      exit 1
+   fi
+   popd
 fi
 
-if output=$(make 2>&1); then 
-   tmux run-shell "echo \"tmux-mem-cpu-load built successfully.
-   \""
-else
-   tmux run-shell "echo \"tmux-mem-cpu-load failed to build. Error logged below.
-   $output
-   \""
-   exit 1
-fi
-
-popd
