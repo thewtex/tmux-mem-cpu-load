@@ -23,5 +23,6 @@
 
 std::string get_graph_by_percentage( unsigned, unsigned len = 10 );
 std::string get_graph_by_value( unsigned, unsigned, unsigned len = 10 );
+std::string get_graph_nerd( unsigned );
 
 #endif
