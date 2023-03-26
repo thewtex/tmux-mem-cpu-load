@@ -37,7 +37,7 @@
 
 std::string cpu_string( CPU_MODE cpu_mode, unsigned int cpu_usage_delay, unsigned int graph_lines,
     bool use_colors = false,
-    bool use_powerline_left = false, bool use_powerline_right = false, bool nerd_graph = false)
+    bool use_powerline_left = false, bool use_powerline_right = false, bool use_nerd_graph = false)
 {
 
   float percentage;
@@ -80,7 +80,7 @@ std::string cpu_string( CPU_MODE cpu_mode, unsigned int cpu_usage_delay, unsigne
     }
   }
 
-  if( nerd_graph )
+  if( use_nerd_graph )
   {
     oss << "▕";
     oss << get_graph_nerd( unsigned( percentage ) );
@@ -152,9 +152,9 @@ int main( int argc, char** argv )
   bool use_colors = false;
   bool use_powerline_left = false;
   bool use_powerline_right = false;
+  bool use_nerd_graph = false;
   MEMORY_MODE mem_mode = MEMORY_MODE_DEFAULT;
   CPU_MODE cpu_mode = CPU_MODE_DEFAULT;
-  bool nerd_graph = false;
 
   static struct option long_options[] =
   {
@@ -197,7 +197,7 @@ int main( int argc, char** argv )
         use_powerline_right = true;
         break;
       case 'n': // --nerd-graph
-        nerd_graph = true;
+        use_nerd_graph = true;
         break;
       case 'i': // --interval, -i
         if( atoi( optarg ) < 1 )
@@ -260,7 +260,7 @@ int main( int argc, char** argv )
   MemoryStatus memory_status;
   mem_status( memory_status );
   std::cout << mem_string( memory_status, mem_mode, use_colors, use_powerline_left, use_powerline_right )
-    << cpu_string( cpu_mode, cpu_usage_delay, graph_lines, use_colors, use_powerline_left, use_powerline_right, nerd_graph )
+    << cpu_string( cpu_mode, cpu_usage_delay, graph_lines, use_colors, use_powerline_left, use_powerline_right, use_nerd_graph )
     << load_string( use_colors, use_powerline_left, use_powerline_right, averages_count );
 
   std::cout << std::endl;
