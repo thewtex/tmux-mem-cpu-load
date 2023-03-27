@@ -24,6 +24,7 @@
 
 std::string load_string( bool use_colors = false,
   bool use_powerline_left = false, bool use_powerline_right = false,
-  short num_averages = 3 );
+  short num_averages = 3, bool segments_to_right = false,
+  short right_color = 0 );
 
 #endif

@@ -34,5 +34,7 @@ enum POWERLINE_DIRECTION
  * in the next entr. */
 void powerline( std::ostringstream & oss, const char color[],
   POWERLINE_DIRECTION direction, bool background_only = false );
+void powerline_char( std::ostringstream & oss, const char dynamic_color[],
+  short static_color, POWERLINE_DIRECTION direction, bool eol = false );
 
 #endif // POWERLINE_H
