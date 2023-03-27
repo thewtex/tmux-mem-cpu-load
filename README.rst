@@ -144,8 +144,8 @@ The full usage::
           Use tmux colors in output
   -p, --powerline-left
 	  Use powerline left symbols throughout the output, enables --colors
-  -n, --nerd-graph
-	  Use NerdFont characters to render CPU graph as vertical bar chart
+  -v, --vertical-graph
+	  Use vertical bar chart for CPU graph
   -q, --powerline-right
 	  Use powerline right symbols throughout the output, enables --colors
   -i <value>, --interval <value>

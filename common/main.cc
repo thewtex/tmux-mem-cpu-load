@@ -129,7 +129,7 @@ void print_help()
     << "\tUse powerline left symbols throughout the output, enables --colors\n"
     << "-q, --powerline-right\n"
     << "\tUse powerline right symbols throughout the output, enables --colors\n"
-    << "-n, --vertical-graph\n"
+    << "-v, --vertical-graph\n"
     << "\tUse vertical bar chart for CPU graph\n"
     << "-i <value>, --interval <value>\n"
     << "\tSet tmux status refresh interval in seconds. Default: 1 second\n"
