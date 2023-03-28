@@ -18,10 +18,11 @@
 
 #include <string>
 #include <cstring>
+#include <map>
 
 #include "graph.h"
 
-std::string get_graph_by_percentage( unsigned value, unsigned len ) 
+std::string get_graph_by_percentage( unsigned value, unsigned len )
 {
   unsigned step = 0;
   std::string bars;
@@ -60,3 +61,20 @@ std::string get_graph_by_value( unsigned value, unsigned max, unsigned len )
   return bars;
 }
 
+std::string get_graph_vert( unsigned value )
+{
+  static const std::map<unsigned, std::string> graph_chars = {
+    { 0, " " }, { 10, "▁" }, { 20, "▂" }, { 30, "▃" }, { 40, "▄" },
+    { 50, "▅" }, { 60, "▆" }, { 70, "▇" }, { 80, "█" }, { 90, "▲" }
+  };
+
+  for( auto it = graph_chars.rbegin(); it != graph_chars.rend(); ++it )
+  {
+    if( value >= it->first )
+    {
+      return it->second;
+    }
+  }
+
+  return " "; // default return in case value doesn't match map options
+}

@@ -144,6 +144,8 @@ The full usage::
           Use tmux colors in output
   -p, --powerline-left
 	  Use powerline left symbols throughout the output, enables --colors
+  -v, --vertical-graph
+	  Use vertical bar chart for CPU graph
   -q, --powerline-right
 	  Use powerline right symbols throughout the output, enables --colors
   -i <value>, --interval <value>
