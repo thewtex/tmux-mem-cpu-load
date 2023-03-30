@@ -37,7 +37,7 @@
 
 std::string cpu_string( CPU_MODE cpu_mode, unsigned int cpu_usage_delay, unsigned int graph_lines,
     bool use_colors = false,
-    bool use_powerline_left = false, bool use_powerline_right = false, bool use_nerd_graph = false)
+    bool use_powerline_left = false, bool use_powerline_right = false, bool use_vert_graph = false)
 {
 
   float percentage;
@@ -80,10 +80,10 @@ std::string cpu_string( CPU_MODE cpu_mode, unsigned int cpu_usage_delay, unsigne
     }
   }
 
-  if( use_nerd_graph )
+  if( use_vert_graph )
   {
     oss << "▕";
-    oss << get_graph_nerd( unsigned( percentage ) );
+    oss << get_graph_vert( unsigned( percentage ) );
     oss << "▏";
   }
   else if( graph_lines > 0)
@@ -129,8 +129,8 @@ void print_help()
     << "\tUse powerline left symbols throughout the output, enables --colors\n"
     << "-q, --powerline-right\n"
     << "\tUse powerline right symbols throughout the output, enables --colors\n"
-    << "-n, --nerd-graph\n"
-    << "\tUse NerdFont symbols to render CPU graph as vertical bar chart\n"
+    << "-v, --vertical-graph\n"
+    << "\tUse vertical bar chart for CPU graph\n"
     << "-l <value>, --segments-left <value>\n"
     << "\tEnable blending bg/fg color (depending on -p or -q use) with segment to left\n"
     << "-r <value>, --segments-right <value>\n"
@@ -158,7 +158,7 @@ int main( int argc, char** argv )
   bool use_colors = false;
   bool use_powerline_left = false;
   bool use_powerline_right = false;
-  bool use_nerd_graph = false;
+  bool use_vert_graph = false;
   bool segments_to_left = false;
   bool segments_to_right= false;
   MEMORY_MODE mem_mode = MEMORY_MODE_DEFAULT;
@@ -174,7 +174,7 @@ int main( int argc, char** argv )
     { "colors", no_argument, NULL, 'c' },
     { "powerline-left", no_argument, NULL, 'p' },
     { "powerline-right", no_argument, NULL, 'q' },
-    { "nerd-graph", no_argument, NULL, 'n' },
+    { "vertical-graph", no_argument, NULL, 'v' },
     { "interval", required_argument, NULL, 'i' },
     { "graph-lines", required_argument, NULL, 'g' },
     { "mem-mode", required_argument, NULL, 'm' },
@@ -187,7 +187,7 @@ int main( int argc, char** argv )
 
   int c;
   // while c != -1
-  while( (c = getopt_long( argc, argv, "hi:cpqnl:r:g:m:a:t:", long_options, NULL) ) != -1 )
+  while( (c = getopt_long( argc, argv, "hi:cpqvl:r:g:m:a:t:", long_options, NULL) ) != -1 )
   {
     switch( c )
     {
@@ -206,8 +206,8 @@ int main( int argc, char** argv )
         use_colors = true;
         use_powerline_right = true;
         break;
-      case 'n': // --nerd-graph
-        use_nerd_graph = true;
+      case 'v': // --vertical-graph
+        use_vert_graph = true;
         break;
       case 'l': // --segments-left
         segments_to_left = true;
@@ -288,7 +288,7 @@ int main( int argc, char** argv )
   MemoryStatus memory_status;
   mem_status( memory_status );
   std::cout << mem_string( memory_status, mem_mode, use_colors, use_powerline_left, use_powerline_right, segments_to_left, left_color )
-    << cpu_string( cpu_mode, cpu_usage_delay, graph_lines, use_colors, use_powerline_left, use_powerline_right, use_nerd_graph )
+    << cpu_string( cpu_mode, cpu_usage_delay, graph_lines, use_colors, use_powerline_left, use_powerline_right, use_vert_graph )
     << load_string( use_colors, use_powerline_left, use_powerline_right, averages_count, segments_to_right, right_color );
 
   std::cout << std::endl;

@@ -61,7 +61,7 @@ std::string get_graph_by_value( unsigned value, unsigned max, unsigned len )
   return bars;
 }
 
-std::string get_graph_nerd( unsigned value )
+std::string get_graph_vert( unsigned value )
 {
   static const std::map<unsigned, std::string> graph_chars = {
     { 0, " " }, { 10, "▁" }, { 20, "▂" }, { 30, "▃" }, { 40, "▄" },
