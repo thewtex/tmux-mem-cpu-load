@@ -134,7 +134,7 @@ void print_help()
     << "-l <value>, --segments-left <value>\n"
     << "\tEnable blending bg/fg color (depending on -p or -q use) with segment to left\n"
     << "-r <value>, --segments-right <value>\n"
-    << "\tEnable blending bg/fg color (depending on -p or -q use) with segment to left\n"
+    << "\tEnable blending bg/fg color (depending on -p or -q use) with segment to right\n"
     << "-i <value>, --interval <value>\n"
     << "\tSet tmux status refresh interval in seconds. Default: 1 second\n"
     << "-g <value>, --graph-lines <value>\n"
