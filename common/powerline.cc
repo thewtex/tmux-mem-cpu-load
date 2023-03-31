@@ -77,38 +77,24 @@ void powerline_char( std::ostringstream & oss, const char dynamic_color[],
     case POWERLINE_LEFT:
       if ( eol )
       {
-      oss << bg2fg( dynamic_color )
-          << "#[bg=colour"
-          << write_color
-          << "]";
+      oss << bg2fg( dynamic_color ) << "#[bg=colour" << write_color << "]";
       }
       else
       {
-      oss << dynamic_color
-          << "#[fg=colour"
-          << write_color
-          << "]";
+      oss << dynamic_color << "#[fg=colour" << write_color << "]";
       }
-      oss << PWL_LEFT_FILLED
-          << dynamic_color;
+      oss << PWL_LEFT_FILLED << dynamic_color;
     break;
     case POWERLINE_RIGHT:
       if ( eol )
       {
-        oss << dynamic_color
-            << "#[fg=colour"
-            << write_color
-            << "] ";
+        oss << dynamic_color << "#[fg=colour" << write_color << "] ";
       }
       else
       {
-        oss << bg2fg(dynamic_color)
-            << " #[bg=colour"
-            << write_color
-            << "]";
+        oss << bg2fg(dynamic_color) << " #[bg=colour" << write_color << "]";
       }
-      oss << PWL_RIGHT_FILLED
-          << dynamic_color;
+      oss << PWL_RIGHT_FILLED << dynamic_color;
     break;
   }
 }
