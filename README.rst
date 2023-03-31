@@ -146,6 +146,10 @@ The full usage::
 	  Use powerline left symbols throughout the output, enables --colors
   -v, --vertical-graph
 	  Use vertical bar chart for CPU graph
+  -l <value>, --segments-left <value>
+	  Enable blending bg/fg color (depending on -p or -q use) with segment to left
+  -r <value>, --segments-right <value>
+	  Enable blending bg/fg color (depending on -p or -q use) with segment to right
   -q, --powerline-right
 	  Use powerline right symbols throughout the output, enables --colors
   -i <value>, --interval <value>
