@@ -148,8 +148,10 @@ The full usage::
 	  Use vertical bar chart for CPU graph
   -l <value>, --segments-left <value>
 	  Enable blending bg/fg color (depending on -p or -q use) with segment to left
+	  Provide color to be used depending on -p or -q option for seamless segment blending
   -r <value>, --segments-right <value>
 	  Enable blending bg/fg color (depending on -p or -q use) with segment to right
+	  Provide color to be used depending on -p or -q option for seamless segment blending
   -q, --powerline-right
 	  Use powerline right symbols throughout the output, enables --colors
   -i <value>, --interval <value>
