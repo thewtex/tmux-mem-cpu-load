@@ -19,6 +19,7 @@
 #ifndef CPU_H_
 #define CPU_H_
 
+#include <cstdint>
 #include <sys/types.h>
 
 #if defined(__APPLE__) && defined(__MACH__)
