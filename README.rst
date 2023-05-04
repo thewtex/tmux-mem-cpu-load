@@ -144,16 +144,18 @@ The full usage::
           Use tmux colors in output
   -p, --powerline-left
 	  Use powerline left symbols throughout the output, enables --colors
+  -q, --powerline-right
+	  Use powerline right symbols throughout the output, enables --colors
   -v, --vertical-graph
 	  Use vertical bar chart for CPU graph
   -l <value>, --segments-left <value>
 	  Enable blending bg/fg color (depending on -p or -q use) with segment to left
 	  Provide color to be used depending on -p or -q option for seamless segment blending
+      Color is an integer value which uses the standard tmux color palette values
   -r <value>, --segments-right <value>
 	  Enable blending bg/fg color (depending on -p or -q use) with segment to right
 	  Provide color to be used depending on -p or -q option for seamless segment blending
-  -q, --powerline-right
-	  Use powerline right symbols throughout the output, enables --colors
+      Color is an integer value which uses the standard tmux color palette values
   -i <value>, --interval <value>
           Set tmux status refresh interval in seconds. Default: 1 second
   -g <value>, --graph-lines <value>
@@ -165,7 +167,37 @@ The full usage::
   -a <value>, --averages-count <value>
         Set how many load-averages should be drawn. Default: 3
 
+Blending Dynamic Colors Tmux Powerline Segments
+===============================================
 
+The -l and -r options when used in conjunction with a recent version of Tmux Powerline
+that has the ability to selectively disable spacing and separators between segments allow
+for seamless blending of tmux-mem-cpu-load output with other adjacent segments.  The end
+result is dynamic changing of appropriate foreground and background colors as the start
+and end of the tmux-mem-cpu-load output string that is aggregated with other Tmux
+Powerline output to produce a more polished status line in Tmux.
+
+Segment Adjaceny before this feature:
+
+.. image:: seg-adj1.png
+
+Segment Adjaceny after this feature:
+
+.. image:: seg-adj2.png
+
+Note that the values for the -l and -r options  will be the standard Tmux integer color
+values.  They set the appropriate background and foreground colors used for the separator
+character when used with the poweline-left or powerline-right options so it is easy to
+match coloring to adjacent segments.  An example from the segment script that calls
+tmux-mem-cpu-load is as follows::
+
+  tmux-mem-cpu-load -q -v -l 52 -r 33
+
+This combines with theme options available to tmux-powerline, such as the following::
+
+  "disk_usage_cust 52 123 ${TMUX_POWERLINE_SEPARATOR_LEFT_BOLD} 52 123 right_disable" \
+  "tmux_mem_cpu_load_cust 52 234 ${TMUX_POWERLINE_SEPARATOR_LEFT_BOLD} 52 234 both_disable separator_disable" \
+  "batt_cust 33 154 ${TMUX_POWERLINE_SEPARATOR_LEFT_BOLD} 16 33 N separator_disable" \  
 
 Authors
 =======
