@@ -151,11 +151,11 @@ The full usage::
   -l <value>, --segments-left <value>
 	  Enable blending bg/fg color (depending on -p or -q use) with segment to left
 	  Provide color to be used depending on -p or -q option for seamless segment blending
-      Color is an integer value which uses the standard tmux color palette values
+	  Color is an integer value which uses the standard tmux color palette values
   -r <value>, --segments-right <value>
 	  Enable blending bg/fg color (depending on -p or -q use) with segment to right
 	  Provide color to be used depending on -p or -q option for seamless segment blending
-      Color is an integer value which uses the standard tmux color palette values
+	  Color is an integer value which uses the standard tmux color palette values
   -i <value>, --interval <value>
           Set tmux status refresh interval in seconds. Default: 1 second
   -g <value>, --graph-lines <value>
