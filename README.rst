@@ -122,7 +122,7 @@ Edit ``$HOME/.tmux.conf`` to display the program's output in *status-left* or
 If you installed using tpm, you must specify the full path to the
 ``tmux-mem-cpu-load`` script, like below::
 
-  set -g status-right "#[fg=green]#($TMUX_PLUGIN_MANAGER_PATH/tmux-mem-cpu-load/tmux-mem-cpu-load --colors --powerline-right --interval 2)#[default]"
+  set -g status-right '#[fg=green]#($TMUX_PLUGIN_MANAGER_PATH/tmux-mem-cpu-load/tmux-mem-cpu-load --colors --powerline-right --interval 2)#[default]'
 
 Note that the *interval* argument to `tmux-mem-cpu-load` should be the same number
 of seconds that *status-interval* is set at.
