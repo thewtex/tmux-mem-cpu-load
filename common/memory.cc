@@ -28,7 +28,9 @@ std::string mem_string( const MemoryStatus & mem_status,
   MEMORY_MODE mode,
   bool use_colors,
   bool use_powerline_left,
-  bool use_powerline_right )
+  bool use_powerline_right,
+  bool segments_to_left,
+  short left_color )
 {
   std::ostringstream oss;
   // Change the percision for floats, for a pretty output
@@ -38,10 +40,20 @@ std::string mem_string( const MemoryStatus & mem_status,
   unsigned int color = static_cast< unsigned int >((100 * mem_status.used_mem) / mem_status.total_mem);
   if( use_colors )
   {
-    if( use_powerline_right )
+    if( use_powerline_right && segments_to_left )
+    {
+      powerline_char( oss, mem_lut[color], left_color, POWERLINE_RIGHT, false);
+      oss << ' ';
+    }
+    else if( use_powerline_right && !segments_to_left )
     {
       oss << "#[bg=default]";
       powerline( oss, mem_lut[color], POWERLINE_RIGHT );
+      oss << ' ';
+    }
+    else if( use_powerline_left && segments_to_left )
+    {
+      powerline_char( oss, mem_lut[color], left_color, POWERLINE_LEFT, false);
       oss << ' ';
     }
     else if( use_powerline_left )

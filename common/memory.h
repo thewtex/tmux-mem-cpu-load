@@ -51,6 +51,8 @@ std::string mem_string( const MemoryStatus & mem_status,
   MEMORY_MODE mode = MEMORY_MODE_DEFAULT,
   bool use_colors = false,
   bool use_powerline_left = false,
-  bool use_powerline_right = false );
+  bool use_powerline_right = false,
+  bool segments_to_left = false,
+  short left_color = 0 );
 
 #endif

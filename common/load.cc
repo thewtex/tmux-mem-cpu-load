@@ -26,6 +26,7 @@
 #include <stdlib.h> // getloadavg()
 #include <cmath> // floorf()
 #include <sys/types.h>
+#include <stdio.h>
 
 #include "cpu.h"
 #include "load.h"
@@ -35,8 +36,8 @@
 
 // Load Averages
 std::string load_string( bool use_colors,
-  bool use_powerline_left, bool use_powerline_right,
-  short num_averages )
+  bool use_powerline_left, bool use_powerline_right, short num_averages,
+  bool segments_to_right, short right_color )
 {
   std::ostringstream ss;
   ss.setf( std::ios::fixed, std::ios::floatfield );
@@ -97,7 +98,12 @@ std::string load_string( bool use_colors,
 
     if( use_colors )
     {
-      if( use_powerline_left )
+      if( use_powerline_left && segments_to_right )
+      {
+        powerline( ss, load_lut[load_percent], POWERLINE_LEFT, true );
+        powerline_char( ss, load_lut[load_percent], right_color, POWERLINE_LEFT, true );
+      }
+      else if( use_powerline_left && !segments_to_right )
       {
         powerline( ss, load_lut[load_percent], POWERLINE_LEFT, true );
         powerline( ss, "#[fg=default,bg=default]", POWERLINE_LEFT );
@@ -105,6 +111,10 @@ std::string load_string( bool use_colors,
       else if( !use_powerline_right )
       {
         ss << "#[fg=default,bg=default]";
+      }
+      else if ( segments_to_right && use_powerline_right )
+      {
+        powerline_char( ss, load_lut[load_percent], right_color, POWERLINE_RIGHT, true );
       }
     }
   }

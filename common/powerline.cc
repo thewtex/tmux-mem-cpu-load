@@ -66,3 +66,35 @@ void powerline( std::ostringstream & oss, const char color[],
     break;
     };
 }
+
+void powerline_char( std::ostringstream & oss, const char dynamic_color[],
+  short static_color, POWERLINE_DIRECTION direction, bool eol )
+{
+  char write_color[7];
+  sprintf(write_color, "%d", static_color);
+  switch( direction )
+  {
+    case POWERLINE_LEFT:
+      if ( eol )
+      {
+      oss << bg2fg( dynamic_color ) << "#[bg=colour" << write_color << "]";
+      }
+      else
+      {
+      oss << dynamic_color << "#[fg=colour" << write_color << "]";
+      }
+      oss << PWL_LEFT_FILLED << dynamic_color;
+    break;
+    case POWERLINE_RIGHT:
+      if ( eol )
+      {
+        oss << dynamic_color << "#[fg=colour" << write_color << "] ";
+      }
+      else
+      {
+        oss << bg2fg(dynamic_color) << " #[bg=colour" << write_color << "]";
+      }
+      oss << PWL_RIGHT_FILLED << dynamic_color;
+    break;
+  }
+}
