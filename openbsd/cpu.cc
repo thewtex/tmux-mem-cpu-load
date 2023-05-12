@@ -24,7 +24,7 @@
 #include "error.h"
 #include "cpu.h"
 
-uint8_t get_cpu_count()
+uint32_t get_cpu_count()
 {
   int cpu_count = 1; // default to 1
   int mib[2] = { CTL_HW, HW_NCPUONLINE };
@@ -35,7 +35,7 @@ uint8_t get_cpu_count()
     error( "sysctl: error getting cpu count" );
   }
 
-  return cpu_count;
+  return static_cast<uint32_t>( cpu_count );
 }
 
 float cpu_percentage( unsigned int cpu_usage_delay )
@@ -54,6 +54,8 @@ float cpu_percentage( unsigned int cpu_usage_delay )
   }
 
   usleep( cpu_usage_delay );
+
+  size = sizeof( load2 );
 
   // update cpu times
   if( sysctl( cpu_ctl, 2, &load2, &size, NULL, 0 ) < 0 )
