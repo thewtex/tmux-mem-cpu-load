@@ -66,21 +66,21 @@ void mem_status( MemoryStatus & status )
     if( substr.compare( "MemTotal" ) == 0 )
     {
       // get total memory
-      total_mem = stoi( line.substr( substr_start, substr_len ) );
+      total_mem = stol( line.substr( substr_start, substr_len ) );
     }
     else if( substr.compare( "MemFree" ) == 0 )
     {
-      used_mem = total_mem - stoi( line.substr( substr_start, substr_len ) );
+      used_mem = total_mem - stol( line.substr( substr_start, substr_len ) );
     }
     else if( substr.compare( "Shmem" ) == 0 )
     {
-      used_mem += stoi( line.substr( substr_start, substr_len ) );
+      used_mem += stol( line.substr( substr_start, substr_len ) );
     }
     else if( substr.compare( "Buffers" ) == 0 ||
              substr.compare( "Cached" ) == 0  ||
              substr.compare( "SReclaimable" ) == 0 )
     {
-      used_mem -= stoi( line.substr( substr_start, substr_len ) );
+      used_mem -= stol( line.substr( substr_start, substr_len ) );
     }
   }
 
