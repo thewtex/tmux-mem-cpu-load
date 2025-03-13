@@ -35,7 +35,7 @@ if [ ! -f $CURRENT_DIR/tmux-mem-cpu-load ] && ! $(builtin type -P "tmux-mem-cpu-
       exit 1
    fi
 
-   if output=$(make 2>&1); then 
+   if output=$(cmake --build . 2>&1); then 
       tmux run-shell "echo \"tmux-mem-cpu-load built successfully.
       \""
    else
