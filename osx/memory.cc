@@ -28,14 +28,16 @@ void mem_status( MemoryStatus & status )
 {
   // These values are in bytes
   u_int64_t total_mem;
-  float used_mem;
+  // float app_mem = 0.0f;
+  // float cached_file_mem = 0.0f;
+  float available_mem = 0.0f;
   float percentage_mem;
   float free_mem;
   float free_mem_in_gigabytes; // used to check if free mem < 1 GB
   //u_int64_t unused_mem;
 
   vm_size_t page_size;
-  vm_statistics_data_t vm_stats;
+  vm_statistics64_data_t vm_stats; // Use 64-bit VM statistics
 
   // Get total physical memory
   int mib[] = { CTL_HW, HW_MEMSIZE };
@@ -43,18 +45,21 @@ void mem_status( MemoryStatus & status )
   sysctl( mib, 2, &total_mem, &length, NULL, 0 );
 
   mach_port_t mach_port = mach_host_self();
-  mach_msg_type_number_t count = sizeof( vm_stats ) / sizeof( natural_t );
+
+  // Use HOST_VM_INFO64_COUNT as the count for vm_statistics64_data_t
+  mach_msg_type_number_t count = HOST_VM_INFO64_COUNT;
+
   if( KERN_SUCCESS == host_page_size( mach_port, &page_size ) &&
-      KERN_SUCCESS == host_statistics( mach_port, HOST_VM_INFO,
+      KERN_SUCCESS == host_statistics64( mach_port, HOST_VM_INFO64,
         ( host_info_t )&vm_stats, &count )
     )
   {
     //unused_mem = static_cast<u_int64_t>( vm_stats.free_count * page_size );
-
-    used_mem = static_cast<float>(
-        ( vm_stats.active_count + vm_stats.wire_count ) * page_size);
+    // app_mem = static_cast<float>(( vm_stats.internal_page_count - vm_stats.purgeable_count ) * page_size );
+    // cached_file_mem = static_cast<float>(( vm_stats.purgeable_count + vm_stats.external_page_count ) * page_size );
+    available_mem = static_cast<float>(( vm_stats.free_count + vm_stats.external_page_count - vm_stats.speculative_count ) * page_size );
   }
 
-  status.used_mem = convert_unit(static_cast< float >( used_mem ), MEGABYTES );
+  status.used_mem = convert_unit(static_cast< float >(total_mem - available_mem ), MEGABYTES );
   status.total_mem = convert_unit(static_cast< float >( total_mem ), MEGABYTES );
 }
