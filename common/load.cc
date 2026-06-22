@@ -42,14 +42,15 @@ std::string load_string( bool use_colors,
   std::ostringstream ss;
   ss.setf( std::ios::fixed, std::ios::floatfield );
   ss.precision( 2 );
-  double averages[num_averages];
-  // based on: opensource.apple.com/source/Libc/Libc-262/gen/getloadavg.c
 
   if( num_averages <= 0 || num_averages > 3)
   {
     ss << (char) 0;
     return ss.str();
   }
+
+  double averages[3];
+  // based on: opensource.apple.com/source/Libc/Libc-262/gen/getloadavg.c
 
   if( getloadavg( averages, num_averages ) < 0 )
   {
