@@ -121,7 +121,7 @@ if(BUILD_TESTING)
     )
 
   add_test(NAME invalid_graph_lines
-    COMMAND tmux-mem-cpu-load --graph_lines -2
+    COMMAND tmux-mem-cpu-load --graph-lines -2
     )
 
   add_test(NAME old_option_specification
