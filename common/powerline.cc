@@ -74,6 +74,8 @@ void powerline_char( std::ostringstream & oss, const char dynamic_color[],
   sprintf(write_color, "%d", static_color);
   switch( direction )
   {
+    case NONE:
+    break;
     case POWERLINE_LEFT:
       if ( eol )
       {
