@@ -96,6 +96,7 @@ Install with Package Managers
 
 * Gentoo: ``emerge tmux-mem-cpu-load``
 * Homebrew: ``brew install tmux-mem-cpu-load``
+* FreeBSD: ``pkg install tmux-mem-cpu-load``
 
 Build and Install Using Antigen_
 --------------------------------
