@@ -128,17 +128,16 @@ of seconds that *status-interval* is set at.
 Continuous updates
 ------------------
 
-Use ``--watch`` (or ``-w``) to keep one foreground process running instead of
-starting a new process on every status refresh::
+Alternatively, use ``--watch`` (or ``-w``) to keep one foreground process running
+and emit a fresh status line each interval::
 
   set -g status-right '#[fg=green,bg=default]#(exec /usr/local/bin/tmux-mem-cpu-load --watch --interval 3)#[default]'
 
-Watch mode samples repeatedly and writes one newline-terminated, flushed status
-line after each interval. The first line appears after the first sampling
-interval. tmux reads the latest line from the running command and replaces the
-previous status value automatically. The program does not fork or daemonize.
-Ctrl-C or SIGTERM stops it. Without ``--watch``, it still prints one line and
-exits as before.
+tmux displays the latest output line without restarting the running command.
+The first update appears after one sampling interval. We recommend using
+``exec`` together with ``--watch``: it replaces the shell tmux launches with the
+monitor process, avoiding an extra shell and allowing signals to reach the
+monitor directly. ``--watch`` prevents repeated launches; ``exec`` alone does not.
 
 The remaining display options apply in both modes.
 
