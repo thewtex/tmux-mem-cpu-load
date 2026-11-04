@@ -60,6 +60,8 @@ void mem_status( MemoryStatus & status )
     available_mem = static_cast<float>(( vm_stats.free_count + vm_stats.external_page_count - vm_stats.speculative_count ) * page_size );
   }
 
+  mach_port_deallocate( mach_task_self(), mach_port );
+
   status.used_mem = convert_unit(static_cast< float >(total_mem - available_mem ), MEGABYTES );
   status.total_mem = convert_unit(static_cast< float >( total_mem ), MEGABYTES );
 }

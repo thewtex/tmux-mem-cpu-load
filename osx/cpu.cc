@@ -41,6 +41,7 @@ host_cpu_load_info_data_t _get_cpu_percentage()
   mach_port = mach_host_self();
   error = host_statistics(mach_port, HOST_CPU_LOAD_INFO, 
       ( host_info_t )&r_load, &count );
+  mach_port_deallocate( mach_task_self(), mach_port );
 
   if ( error != KERN_SUCCESS )
   {
