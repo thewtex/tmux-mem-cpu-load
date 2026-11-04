@@ -96,6 +96,13 @@ if(BUILD_TESTING)
     COMMAND tmux-mem-cpu-load -i 3
     )
 
+  add_test(NAME watch
+    COMMAND ${CMAKE_COMMAND}
+      "-DPROGRAM=$<TARGET_FILE:tmux-mem-cpu-load>"
+      -P "${PROJECT_SOURCE_DIR}/tests/watch.cmake"
+    )
+  set_tests_properties(watch PROPERTIES TIMEOUT 10)
+
   add_test(NAME no_cpu_graph
     COMMAND tmux-mem-cpu-load -g 0
     )

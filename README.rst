@@ -125,6 +125,26 @@ If you installed using tpm, you must specify the full path to the
 Note that the *interval* argument to `tmux-mem-cpu-load` should be the same number
 of seconds that *status-interval* is set at.
 
+Continuous updates
+------------------
+
+Use ``--watch`` (or ``-w``) to keep one foreground process running instead of
+starting a new process on every status refresh::
+
+  set -g status-right '#[fg=green,bg=default]#(exec /usr/local/bin/tmux-mem-cpu-load --watch --interval 3)#[default]'
+
+Watch mode samples repeatedly and writes one newline-terminated, flushed status
+line after each interval. The first line appears after the first sampling
+interval. tmux reads the latest line from the running command and replaces the
+previous status value automatically. The program does not fork or daemonize.
+Ctrl-C or SIGTERM stops it. Without ``--watch``, it still prints one line and
+exits as before.
+
+The remaining display options apply in both modes.
+
+Display options
+---------------
+
 Another optional argument is the number of bars in the bar graph, which
 defaults to 10.  This can, for instance, be set to the number of cores in a
 multi-core system.
@@ -155,7 +175,9 @@ The full usage::
 	  Provide color to be used depending on -p or -q option for seamless segment blending
 	  Color is an integer value which uses the standard tmux color palette values
   -i <value>, --interval <value>
-          Set tmux status refresh interval in seconds. Default: 1 second
+          Set CPU sampling interval in seconds. Default: 1 second
+  -w, --watch
+          Continuously print and flush one status line per interval
   -g <value>, --graph-lines <value>
           Set how many lines should be drawn in a graph. Default: 10
   -m <value>, --mem-mode <value>
